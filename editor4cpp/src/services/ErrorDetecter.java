@@ -1,119 +1,162 @@
 package services;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
-
+import java.util.UUID;
+import Dtos.ParsingObject;
+import Dtos.StatementParsingResult;
 import entities.*;
-import entities.TokenTypes.*;
-import entities.TokenTypes.DataTypes.*;
-import entities.TokenTypes.Identifiers.*;
-import entities.TokenTypes.Literals.*;
-import entities.TokenTypes.Punctuations.SemicolonType;
-import interfaces.IParser;
-import parsers.CurlyBracketParser;
-import parsers.IfStatementParser;
-import parsers.VariableDeclaration;
+import entities.TokenTypes.Punctuations.CloseParenthesisType;
+import entities.TokenTypes.Punctuations.OpenParenthesisType;
+import enums.GrammarStatus;
+import grammars.Grammar;
 
 public class ErrorDetecter {
-	private List<IParser> parsingTrees;
-	private List<IParser> currentParsingTrees;
+	public List<ParsingObject> currentGrammars = null;
+	public List<ParsingObject> previousGrammars = null;
 
-	public ErrorDetecter() {
-		parsingTrees = new ArrayList<IParser>();
-		parsingTrees.add(new VariableDeclaration(new ShortType(), new ShortIdentifier(""), new ShortLiteral(), false));
+	public StatementParsingResult Parse(StatementNode statementNode, Token token) {
 
-		parsingTrees.add(new VariableDeclaration(new IntType(), new IntIdentifier(""), new ShortLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new IntType(), new IntIdentifier(""), new IntLiteral(), false));
+		if (currentGrammars == null)
+			currentGrammars = statementNode.cloneParsingObject();
 
-		parsingTrees.add(new VariableDeclaration(new LongType(), new LongIdentifier(""), new ShortLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new LongType(), new LongIdentifier(""), new IntLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new LongType(), new LongIdentifier(""), new LongLiteral(), false));
+		var previousGrammars = new ArrayList<ParsingObject>();
+		for (ParsingObject po : currentGrammars) {
+			previousGrammars.add(po.clone());
+		}
 
-		parsingTrees.add(new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new ShortLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new IntLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new LongLiteral(), false));
-		parsingTrees.add(
-				new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new FloatingPointLiteral(), false));
+		var maxProgress = previousGrammars.stream().mapToInt(ParsingObject::getProgressCounter).max().orElse(0);
 
-		parsingTrees
-				.add(new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new ShortLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new IntLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new LongLiteral(), false));
-		parsingTrees.add(
-				new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new FloatingPointLiteral(), false));
+		var deleteList = new ArrayList<ParsingObject>();
+		String finalError = null;
+		for (int i = 0; i < currentGrammars.size(); i++) {
 
-		parsingTrees
-				.add(new VariableDeclaration(new StringType(), new StringIdentifier(""), new StringLiteral(), false));
-		parsingTrees.add(new VariableDeclaration(new CharType(), new CharIdentifier(""), new CharLiteral(), false));
+			var gObj = currentGrammars.get(i);
 
-		parsingTrees.add(new VariableDeclaration(new BoolType(), new BoolIdentifier(""), new BoolLiteral(), false));
+			var currentNode = gObj.grammar.getGrammarNodeById(gObj.currentNodeId);
 
-		// -----------------------------------------------------------------------------------------------
-//		parsingTrees.add(new SimpleAssignmentParser(new IntIdentifier(""),new ShortLiteral()));
-//		parsingTrees.add(new SimpleAssignmentParser(new IntIdentifier(""),new IntLiteral()));
-		parsingTrees.add(new VariableDeclaration(new ShortType(), new ShortIdentifier(""), new ShortLiteral(), true));
+			if (currentNode.isEmpty()) {
+				deleteList.add(gObj);
+				continue;
+			}
 
-		parsingTrees.add(new VariableDeclaration(new IntType(), new IntIdentifier(""), new ShortLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new IntType(), new IntIdentifier(""), new IntLiteral(), true));
+			if (currentNode.get().getChildIds().size() == 0) {
+				deleteList.add(gObj);
+				continue;
+			}
 
-		parsingTrees.add(new VariableDeclaration(new LongType(), new LongIdentifier(""), new ShortLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new LongType(), new LongIdentifier(""), new IntLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new LongType(), new LongIdentifier(""), new LongLiteral(), true));
+			for (UUID childId : currentNode.get().getChildIds()) {
+				var child = gObj.grammar.getGrammarNodeById(childId);
 
-		parsingTrees.add(new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new ShortLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new IntLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new LongLiteral(), true));
-		parsingTrees.add(
-				new VariableDeclaration(new FloatType(), new FloatIdentifier(""), new FloatingPointLiteral(), true));
+				if (child.isEmpty()) {
+					continue;
+				}
 
-		parsingTrees.add(new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new ShortLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new IntLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new LongLiteral(), true));
-		parsingTrees.add(
-				new VariableDeclaration(new DoubleType(), new DoubleIdentifier(""), new FloatingPointLiteral(), true));
+				if (child.get().getClass() == StatementNode.class) {
+					breakDownChilds(gObj, gObj.currentNodeId, child.get().Id);
+					if (!deleteList.contains(gObj))
+						deleteList.add(gObj);
 
-		parsingTrees
-				.add(new VariableDeclaration(new StringType(), new StringIdentifier(""), new StringLiteral(), true));
-		parsingTrees.add(new VariableDeclaration(new CharType(), new CharIdentifier(""), new CharLiteral(), true));
+				}
 
-		parsingTrees.add(new VariableDeclaration(new BoolType(), new BoolIdentifier(""), new BoolLiteral(), true));
-		parsingTrees.add(new IfStatementParser());
-		parsingTrees.add(new CurlyBracketParser());
+			}
+			if (deleteList.contains(gObj)) {
+				continue;
+			}
+			String childError = null;
+			boolean passed = false;
+			for (UUID childId : currentNode.get().getChildIds()) {
+				var child = gObj.grammar.getGrammarNodeById(childId);
+
+				if (child.isEmpty()) {
+					continue;
+				}
+
+				if (child.get().getClass() == SingleNode.class) {
+
+					if (((SingleNode) child.get()).tokenType.getClass().isInstance(token.tokenType)) {
+						if(((SingleNode) child.get()).tokenType instanceof OpenParenthesisType)
+						{
+							gObj.openParenthesis++;
+						}
+						if(((SingleNode) child.get()).tokenType instanceof CloseParenthesisType)
+						{
+							if(gObj.openParenthesis==0) {
+								childError="Too many )";
+								continue;
+							}
+							gObj.openParenthesis--;
+						}
+						
+						if(child.get().countParenthesis&&gObj.openParenthesis>0) {
+							childError="Expected )";
+							continue;
+						}
+
+						
+						if (child.get().canBeEnd) {
+							gObj.grammarStatus = GrammarStatus.isEnded;
+							gObj.currentNodeId = child.get().Id;
+							gObj.progressCounter++;
+							passed = true;
+							break;
+						} else {
+							gObj.grammarStatus = GrammarStatus.processing;
+							gObj.currentNodeId = child.get().Id;
+							gObj.progressCounter++;
+							passed = true;
+							break;
+						}
+					} else {
+						childError = ((SingleNode) child.get()).tokenType.getError();
+						continue;
+					}
+
+				}
+
+			}
+			if (!passed) {
+				if (gObj.getProgressCounter() >= maxProgress)
+					finalError = childError;
+				gObj.grammarStatus = GrammarStatus.failed;
+				deleteList.add(gObj);
+			}
+
+		}
+
+		currentGrammars.removeAll(deleteList);
+		var result = new StatementParsingResult();
+
+		if (currentGrammars.isEmpty()) {
+			if (previousGrammars.stream().anyMatch(a -> a.grammarStatus == GrammarStatus.isEnded)) {
+				result.grammarStatus = GrammarStatus.refresh_Retry;
+			} else {
+				result.grammarStatus = GrammarStatus.failed;
+
+				result.error = finalError;
+			}
+		} else {
+			result.grammarStatus = GrammarStatus.processing;
+		}
+
+		return result;
 	}
 
-	public Token CheckForError(Token token) {
+	private void breakDownChilds(ParsingObject gObj, UUID currentNodeId, UUID childId) {
 
-		if (currentParsingTrees == null || currentParsingTrees.isEmpty()) {
-			currentParsingTrees = new ArrayList<>(parsingTrees);
-		}
-		var treesBefore = new ArrayList<>(currentParsingTrees);
-		Iterator<IParser> parsingIterator = currentParsingTrees.iterator();
-		String error = null;
-		while (parsingIterator.hasNext()) {
-			var parsingTree = parsingIterator.next();
-			error = parsingTree.parseToken(token);
-			if (error != null && error.length() > 0 || parsingTree.isEnd()) {
-				parsingIterator.remove();
+		var grammarsToAdd = gObj.grammar.breakDown(currentNodeId, childId);
+		for (Grammar grammar : grammarsToAdd) {
 
-			}
-		}
-		if (currentParsingTrees.isEmpty() && error != null) {
-			token.error = error;
-		}
-//		if (token.tokenType instanceof SemicolonType||token.error !=null||(currentParsingTrees.isEmpty()&& error==null) ) {
-//			currentParsingTrees =new ArrayList<>( parsingTrees);
-//			for(IParser tree:currentParsingTrees) {
-//				tree.resetTree();
-//			}
-//		}
-		if (currentParsingTrees.isEmpty() && treesBefore.stream().anyMatch(s -> s.isEnd())) {
-			currentParsingTrees = new ArrayList<>(parsingTrees);
-			for (IParser tree : currentParsingTrees) {
-				tree.resetTree();
-			}
+			var newParsingObj = gObj.clone();
+			newParsingObj.grammar = grammar;
+			currentGrammars.add(newParsingObj);
 		}
 
-		return token;
+	}
+
+	public void refresh() {
+		currentGrammars = null;
+		previousGrammars = null;
 	}
 }

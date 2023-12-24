@@ -5,7 +5,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Dtos.ParsingObject;
+import constants.GrammarLibrary;
+import entities.StatementNode;
 import entities.Token;
+
+import entities.TokenTypes.WhiteSpace;
+import enums.GrammarStatus;
 
 public class Tokenizer {
 
@@ -14,9 +20,10 @@ public class Tokenizer {
 		List<Token> tokens = new ArrayList<Token>();
 		TokenHighlighter tokenHighlighter = new TokenHighlighter();
 		TokenIdentifier tokenIdentifier = new TokenIdentifier();
-		ErrorDetecter errorDetector = new ErrorDetecter();
+		ErrorDetecter errorDetecter = new ErrorDetecter();
+		StatementNode statementNode=new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 
-		boolean hasError=false;
+		boolean hasError = false;
 		String regex = "\\b\\w+\\b|\\s|\\n|\\p{Punct}";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(text);
@@ -37,16 +44,32 @@ public class Tokenizer {
 
 				token = tokenIdentifier.identify(token);
 				token = tokenHighlighter.HighlightToken(token);
-				if(!hasError)
-				{
-					token = errorDetector.CheckForError(token);
-					hasError=token.error !=null && token.error.length()>0;
+				if (!(token.tokenType instanceof WhiteSpace) && !hasError) {
+					
+					var result = errorDetecter.Parse(statementNode,token);
+					if(result.grammarStatus==GrammarStatus.failed) {
+						errorDetecter.refresh();
+						token.error = result.error;
+						hasError = true;
+					}
+					if(result.grammarStatus==GrammarStatus.refresh_Retry) {
+						
+						errorDetecter.refresh();
+						
+						var secondResult = errorDetecter.Parse(statementNode,token);
+						
+						if(secondResult.grammarStatus==GrammarStatus.failed) {
+							errorDetecter.refresh();
+							token.error = secondResult.error;
+							hasError = true;
+						}
+					}
 				}
-				if(hasError && (token.value.equals("\n") ||token.value.equals("\r"))) {
-					hasError=false;
+				
+				if (hasError && (token.value.equals("\n") || token.value.equals("\r"))) {
+					hasError = false;
 				}
 
-				
 				tokens.add(token);
 				prevToken = token;
 				token = token.nextToken;
@@ -55,14 +78,34 @@ public class Tokenizer {
 			token.nextToken = null;
 			token = tokenIdentifier.identify(token);
 			token = tokenHighlighter.HighlightToken(token);
-			if(!hasError)
-			{
-				token = errorDetector.CheckForError(token);
-				hasError=token.error !=null && token.error.length()>0;
+			if (!(token.tokenType instanceof WhiteSpace) && !hasError) {
+				var result = errorDetecter.Parse(statementNode,token);
+				if(result.grammarStatus==GrammarStatus.failed) {
+					errorDetecter.refresh();
+					token.error = result.error;
+					hasError = true;
+				}
+				if(result.grammarStatus==GrammarStatus.refresh_Retry) {
+					
+					errorDetecter.refresh();
+					
+					var secondResult = errorDetecter.Parse(statementNode,token);
+					
+					if(secondResult.grammarStatus==GrammarStatus.failed) {
+						errorDetecter.refresh();
+						token.error = secondResult.error;
+						hasError = true;
+					}
+				}
+				
+				
+				
+
 			}
 			tokens.add(token);
 		}
 
 		return tokens;
 	}
+
 }

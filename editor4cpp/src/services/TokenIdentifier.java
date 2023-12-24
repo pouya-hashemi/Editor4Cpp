@@ -8,6 +8,7 @@ import entities.*;
 import entities.TokenTypes.*;
 import entities.TokenTypes.DataTypes.*;
 import entities.TokenTypes.Identifiers.*;
+import entities.TokenTypes.Keywords.ElseKeyword;
 import entities.TokenTypes.Keywords.IfKeyword;
 import entities.TokenTypes.Literals.*;
 import entities.TokenTypes.Operations.*;
@@ -26,12 +27,12 @@ public class TokenIdentifier {
 	private List<String> keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand",
 			"bitor", "break", "case", "catch", "class", "compl", "concept", "const", "const_cast", "consteval",
 			"constexpr", "constinit", "continue", "co_await", "co_return", "co_yield", "decltype", "default", "delete",
-			"do", "dynamic_cast", "else", "enum", "explicit", "export", "extern", "for", "friend", "goto",
-			"inline", "mutable", "namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq",
-			"private", "protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "signed",
-			"sizeof", "static", "static_assert", "static_cast", "struct", "switch", "template", "this", "thread_local",
-			"throw", "try", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile",
-			"while", "xor", "xor_eq");
+			"do", "dynamic_cast", "enum", "explicit", "export", "extern", "for", "friend", "goto", "inline", "mutable",
+			"namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq", "private",
+			"protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "signed", "sizeof",
+			"static", "static_assert", "static_cast", "struct", "switch", "template", "this", "thread_local", "throw",
+			"try", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile", "while", "xor",
+			"xor_eq");
 	private List<String> directives = Arrays.asList("define", "undef", "include", "ifdef", "ifndef", "if", "else",
 			"endif");
 	private TokenType prevDataType;
@@ -80,8 +81,10 @@ public class TokenIdentifier {
 			token.tokenType = new OpenBracket();
 		} else if (isCloseBracket(token)) {
 			token.tokenType = new CloseBracket();
-		}else if (isIfKeyword(token)) {
+		} else if (isIfKeyword(token)) {
 			token.tokenType = new IfKeyword();
+		} else if (isElse(token)) {
+			token.tokenType = new ElseKeyword();
 		} else if (isOpenParenthesis(token)) {
 			token.tokenType = new OpenParenthesisType();
 		} else if (isCloseParenthesis(token)) {
@@ -514,6 +517,18 @@ public class TokenIdentifier {
 
 	}
 
+	private boolean isElse(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("else")) {
+			return true;
+		}
+
+		return false;
+
+	}
+
 	private boolean isCloseParenthesis(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -525,6 +540,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isIfKeyword(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -565,13 +581,13 @@ public class TokenIdentifier {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
 		}
-		if (token.value.equals(">") || token.value.equals("<") 
-				|| (token.value.equals("!") && token.nextToken != null &&token.nextToken.value.equals("="))) {
+		if (token.value.equals(">") || token.value.equals("<")
+				|| (token.value.equals("!") && token.nextToken != null && token.nextToken.value.equals("="))) {
 			return true;
 		}
-		if(token.value.equals("=") && token.nextToken != null && token.nextToken.value.equals("="))
+		if (token.value.equals("=") && token.nextToken != null && token.nextToken.value.equals("="))
 			return true;
-		if(token.value.equals("=") && token.prevToken != null
+		if (token.value.equals("=") && token.prevToken != null
 				&& (token.prevToken.value.equals("=") || token.prevToken.value.equals("<")
 						|| token.prevToken.value.equals(">") || token.prevToken.value.equals("!")))
 			return true;

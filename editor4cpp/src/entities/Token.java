@@ -11,4 +11,5 @@ public class Token {
 	public String error;
 	public Token prevToken;
 	public Token nextToken;
+	public boolean isEndOfStatement;
 }

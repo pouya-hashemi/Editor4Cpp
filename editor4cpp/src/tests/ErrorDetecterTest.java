@@ -10,13 +10,34 @@ import services.Tokenizer;
 
 //"int a[5];", "int a[]={2};", "int a[]={2,1};","int a[]={\"a\"};","int a[]={\"a\",\"b\"};", "int a[2]={2,1};",
 public class ErrorDetecterTest {
+	
+	public static String[] newData() {
+		return new String[] { "int a;" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "newData")
+	public void newD(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	
 	public static String[] noError_Data() {
 		return new String[] { "int a;", "int  a;", "int\n a;", "int a", "int a=2;", "int a =2;", "int a = 2;",
 				"int a= 2;", "int a=2 ;", "char a='a';", "char a ='a';", "char a= 'a';", "char a='a' ;",
 				"char a = ' a ' ;", "int a,b;", "int a, b;", "int a,  b;", "int a ,b;", "int a  ,b;", "int a,b,c;",
 				"int a,b=2;", "int a,b=2,c;", "int a , b=2 , c;", "int a;int a;", "float a=2;", "float a=2.2;",
 				"double a=2;", "double a=2;", "int a; a=2;", "int a;a=a;", "int a;int b=2;a=b;",
-				"int a=1;int b=2;int c =a+b;", "int a+=2;", "int a=1++;" };
+				"int a=1;int b=2;int c =a+b;","int a=1;int b=2;int c =3;", "int a+=2;", "int a=1++;" };
 	}
 
 	@ParameterizedTest
@@ -259,7 +280,7 @@ public class ErrorDetecterTest {
 	}
 
 	public static String[] IfStatement_Data() {
-		return new String[] { "if(2>3)", "if('a'>'a')", "if(\"ba\">\"asd\")", "if(true>false)", "if(2>=3)", "if(2<=3)",
+		return new String[] { "if(2>3){int a=2;}", "if('a'>'a')", "if(\"ba\">\"asd\")", "if(true>false)", "if(2>=3)", "if(2<=3)",
 				"if(2==3)", "if(2!=3)", "if(2<3)","if(!2<3)" ,"if((2<3))","if(!(2<3))","if((2<3)&&(2>3))","if((2<3)&&(2>3)||!(2==3))"    };
 	}
 
