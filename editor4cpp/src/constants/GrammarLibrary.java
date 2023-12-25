@@ -1,96 +1,174 @@
 package constants;
 
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import Dtos.ParsingObject;
-import entities.TokenTypes.DataType;
-import entities.TokenTypes.FloatingPointLiteral;
-import entities.TokenTypes.DataTypes.BoolType;
-import entities.TokenTypes.DataTypes.CharType;
-import entities.TokenTypes.DataTypes.DoubleType;
-import entities.TokenTypes.DataTypes.FloatType;
-import entities.TokenTypes.DataTypes.IntType;
-import entities.TokenTypes.DataTypes.LongType;
-import entities.TokenTypes.DataTypes.ShortType;
-import entities.TokenTypes.DataTypes.StringType;
-import entities.TokenTypes.Identifiers.BoolIdentifier;
-import entities.TokenTypes.Identifiers.CharIdentifier;
-import entities.TokenTypes.Identifiers.DoubleIdentifier;
-import entities.TokenTypes.Identifiers.FloatIdentifier;
-import entities.TokenTypes.Identifiers.IntIdentifier;
-import entities.TokenTypes.Identifiers.LongIdentifier;
-import entities.TokenTypes.Identifiers.ShortIdentifier;
-import entities.TokenTypes.Identifiers.StringIdentifier;
-import entities.TokenTypes.Literals.BoolLiteral;
-import entities.TokenTypes.Literals.CharLiteral;
-import entities.TokenTypes.Literals.IntLiteral;
-import entities.TokenTypes.Literals.LongLiteral;
-import entities.TokenTypes.Literals.ShortLiteral;
-import entities.TokenTypes.Literals.StringLiteral;
 import grammars.AssignmentGrammar;
 import grammars.ComparisonGrammar;
-import grammars.Grammar;
+import grammars.DoWhileGrammar;
 import grammars.IfGrammar;
 import grammars.VariableDeclarationGrammar;
+import grammars.WhileGrammar;
+import grammars.subGrammars.DeclartionSubGrammar;
+import grammars.subGrammars.EqualSubGrammar;
+import grammars.subGrammars.MathematikOperationSubGrammar;
+import grammars.subGrammars.MathematikOperationTopLayerSubGrammar;
 
 public class GrammarLibrary {
-	public static List<Grammar> grammars = Arrays.asList(
-			new AssignmentGrammar(new ShortType(), new ShortIdentifier(""), new ShortLiteral()),
-			new AssignmentGrammar(new IntType(), new IntIdentifier(""), new ShortLiteral()),
-			new AssignmentGrammar(new IntType(), new IntIdentifier(""), new IntLiteral()),
-			new AssignmentGrammar(new LongType(), new LongIdentifier(""), new ShortLiteral()),
-			new AssignmentGrammar(new LongType(), new LongIdentifier(""), new IntLiteral()),
-			new AssignmentGrammar(new LongType(), new LongIdentifier(""), new LongLiteral()),
-			new AssignmentGrammar(new FloatType(), new FloatIdentifier(""), new ShortLiteral()),
-			new AssignmentGrammar(new FloatType(), new FloatIdentifier(""), new IntLiteral()),
-			new AssignmentGrammar(new FloatType(), new FloatIdentifier(""), new LongLiteral()),
-			new AssignmentGrammar(new FloatType(), new FloatIdentifier(""), new FloatingPointLiteral()),
-			new AssignmentGrammar(new DoubleType(), new DoubleIdentifier(""), new ShortLiteral()),
-			new AssignmentGrammar(new DoubleType(), new DoubleIdentifier(""), new IntLiteral()),
-			new AssignmentGrammar(new DoubleType(), new DoubleIdentifier(""), new LongLiteral()),
-			new AssignmentGrammar(new DoubleType(), new DoubleIdentifier(""), new FloatingPointLiteral()),
-			new AssignmentGrammar(new StringType(), new StringIdentifier(""), new StringLiteral()),
-			new AssignmentGrammar(new CharType(), new CharIdentifier(""), new CharLiteral()),
-			new AssignmentGrammar(new BoolType(), new BoolIdentifier(""), new BoolLiteral()),
-			new VariableDeclarationGrammar(new ShortType(), new ShortIdentifier(""), new ShortLiteral()),
-			new VariableDeclarationGrammar(new IntType(), new IntIdentifier(""), new ShortLiteral()),
-			new VariableDeclarationGrammar(new IntType(), new IntIdentifier(""), new IntLiteral()),
-			new VariableDeclarationGrammar(new LongType(), new LongIdentifier(""), new ShortLiteral()),
-			new VariableDeclarationGrammar(new LongType(), new LongIdentifier(""), new IntLiteral()),
-			new VariableDeclarationGrammar(new LongType(), new LongIdentifier(""), new LongLiteral()),
-			new VariableDeclarationGrammar(new FloatType(), new FloatIdentifier(""), new ShortLiteral()),
-			new VariableDeclarationGrammar(new FloatType(), new FloatIdentifier(""), new IntLiteral()),
-			new VariableDeclarationGrammar(new FloatType(), new FloatIdentifier(""), new LongLiteral()),
-			new VariableDeclarationGrammar(new FloatType(), new FloatIdentifier(""), new FloatingPointLiteral()),
-			new VariableDeclarationGrammar(new DoubleType(), new DoubleIdentifier(""), new ShortLiteral()),
-			new VariableDeclarationGrammar(new DoubleType(), new DoubleIdentifier(""), new IntLiteral()),
-			new VariableDeclarationGrammar(new DoubleType(), new DoubleIdentifier(""), new LongLiteral()),
-			new VariableDeclarationGrammar(new DoubleType(), new DoubleIdentifier(""), new FloatingPointLiteral()),
-			new VariableDeclarationGrammar(new StringType(), new StringIdentifier(""), new StringLiteral()),
-			new VariableDeclarationGrammar(new CharType(), new CharIdentifier(""), new CharLiteral()),
-			new VariableDeclarationGrammar(new BoolType(), new BoolIdentifier(""), new BoolLiteral()),
-			new ComparisonGrammar(), new IfGrammar());
+
 
 	public static List<ParsingObject> getParsingObjectsOfComparison() {
-		return grammars.stream().filter(s -> s.getClass() == ComparisonGrammar.class )
-				.map(a -> new ParsingObject(a.clone(), a.rootNodeId)).collect(Collectors.toList());
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new ComparisonGrammar()));
+		return list;
 	}
-
-	public static Optional<Grammar> getGrammarById(int id) {
-		return grammars.stream().filter(s -> s.Id == id).findFirst();
+	public static List<ParsingObject> getParsingObjectsOfEqualSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new EqualSubGrammar()));
+		return list;
 	}
-
-	public static List<ParsingObject> getParsingObjectsOfAssignment(DataType datatype) {
-		var list=grammars.stream().filter(s -> s.getClass() == AssignmentGrammar.class && ((AssignmentGrammar)s).dataType.getClass()==datatype.getClass())
-		.map(a -> new ParsingObject(a.clone(), a.rootNodeId)).collect(Collectors.toList());
+	public static List<ParsingObject> getParsingObjectsOfDeclartionSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new DeclartionSubGrammar()));
+		return list;
+	}
+	
+	public static List<ParsingObject> getParsingObjectsOfIf() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new IfGrammar()));
 		return list;
 	}
 
+	public static List<ParsingObject> getParsingObjectsOfWhile() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new WhileGrammar()));
+		return list;
+	}
+
+	public static List<ParsingObject> getParsingObjectsOfDoWhile() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new DoWhileGrammar()));
+		return list;
+	}
+
+//	public static Optional<Grammar> getGrammarById(int id) {
+//		return grammars.stream().filter(s -> s.Id == id).findFirst();
+//	}
+
+	public static List<ParsingObject> getParsingObjectsOfAssignment() {
+		var list = new ArrayList<ParsingObject>();
+
+		list.add(new ParsingObject(new AssignmentGrammar()));
+
+		return list;
+	}
+
+	public static List<ParsingObject> getParsingObjectsOfVariableDeclaration() {
+		var list = new ArrayList<ParsingObject>();
+
+		list.add(new ParsingObject(new VariableDeclarationGrammar()));
+
+		return list;
+	}
+
+	public static List<ParsingObject> getParsingObjectsOfMathematikOperationSubGrammar() {
+
+		var list = new ArrayList<ParsingObject>();
+
+		list.add(new ParsingObject(new MathematikOperationSubGrammar()));
+
+		return list;
+
+	}
+
+	public static List<ParsingObject> getParsingObjectsOfMathematikOperationTopLayerSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new MathematikOperationTopLayerSubGrammar()));
+		return list;
+	}
+//	public static List<ParsingObject> getParsingObjectsOfAssignmentSubGrammar(DataType dataType) {
+//
+//		var list = new ArrayList<ParsingObject>();
+//
+//		if (dataType == null || dataType.getClass() == ShortType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new ShortType(),
+//					new ShortIdentifier(""), new ShortLiteral())));
+//		}
+//
+//		if (dataType == null || dataType.getClass() == IntType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new IntType(), new IntIdentifier(""),
+//					new ShortLiteral())));
+//			list.add(new ParsingObject(
+//					new AssignmentSubGrammar(new IntType(), new IntIdentifier(""), new IntLiteral())));
+//		}
+//
+//		if (dataType == null || dataType.getClass() == LongType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new LongType(), new LongIdentifier(""),
+//					new ShortLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new LongType(), new LongIdentifier(""),
+//					new IntLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new LongType(), new LongIdentifier(""),
+//					new LongLiteral())));
+//		}
+//
+//		if (dataType == null || dataType.getClass() == FloatType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new FloatType(),
+//					new FloatIdentifier(""), new ShortLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new FloatType(),
+//					new FloatIdentifier(""), new IntLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new FloatType(),
+//					new FloatIdentifier(""), new LongLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new FloatType(),
+//					new FloatIdentifier(""), new FloatingPointLiteral())));
+//		}
+//
+//		if (dataType == null || dataType.getClass() == DoubleType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new DoubleType(),
+//					new DoubleIdentifier(""), new ShortLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new DoubleType(),
+//					new DoubleIdentifier(""), new IntLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new DoubleType(),
+//					new DoubleIdentifier(""), new LongLiteral())));
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new DoubleType(),
+//					new DoubleIdentifier(""), new FloatingPointLiteral())));
+//		}
+//
+//		if (dataType == null || dataType.getClass() == StringType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new StringType(),
+//					new StringIdentifier(""), new StringLiteral())));
+//		}
+//		if (dataType == null || dataType.getClass() == CharType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new CharType(), new CharIdentifier(""),
+//					new CharLiteral())));
+//		}
+//
+//		if (dataType == null || dataType.getClass() == CharType.class) {
+//			list.add(new ParsingObject(new AssignmentSubGrammar(new BoolType(), new BoolIdentifier(""),
+//					new BoolLiteral())));
+//		}
+//
+//		return list;
+//
+//	}
+
+//	public static List<ParsingObject> getParsingObjectsOfAssignmentSubGrammar(DataType datatype) {
+//		var list = grammars.stream()
+//				.filter(s -> s.getClass() == AssignmentSubGrammar.class
+//						&& ((AssignmentSubGrammar) s).dataType.getClass() == datatype.getClass())
+//				.map(a -> new ParsingObject(a.clone(), a.rootNodeId)).collect(Collectors.toList());
+//		return list;
+//	}
+//	
+
 	public static List<ParsingObject> getParsingObjectsOfAll() {
-		var list=grammars.stream().map(a -> new ParsingObject(a.clone(), a.rootNodeId)).collect(Collectors.toList());
+		var list = new ArrayList<ParsingObject>();
+
+		list.addAll(getParsingObjectsOfAssignment());
+		list.addAll(getParsingObjectsOfVariableDeclaration());
+		list.addAll(getParsingObjectsOfIf());
+		list.addAll(getParsingObjectsOfWhile());
+		list.addAll(getParsingObjectsOfDoWhile());
+
 		return list;
 	}
 }

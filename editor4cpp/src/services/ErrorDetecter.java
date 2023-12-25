@@ -1,16 +1,15 @@
 package services;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import Dtos.ParsingObject;
 import Dtos.StatementParsingResult;
 import entities.*;
-import entities.TokenTypes.Punctuations.CloseParenthesisType;
-import entities.TokenTypes.Punctuations.OpenParenthesisType;
+import entities.TokenTypes.DataType;
+import entities.TokenTypes.Identifier;
 import enums.GrammarStatus;
-import grammars.Grammar;
+import interfaces.HasType;
 
 public class ErrorDetecter {
 	public List<ParsingObject> currentGrammars = null;
@@ -36,25 +35,25 @@ public class ErrorDetecter {
 
 			var currentNode = gObj.grammar.getGrammarNodeById(gObj.currentNodeId);
 
-			if (currentNode.isEmpty()) {
+			if (currentNode == null) {
 				deleteList.add(gObj);
 				continue;
 			}
 
-			if (currentNode.get().getChildIds().size() == 0) {
+			if (currentNode.getChildIds().size() == 0) {
 				deleteList.add(gObj);
 				continue;
 			}
 
-			for (UUID childId : currentNode.get().getChildIds()) {
+			for (UUID childId : currentNode.getChildIds()) {
 				var child = gObj.grammar.getGrammarNodeById(childId);
 
-				if (child.isEmpty()) {
+				if (child == null) {
 					continue;
 				}
 
-				if (child.get().getClass() == StatementNode.class) {
-					breakDownChilds(gObj, gObj.currentNodeId, child.get().Id);
+				if (child.getClass() == StatementNode.class) {
+					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
 					if (!deleteList.contains(gObj))
 						deleteList.add(gObj);
 
@@ -66,50 +65,44 @@ public class ErrorDetecter {
 			}
 			String childError = null;
 			boolean passed = false;
-			for (UUID childId : currentNode.get().getChildIds()) {
+			for (UUID childId : currentNode.getChildIds()) {
 				var child = gObj.grammar.getGrammarNodeById(childId);
 
-				if (child.isEmpty()) {
+				if (child == null) {
 					continue;
 				}
 
-				if (child.get().getClass() == SingleNode.class) {
+				if (child.getClass() == SingleNode.class) {
 
-					if (((SingleNode) child.get()).tokenType.getClass().isInstance(token.tokenType)) {
-						if(((SingleNode) child.get()).tokenType instanceof OpenParenthesisType)
-						{
-							gObj.openParenthesis++;
-						}
-						if(((SingleNode) child.get()).tokenType instanceof CloseParenthesisType)
-						{
-							if(gObj.openParenthesis==0) {
-								childError="Too many )";
-								continue;
+					if (((SingleNode) child).tokenType.getClass().isInstance(token.tokenType)) {
+						
+						if(token.tokenType instanceof HasType) {
+							if(gObj.dataType ==null && (token.tokenType instanceof DataType|| token.tokenType instanceof Identifier )) {
+								gObj.dataType=((HasType)token.tokenType).getDataType();
 							}
-							gObj.openParenthesis--;
-						}
-						
-						if(child.get().countParenthesis&&gObj.openParenthesis>0) {
-							childError="Expected )";
-							continue;
+							else if(gObj.dataType !=null) {
+								if(!gObj.dataType.canBe(((HasType)token.tokenType).getDataType())) {
+									childError = ((SingleNode) child).tokenType.getError()+" " +gObj.dataType.getError();
+									continue;
+								}
+							}
 						}
 
-						
-						if (child.get().canBeEnd) {
+						if (child.canBeEnd) {
 							gObj.grammarStatus = GrammarStatus.isEnded;
-							gObj.currentNodeId = child.get().Id;
+							gObj.currentNodeId = child.Id;
 							gObj.progressCounter++;
 							passed = true;
 							break;
 						} else {
 							gObj.grammarStatus = GrammarStatus.processing;
-							gObj.currentNodeId = child.get().Id;
+							gObj.currentNodeId = child.Id;
 							gObj.progressCounter++;
 							passed = true;
 							break;
 						}
 					} else {
-						childError = ((SingleNode) child.get()).tokenType.getError();
+						childError = ((SingleNode) child).tokenType.getError();
 						continue;
 					}
 
@@ -145,11 +138,45 @@ public class ErrorDetecter {
 
 	private void breakDownChilds(ParsingObject gObj, UUID currentNodeId, UUID childId) {
 
-		var grammarsToAdd = gObj.grammar.breakDown(currentNodeId, childId);
-		for (Grammar grammar : grammarsToAdd) {
+//		var grammarsToAdd = gObj.grammar.breakDown(currentNodeId, childId);
+//		for (Grammar grammar : grammarsToAdd) {
+//
+//			var newParsingObj = gObj.clone();
+//			newParsingObj.grammar = grammar;
+//			currentGrammars.add(newParsingObj);
+//		}
+
+		var childNode = gObj.grammar.getGrammarNodeById(childId);
+
+		if (childNode.getClass() == SingleNode.class) {
+
+			return;
+		}
+
+		var nextNodes = childNode.getChildIds();
+
+		for (ParsingObject parsingObject : ((StatementNode) childNode).cloneParsingObject()) {
 
 			var newParsingObj = gObj.clone();
-			newParsingObj.grammar = grammar;
+
+			List<GrammarNode> nodesToAdd = parsingObject.grammar.getPureNodes();
+
+			nodesToAdd.stream().filter(a -> a.canBeEnd).forEach(o -> {
+				o.addChild(nextNodes);
+				o.canBeEnd = childNode.canBeEnd;
+			});
+
+			newParsingObj.grammar.grammarNodes.addAll(nodesToAdd);
+
+			// parsingObject.grammar.grammarNodes.stream().filter(a->a.canBeEnd).forEach(o->o.addChild(nextNodes));
+			var currentNode = newParsingObj.grammar.grammarNodes.stream().filter(a -> a.Id == currentNodeId)
+					.findFirst();
+			if (currentNode.isEmpty())
+				return;
+
+			currentNode.get().removeChild(childId);
+			currentNode.get()
+					.addChild(parsingObject.grammar.getGrammarNodeById(parsingObject.grammar.rootNodeId).getChildIds());
 			currentGrammars.add(newParsingObj);
 		}
 

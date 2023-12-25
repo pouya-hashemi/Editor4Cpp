@@ -2,10 +2,11 @@ package entities.TokenTypes.Keywords;
 
 import entities.TokenTypes.Keyword;
 
-public class ElseKeyword extends Keyword {
+public class DoKeyword extends Keyword {
 	@Override
 	public String getError() {
-		
-		return "Expected 'else' Keyword";
+
+		return "Expected 'do' Keyword";
 	}
+
 }

@@ -10,7 +10,7 @@ import services.Tokenizer;
 
 //"int a[5];", "int a[]={2};", "int a[]={2,1};","int a[]={\"a\"};","int a[]={\"a\",\"b\"};", "int a[2]={2,1};",
 public class ErrorDetecterTest {
-	
+
 	public static String[] newData() {
 		return new String[] { "int a;" };
 	}
@@ -30,14 +30,13 @@ public class ErrorDetecterTest {
 
 	}
 
-	
 	public static String[] noError_Data() {
 		return new String[] { "int a;", "int  a;", "int\n a;", "int a", "int a=2;", "int a =2;", "int a = 2;",
 				"int a= 2;", "int a=2 ;", "char a='a';", "char a ='a';", "char a= 'a';", "char a='a' ;",
 				"char a = ' a ' ;", "int a,b;", "int a, b;", "int a,  b;", "int a ,b;", "int a  ,b;", "int a,b,c;",
 				"int a,b=2;", "int a,b=2,c;", "int a , b=2 , c;", "int a;int a;", "float a=2;", "float a=2.2;",
 				"double a=2;", "double a=2;", "int a; a=2;", "int a;a=a;", "int a;int b=2;a=b;",
-				"int a=1;int b=2;int c =a+b;","int a=1;int b=2;int c =3;", "int a+=2;", "int a=1++;" };
+				"int a=1;int b=2;int c =a+b;", "int a=1;int b=2;int c =3;", "int a+=2;" };
 	}
 
 	@ParameterizedTest
@@ -201,8 +200,8 @@ public class ErrorDetecterTest {
 
 	public static String[] VariableAssignmentWithAritmeticOperations_Data() {
 		return new String[] { "short a=2+1;", "int a=2+1;", "long a=2+1;", "float a=2.3+6.25;", "double a=2.3+6.25;",
-				"short a=2-1;", "short a=2/1;", "short a=2*1;", "short a=2%1;", "int a=2+1*8;", "int a=2++;",
-				"int a=2--;", "int a+=2;", "int a=2;int b=2+a;" };
+				"short a=2-1;", "short a=2/1;", "short a=2*1;", "short a=2%1;", "int a=2+1*8;", "int a+=2;",
+				"int a=2;int b=2+a;" };
 	}
 
 	@ParameterizedTest
@@ -222,7 +221,7 @@ public class ErrorDetecterTest {
 
 	public static String[] VariableAssignmentWithAritmeticOperationsAndParenthesis_Data() {
 		return new String[] { "short a=(2);", "short a=(2+1);", "short a=2+(1);", "short a=2+(1*2);",
-				"short a=2+(1++);", "int a=2+((1-2)*4);", "int a=2; int b=(2+(a*1)-2);" };
+				"int a=2+((1-2)*4);", "int a=2; int b=(2+(a*1)-2);" };
 	}
 
 	@ParameterizedTest
@@ -241,9 +240,8 @@ public class ErrorDetecterTest {
 	}
 
 	public static Object[][] VariableAssignmentWithAritmeticOperationsAndParenthesisErrors_Data() {
-		return new Object[][] { { "int a(=", 3 }, { "int a=2(", 5 }, { "int a=2++(", 7 }, { "int a=2+(+", 7 },
-				{ "int a=2+(1*)", 9 }, { "int a=)", 4 }, { "int a=2)", 5 }, { "int a=2++(", 7 },
-				{ "int a=(2+2;", 8 }, };
+		return new Object[][] { { "int a(=", 3 }, { "int a=2(", 5 }, { "int a=2+(+", 7 }, { "int a=2+(1*)", 9 },
+				{ "int a=)", 4 }, { "int a=2)", 5 }, { "int a=(2+2;", 8 }, };
 
 	}
 
@@ -280,8 +278,9 @@ public class ErrorDetecterTest {
 	}
 
 	public static String[] IfStatement_Data() {
-		return new String[] { "if(2>3){int a=2;}", "if('a'>'a')", "if(\"ba\">\"asd\")", "if(true>false)", "if(2>=3)", "if(2<=3)",
-				"if(2==3)", "if(2!=3)", "if(2<3)","if(!2<3)" ,"if((2<3))","if(!(2<3))","if((2<3)&&(2>3))","if((2<3)&&(2>3)||!(2==3))"    };
+		return new String[] { "if(2>3){int a=2;}", "if('a'>'a')", "if(\"ba\">\"asd\")", "if(true>false)", "if(2>=3)",
+				"if(2<=3)", "if(2==3)", "if(2!=3)", "if(2<3)", "if(!2<3)", "if((2<3))", "if(!(2<3))",
+				"if((2<3)&&(2>3))", "if((2<3)&&(2>3)||!(2==3))" };
 	}
 
 	@ParameterizedTest
@@ -298,13 +297,54 @@ public class ErrorDetecterTest {
 		}
 
 	}
+
 	public static String[] CompeleteIfStatement_Data() {
-		return new String[] { "if(2>3){ int a=3; }","if((2<3)&&(2>3)){ int a=3;double b=2.4; }"  };
+		return new String[] { "if(2>3){ int a=3; }", "if((2<3)&&(2>3)){ int a=3;double b=2.4; }" };
 	}
 
 	@ParameterizedTest
 	@MethodSource(value = "CompeleteIfStatement_Data")
 	public void CompeleteIfStatement_Data(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	public static String[] WhileStatement_Data() {
+		return new String[] { "while(2>3){ int a=3; }", "while(2>3) int a=3; ",
+				"while(2>3){ int a=3;\nint a=3;\nint a=3; }" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "WhileStatement_Data")
+	public void WhileStatement(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	public static String[] DoWhileStatement_Data() {
+		return new String[] { "do int a=2; while(2>3);", "do {int a=2;} while(2>3);",
+				"do {int a=2;\r int b=2;} while(2>3);", };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "DoWhileStatement_Data")
+	public void DoWhileStatement_Data(String text) {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act

@@ -23,6 +23,7 @@ public class StatementNode extends GrammarNode {
 		this.parsingObjCollector = parsingObjCollector;
 		this.countParenthesis=countParenthesis;
 	}
+	
 
 	public StatementNode(UUID id, List<UUID> childIds, boolean canBeEnd,
 			Supplier<List<ParsingObject>> parsingObjCollector,boolean countParenthesis) {

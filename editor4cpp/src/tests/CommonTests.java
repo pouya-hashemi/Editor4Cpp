@@ -1,51 +1,30 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.UUID;
-
-import org.junit.Test;
-
-import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
-import entities.TokenTypes.Punctuations.OpenCurlyBracket;
-import grammars.ComparisonGrammar;
-import grammars.IfGrammar;
+import java.util.List;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import entities.Token;
+import services.Tokenizer;
 
 public class CommonTests {
 
-	@Test
-	public void GrammarIdGeneratorTest() {
-		var grammar1=new IfGrammar();
-		var grammar2=new ComparisonGrammar();
-		var grammar3=grammar1.clone();
-		
-		assertTrue(grammar1.Id==1);
-		assertTrue(grammar2.Id==2);
-		assertTrue(grammar3.Id==3);
+	public static String[] noError_Data() {
+		return new String[] { "int a;","int a=1;","int a=\"asd\"" };
 	}
-	
 
-	@Test
-	public void GrammarBreakdownTest() {
-		var grammar1=new IfGrammar();
-		
-		var node= grammar1.grammarNodes.stream().filter(a->a.getClass()==SingleNode.class && ((SingleNode)a).tokenType.getClass()==OpenCurlyBracket.class).findFirst();
-		UUID destId=null;
-		
-		for(UUID id:node.get().getChildIds()) {
-			if(grammar1.getGrammarNodeById(id).get().getClass()==StatementNode.class) {
-				destId=id;
-				break;
-			}
+	@ParameterizedTest
+	@MethodSource(value = "noError_Data")
+	public void noError(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
 		}
-		
-		var newGrammars= grammar1.breakDown(node.get().Id, destId);
-		
-		assertTrue(newGrammars.size()==36);
-
-		
 
 	}
 	

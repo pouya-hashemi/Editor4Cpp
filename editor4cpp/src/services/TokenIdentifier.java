@@ -8,8 +8,10 @@ import entities.*;
 import entities.TokenTypes.*;
 import entities.TokenTypes.DataTypes.*;
 import entities.TokenTypes.Identifiers.*;
+import entities.TokenTypes.Keywords.DoKeyword;
 import entities.TokenTypes.Keywords.ElseKeyword;
 import entities.TokenTypes.Keywords.IfKeyword;
+import entities.TokenTypes.Keywords.WhileKeyword;
 import entities.TokenTypes.Literals.*;
 import entities.TokenTypes.Operations.*;
 import entities.TokenTypes.Punctuations.*;
@@ -27,11 +29,11 @@ public class TokenIdentifier {
 	private List<String> keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand",
 			"bitor", "break", "case", "catch", "class", "compl", "concept", "const", "const_cast", "consteval",
 			"constexpr", "constinit", "continue", "co_await", "co_return", "co_yield", "decltype", "default", "delete",
-			"do", "dynamic_cast", "enum", "explicit", "export", "extern", "for", "friend", "goto", "inline", "mutable",
+			"dynamic_cast", "enum", "explicit", "export", "extern", "for", "friend", "goto", "inline", "mutable",
 			"namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq", "private",
 			"protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "signed", "sizeof",
 			"static", "static_assert", "static_cast", "struct", "switch", "template", "this", "thread_local", "throw",
-			"try", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile", "while", "xor",
+			"try", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile", "xor",
 			"xor_eq");
 	private List<String> directives = Arrays.asList("define", "undef", "include", "ifdef", "ifndef", "if", "else",
 			"endif");
@@ -83,6 +85,10 @@ public class TokenIdentifier {
 			token.tokenType = new CloseBracket();
 		} else if (isIfKeyword(token)) {
 			token.tokenType = new IfKeyword();
+		} else if (isWhileKeyword(token)) {
+			token.tokenType = new WhileKeyword();
+		} else if (isDoKeyword(token)) {
+			token.tokenType = new DoKeyword();
 		} else if (isElse(token)) {
 			token.tokenType = new ElseKeyword();
 		} else if (isOpenParenthesis(token)) {
@@ -546,6 +552,30 @@ public class TokenIdentifier {
 			return false;
 		}
 		if (token.value.equals("if")) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	private boolean isWhileKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("while")) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	private boolean isDoKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("do")) {
 			return true;
 		}
 

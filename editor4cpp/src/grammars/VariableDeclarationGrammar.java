@@ -9,8 +9,6 @@ import entities.GrammarNode;
 import entities.SingleNode;
 import entities.StatementNode;
 import entities.TokenTypes.DataType;
-import entities.TokenTypes.Identifier;
-import entities.TokenTypes.Literal;
 
 
 
@@ -19,33 +17,32 @@ public class VariableDeclarationGrammar extends Grammar {
 		super(id,grammarNodes,rootNodeId);
 
 	}
-	public VariableDeclarationGrammar(DataType dataType, Identifier identifier, Literal literal) {
+	public VariableDeclarationGrammar() {
 		super();
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
 		
-		
-		SingleNode dataType_Node1 = new SingleNode(dataType,false);
+		SingleNode dataType_Node1 = new SingleNode(new DataType(),false);
 
-
-		StatementNode assignment_Node4=new StatementNode(()->GrammarLibrary.getParsingObjectsOfAssignment(dataType),true);
+		StatementNode assignment_Node2=new StatementNode(()->GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(),true);
 		
 
 		root.addChild(dataType_Node1.Id);
 		
-		dataType_Node1.addChild(assignment_Node4.Id);
+		dataType_Node1.addChild(assignment_Node2.Id);
+
 		
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
 		grammarNodes.add(dataType_Node1);
-		grammarNodes.add(assignment_Node4);
+		grammarNodes.add(assignment_Node2);
 		
 		
 	}
-//	
+	
 	@Override
 	public Grammar clone() {
 		var nodes=new ArrayList<GrammarNode>();

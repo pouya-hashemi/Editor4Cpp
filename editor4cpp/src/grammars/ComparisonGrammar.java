@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
+import constants.GrammarLibrary;
 import entities.GrammarNode;
 import entities.SingleNode;
-
+import entities.StatementNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Literal;
 import entities.TokenTypes.Operations.DoubleComparisonOperator;
@@ -52,17 +52,16 @@ public class ComparisonGrammar extends Grammar {
 		SingleNode closeParenthesis_Node12 = new SingleNode(new CloseParenthesisType(), true,true);
 
 		SingleNode secondLogicalOperator_Node13 = new SingleNode(new LogicalOperator(), false);
+		
+		StatementNode comparison_Node14 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfComparison(), false);
 
 		// -----------------------------------------------------------------
 		root.addChild(openParenthesis_Node2.Id);
 		root.addChild(logicalNot_Node3.Id);
 		root.addChild(identifier_Node4.Id);
 		root.addChild(literal_Node5.Id);// E1
-		openParenthesis_Node2.addChild(logicalNot_Node3.Id);// E2
+		openParenthesis_Node2.addChild(comparison_Node14.Id);// E2
 		logicalNot_Node3.addChild(openParenthesis_Node2.Id);// E3
-		openParenthesis_Node2.addChild(openParenthesis_Node2.Id);// E4
-		openParenthesis_Node2.addChild(identifier_Node4.Id);// E5
-		openParenthesis_Node2.addChild(literal_Node5.Id);// E6
 		identifier_Node4.addChild(singleComparisonOperator_Node6.Id);// E7
 		identifier_Node4.addChild(firstDoubleComparisonOperator_Node7.Id);// E8
 		literal_Node5.addChild(singleComparisonOperator_Node6.Id);// E9
@@ -72,11 +71,8 @@ public class ComparisonGrammar extends Grammar {
 		singleComparisonOperator_Node6.addChild(literal_Node10.Id);// E13
 		secondDoubleComparisonOperator_Node8.addChild(literal_Node10.Id);// E14
 		secondDoubleComparisonOperator_Node8.addChild(identifier_Node9.Id);// E15
-		literal_Node10.addChild(closeParenthesis_Node12.Id);// E16
 		literal_Node10.addChild(logicalOperator_Node11.Id);// E17
 		identifier_Node9.addChild(logicalOperator_Node11.Id);// E18
-		identifier_Node9.addChild(closeParenthesis_Node12.Id);// E19
-		closeParenthesis_Node12.addChild(closeParenthesis_Node12.Id);// E20
 		closeParenthesis_Node12.addChild(logicalOperator_Node11.Id);// E21
 		secondLogicalOperator_Node13.addChild(literal_Node5.Id);// E22
 		secondLogicalOperator_Node13.addChild(identifier_Node4.Id);// E23
@@ -88,6 +84,7 @@ public class ComparisonGrammar extends Grammar {
 		logicalNot_Node3.addChild(literal_Node5.Id);// E28
 		logicalOperator_Node11.addChild(secondLogicalOperator_Node13.Id);// E29
 		secondLogicalOperator_Node13.addChild(logicalNot_Node3.Id);// E30
+		comparison_Node14.addChild(closeParenthesis_Node12.Id);
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();

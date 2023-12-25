@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import Dtos.ParsingObject;
 import constants.GrammarLibrary;
 import entities.StatementNode;
 import entities.Token;
@@ -48,18 +46,21 @@ public class Tokenizer {
 					
 					var result = errorDetecter.Parse(statementNode,token);
 					if(result.grammarStatus==GrammarStatus.failed) {
-						errorDetecter.refresh();
+						errorDetecter=null;
+						errorDetecter=new ErrorDetecter();
 						token.error = result.error;
 						hasError = true;
 					}
 					if(result.grammarStatus==GrammarStatus.refresh_Retry) {
 						
-						errorDetecter.refresh();
+						errorDetecter=null;
+						errorDetecter=new ErrorDetecter();
 						
 						var secondResult = errorDetecter.Parse(statementNode,token);
 						
 						if(secondResult.grammarStatus==GrammarStatus.failed) {
-							errorDetecter.refresh();
+							errorDetecter=null;
+							errorDetecter=new ErrorDetecter();
 							token.error = secondResult.error;
 							hasError = true;
 						}
@@ -81,18 +82,21 @@ public class Tokenizer {
 			if (!(token.tokenType instanceof WhiteSpace) && !hasError) {
 				var result = errorDetecter.Parse(statementNode,token);
 				if(result.grammarStatus==GrammarStatus.failed) {
-					errorDetecter.refresh();
+					errorDetecter=null;
+					errorDetecter=new ErrorDetecter();
 					token.error = result.error;
 					hasError = true;
 				}
 				if(result.grammarStatus==GrammarStatus.refresh_Retry) {
 					
-					errorDetecter.refresh();
+					errorDetecter=null;
+					errorDetecter=new ErrorDetecter();
 					
 					var secondResult = errorDetecter.Parse(statementNode,token);
 					
 					if(secondResult.grammarStatus==GrammarStatus.failed) {
-						errorDetecter.refresh();
+						errorDetecter=null;
+						errorDetecter=new ErrorDetecter();
 						token.error = secondResult.error;
 						hasError = true;
 					}
