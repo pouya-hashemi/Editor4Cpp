@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import constants.GrammarLibrary;
 import entities.StatementNode;
 import entities.Token;
-
+import entities.TokenTypes.Comment;
 import entities.TokenTypes.WhiteSpace;
 import enums.GrammarStatus;
 
@@ -42,7 +42,7 @@ public class Tokenizer {
 
 				token = tokenIdentifier.identify(token);
 				token = tokenHighlighter.HighlightToken(token);
-				if (!(token.tokenType instanceof WhiteSpace) && !hasError) {
+				if (!(token.tokenType instanceof WhiteSpace) && !hasError && !(token.tokenType instanceof Comment)) {
 					
 					var result = errorDetecter.Parse(statementNode,token);
 					if(result.grammarStatus==GrammarStatus.failed) {

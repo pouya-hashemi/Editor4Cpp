@@ -8,7 +8,7 @@ import entities.TokenType;
 public class Punctuation extends TokenType {
 	@Override
 	public Style getTokenStyle() {
-		return CustomStyle.defaultStyle;
+		return CustomStyle.punctStyle;
 	}
 	@Override
 	public String getError() {

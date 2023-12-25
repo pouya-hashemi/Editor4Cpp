@@ -378,4 +378,51 @@ public class ErrorDetecterTest {
 
 	}
 
+	public static String[] PointerTest_Data() {
+		return new String[] { "int* a;", "int a=2;int* b=&a;", "int* b=new int(2);", "int* b=nullptr;",
+				"int* b=NULL;" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "PointerTest_Data")
+	public void PointerTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+	
+	public static String[] SwitchTest_Data() {
+		return new String[] { "int day = 3;\r\n"
+				+ "switch (day) {\r\n"
+				+ "case 1:\r\n"
+				+ "int a=1;\r\n"
+				+ "break;\r\n"
+				+ "default:\r\n"
+				+ "int a=1;\r\n"
+				+ "break;\r\n"
+				+ "}" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "SwitchTest_Data")
+	public void SwitchTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
 }

@@ -17,5 +17,9 @@ public class CustomStyle {
 	public static Style classStyle;
 	
 	public static Style errorStyle;
+	
+	public static Style numberStyle;
+	
+	public static Style punctStyle;
 
 }

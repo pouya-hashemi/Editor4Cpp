@@ -7,7 +7,7 @@ import constants.CustomStyle;
 public class NumericLiteral extends Literal {
 	@Override
 	public Style getTokenStyle() {
-		return CustomStyle.defaultStyle;
+		return CustomStyle.numberStyle;
 	}
 	@Override
 	public String getError() {

@@ -98,6 +98,19 @@ public class TextEditor extends JTextPane {
 
 		CustomStyle.stringStyle = stringStyle;
 
+		// Define the style for number
+		Style numberStyle = doc.addStyle("numberStyle", null);
+		StyleConstants.setForeground(numberStyle, Color.decode("#fcad03"));
+		StyleConstants.setUnderline(numberStyle, false);
+
+		CustomStyle.numberStyle = numberStyle;
+
+		// Define the style for punctuations
+		Style punctStyle = doc.addStyle("punctStyle", null);
+		StyleConstants.setForeground(punctStyle, Color.decode("#9803fc"));
+		StyleConstants.setUnderline(punctStyle, false);
+
+		CustomStyle.punctStyle = punctStyle;
 		// Define the style for directives
 		Style directiveStyle = doc.addStyle("directiveStyle", null);
 		StyleConstants.setForeground(directiveStyle, Color.decode("#535453"));
@@ -130,7 +143,7 @@ public class TextEditor extends JTextPane {
 		try {
 			int start = Utilities.getWordStart(this, offset);
 			int end = Utilities.getWordEnd(this, offset);
-			return errorToken.startIndex==start&&errorToken.endIndex==end;
+			return errorToken.startIndex == start && errorToken.endIndex == end;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
