@@ -357,4 +357,25 @@ public class ErrorDetecterTest {
 
 	}
 
+	public static String[] ForStatement_Data() {
+		return new String[] { "for(int i=0;i<=2;i++){ int a=3; }", "int i; for(i=0;i<=2;i++){ int a=3; }",
+				"for(int i=0, b=2;i<=2 && b>6;i++,b--){ int a=3;\nint a=3;\nint a=3; }",
+				"int i; for(i=0;i<=2;i++){ if(2>3){int a=2;}}" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "ForStatement_Data")
+	public void ForStatement(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
 }

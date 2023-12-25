@@ -20,13 +20,24 @@ public class VariableDeclarationGrammar extends Grammar {
 	public VariableDeclarationGrammar() {
 		super();
 
+		initGrammar(true);
+		
+	}
+	public VariableDeclarationGrammar(boolean hasSemicolon) {
+		super();
+
+		initGrammar(hasSemicolon);
+		
+	}
+	private void initGrammar(boolean hasSemicolon) {
+
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
 		
 		SingleNode dataType_Node1 = new SingleNode(new DataType(),false);
 
-		StatementNode assignment_Node2=new StatementNode(()->GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(),true);
+		StatementNode assignment_Node2=new StatementNode(()->GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(hasSemicolon),true);
 		
 
 		root.addChild(dataType_Node1.Id);
@@ -39,8 +50,6 @@ public class VariableDeclarationGrammar extends Grammar {
 		grammarNodes.add(root);
 		grammarNodes.add(dataType_Node1);
 		grammarNodes.add(assignment_Node2);
-		
-		
 	}
 	
 	@Override

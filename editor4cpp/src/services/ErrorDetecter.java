@@ -138,13 +138,6 @@ public class ErrorDetecter {
 
 	private void breakDownChilds(ParsingObject gObj, UUID currentNodeId, UUID childId) {
 
-//		var grammarsToAdd = gObj.grammar.breakDown(currentNodeId, childId);
-//		for (Grammar grammar : grammarsToAdd) {
-//
-//			var newParsingObj = gObj.clone();
-//			newParsingObj.grammar = grammar;
-//			currentGrammars.add(newParsingObj);
-//		}
 
 		var childNode = gObj.grammar.getGrammarNodeById(childId);
 

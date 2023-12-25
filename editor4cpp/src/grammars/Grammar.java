@@ -26,44 +26,6 @@ public class Grammar implements Cloneable  {
 		return grammarNodes.stream().filter(a -> a.Id.equals(id)).findFirst().orElse(null);
 	}
 
-//	public List<Grammar> breakDown(UUID currentNodeId, UUID childId) {
-//		List<Grammar> newGrammars = new ArrayList<Grammar>();
-//
-//		var childNode = getGrammarNodeById(childId).get();
-//
-//		if (childNode.getClass() == SingleNode.class) {
-//
-//			return newGrammars;
-//		}
-//
-//		else if (childNode.getClass() == StatementNode.class) {
-//			var nextNodes = childNode.getChildIds();
-//
-//			for (ParsingObject parsingObject : ((StatementNode) childNode).cloneParsingObject()) {
-//
-//				var newGrammar = clone();
-//
-//				List<GrammarNode> nodesToAdd = parsingObject.grammar.getPureNodes();
-//
-//				nodesToAdd.stream().filter(a -> a.canBeEnd).forEach(o -> o.addChild(nextNodes));
-//
-//				newGrammar.grammarNodes.addAll(nodesToAdd);
-//
-//				// parsingObject.grammar.grammarNodes.stream().filter(a->a.canBeEnd).forEach(o->o.addChild(nextNodes));
-//				var currentNode = newGrammar.grammarNodes.stream().filter(a -> a.Id == currentNodeId).findFirst();
-//				if (currentNode.isEmpty())
-//					return null;
-//
-//				currentNode.get().removeChild(childId);
-//				currentNode.get().addChild(
-//						parsingObject.grammar.getGrammarNodeById(parsingObject.grammar.rootNodeId).get().getChildIds());
-//				newGrammars.add(newGrammar);
-//			}
-//
-//		}
-//
-//		return newGrammars;
-//	}
 
 	public List<GrammarNode> getPureNodes() {
 		var nodes = new ArrayList<GrammarNode>();

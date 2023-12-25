@@ -10,6 +10,7 @@ import entities.TokenTypes.DataTypes.*;
 import entities.TokenTypes.Identifiers.*;
 import entities.TokenTypes.Keywords.DoKeyword;
 import entities.TokenTypes.Keywords.ElseKeyword;
+import entities.TokenTypes.Keywords.ForKeyword;
 import entities.TokenTypes.Keywords.IfKeyword;
 import entities.TokenTypes.Keywords.WhileKeyword;
 import entities.TokenTypes.Literals.*;
@@ -29,7 +30,7 @@ public class TokenIdentifier {
 	private List<String> keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand",
 			"bitor", "break", "case", "catch", "class", "compl", "concept", "const", "const_cast", "consteval",
 			"constexpr", "constinit", "continue", "co_await", "co_return", "co_yield", "decltype", "default", "delete",
-			"dynamic_cast", "enum", "explicit", "export", "extern", "for", "friend", "goto", "inline", "mutable",
+			"dynamic_cast", "enum", "explicit", "export", "extern", "friend", "goto", "inline", "mutable",
 			"namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq", "private",
 			"protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "signed", "sizeof",
 			"static", "static_assert", "static_cast", "struct", "switch", "template", "this", "thread_local", "throw",
@@ -85,6 +86,8 @@ public class TokenIdentifier {
 			token.tokenType = new CloseBracket();
 		} else if (isIfKeyword(token)) {
 			token.tokenType = new IfKeyword();
+		} else if (isForKeyword(token)) {
+			token.tokenType = new ForKeyword();
 		} else if (isWhileKeyword(token)) {
 			token.tokenType = new WhileKeyword();
 		} else if (isDoKeyword(token)) {
@@ -552,6 +555,17 @@ public class TokenIdentifier {
 			return false;
 		}
 		if (token.value.equals("if")) {
+			return true;
+		}
+
+		return false;
+
+	}
+	private boolean isForKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("for")) {
 			return true;
 		}
 
