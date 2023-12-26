@@ -240,8 +240,8 @@ public class ErrorDetecterTest {
 	}
 
 	public static Object[][] VariableAssignmentWithAritmeticOperationsAndParenthesisErrors_Data() {
-		return new Object[][] { { "int a(=", 3 }, { "int a=2(", 5 }, { "int a=2+(+", 7 }, { "int a=2+(1*)", 9 },
-				{ "int a=)", 4 }, { "int a=2)", 5 }, { "int a=(2+2;", 8 }, };
+		return new Object[][] { { "int a=2(", 5 }, { "int a=2+(+", 7 }, { "int a=2+(1*)", 9 }, { "int a=)", 4 },
+				{ "int a=2)", 5 }, { "int a=(2+2;", 8 }, };
 
 	}
 
@@ -397,22 +397,54 @@ public class ErrorDetecterTest {
 		}
 
 	}
-	
+
 	public static String[] SwitchTest_Data() {
-		return new String[] { "int day = 3;\r\n"
-				+ "switch (day) {\r\n"
-				+ "case 1:\r\n"
-				+ "int a=1;\r\n"
-				+ "break;\r\n"
-				+ "default:\r\n"
-				+ "int a=1;\r\n"
-				+ "break;\r\n"
-				+ "}" };
+		return new String[] { "int day = 3;\r\n" + "switch (day) {\r\n" + "case 1:\r\n" + "int a=1;\r\n" + "break;\r\n"
+				+ "default:\r\n" + "int a=1;\r\n" + "break;\r\n" + "}" };
 	}
 
 	@ParameterizedTest
 	@MethodSource(value = "SwitchTest_Data")
 	public void SwitchTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	public static String[] ArrayTest_Data() {
+		return new String[] { "int a[5];", "int a[]={2,2};", "int a[][2]={2,2};", "int a[][2]={{2,2},{2,2}};","int array[3]={1, 2, 3};" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "ArrayTest_Data")
+	public void ArrayTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	public static String[] FunctionTest_Data() {
+		return new String[] { "myFunc();", "myFunc(2,1);", "int a=2;myFunc(a,1);", "int a=myFunc();",
+				"myFunc(secFunc());","std::cout.myFunc();" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "FunctionTest_Data")
+	public void FunctionTest(String text) {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act

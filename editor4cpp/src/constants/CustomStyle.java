@@ -21,5 +21,7 @@ public class CustomStyle {
 	public static Style numberStyle;
 	
 	public static Style punctStyle;
+	
+	public static Style funcStyle;
 
 }

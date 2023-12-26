@@ -13,6 +13,7 @@ import entities.TokenTypes.Comment;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Directive;
 import entities.TokenTypes.FloatingPointLiteral;
+import entities.TokenTypes.FunctionIdentifier;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Keyword;
 import entities.TokenTypes.Operator;
@@ -23,6 +24,7 @@ import entities.TokenTypes.Operations.DoubleComparisonOperator;
 import entities.TokenTypes.Operations.LogicalNotOperator;
 import entities.TokenTypes.Operations.LogicalOperator;
 import entities.TokenTypes.Operations.SingleComparisonOperator;
+import services.NewTokenizer;
 import services.Tokenizer;
 
 public class TokenIdentifierTest {
@@ -304,6 +306,26 @@ public class TokenIdentifierTest {
 		}
 
 	}
+	
+	public static Object[][] IdentifyFunction_Data() {
+		return new Object[][] { { "myFunc();", 0, 0 },{ "myFunc  ();", 0, 0 }, };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "IdentifyFunction_Data")
+	public void IdentifyFunction_Data(String text, int startIndex, int endIndex) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			if (i >= startIndex && i <= endIndex) {
+				assertInstanceOf(FunctionIdentifier.class, tokens.get(i).tokenType, "index:" + i);
+			}
+		}
+
+	}
 
 	public static Object[][] IdentifyComparisonOperation_Data() {
 		return new Object[][] { { "int a=1>2;", 5, 5, new SingleComparisonOperator() },
@@ -329,5 +351,6 @@ public class TokenIdentifierTest {
 		}
 
 	}
+	
 
 }

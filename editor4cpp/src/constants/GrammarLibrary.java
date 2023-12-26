@@ -3,19 +3,23 @@ package constants;
 import java.util.ArrayList;
 import java.util.List;
 import Dtos.ParsingObject;
+import grammars.ArrayGrammar;
 import grammars.AssignmentGrammar;
 import grammars.ComparisonGrammar;
 import grammars.DoWhileGrammar;
 import grammars.ForGrammar;
+import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
 import grammars.PointerAssignmentGrammar;
 import grammars.PointerDeclarationGrammar;
 import grammars.SwitchGrammar;
 import grammars.VariableDeclarationGrammar;
 import grammars.WhileGrammar;
+import grammars.subGrammars.ArrayValueSubGrammar;
 import grammars.subGrammars.CaseSubGrammar;
 import grammars.subGrammars.DeclartionSubGrammar;
 import grammars.subGrammars.EqualSubGrammar;
+import grammars.subGrammars.FunctionCallSubGrammar;
 import grammars.subGrammars.MathematikOperationSubGrammar;
 import grammars.subGrammars.MathematikOperationTopLayerSubGrammar;
 import grammars.subGrammars.PointerEqualSubGrammar;
@@ -94,6 +98,12 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new MathematikOperationTopLayerSubGrammar()));
 		return list;
 	}
+	public static List<ParsingObject> getParsingObjectsOfFunctionCallSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new FunctionCallSubGrammar()));
+		return list;
+	}
+	
 	public static List<ParsingObject> getParsingObjectsOfPointerEqualSubGrammar() {
 		var list = new ArrayList<ParsingObject>();
 		list.add(new ParsingObject(new PointerEqualSubGrammar()));
@@ -119,6 +129,21 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new SwitchGrammar()));
 		return list;
 	}
+	public static List<ParsingObject> getParsingObjectsOfArrayValueSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new ArrayValueSubGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfArrayGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new ArrayGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfFunctionCallGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new FunctionCallGrammar()));
+		return list;
+	}
 	
 	public static List<ParsingObject> getParsingObjectsOfAll() {
 		var list = new ArrayList<ParsingObject>();
@@ -132,6 +157,8 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfPointerAssignmentGrammar());
 		list.addAll(getParsingObjectsOfPointerDeclarationGrammar());
 		list.addAll(getParsingObjectsOfSwitchGrammar());
+		list.addAll(getParsingObjectsOfArrayGrammar());
+		list.addAll(getParsingObjectsOfFunctionCallGrammar());
 		
 
 		return list;

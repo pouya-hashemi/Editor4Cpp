@@ -104,7 +104,12 @@ public class TextEditor extends JTextPane {
 		StyleConstants.setUnderline(numberStyle, false);
 
 		CustomStyle.numberStyle = numberStyle;
+		// Define the style for function
+		Style funcStyle = doc.addStyle("funcStyle", null);
+		StyleConstants.setForeground(funcStyle, Color.decode("#db03fc"));
+		StyleConstants.setUnderline(funcStyle, false);
 
+		CustomStyle.funcStyle = funcStyle;
 		// Define the style for punctuations
 		Style punctStyle = doc.addStyle("punctStyle", null);
 		StyleConstants.setForeground(punctStyle, Color.decode("#9803fc"));

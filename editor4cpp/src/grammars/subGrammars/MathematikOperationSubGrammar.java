@@ -45,11 +45,14 @@ public class MathematikOperationSubGrammar extends Grammar {
 		SingleNode thirdFloatingPoint_Node9 = new SingleNode(new FloatingPointLiteral(), true);
 		StatementNode rightAssignment_Node10 = new StatementNode(
 				() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), true);
+		
+		StatementNode functionCall_Node14 = new StatementNode(
+				() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), true);
 
 		// -----------------------------------------------------------------
 		root.addChild(firstSingleOperator_Node1.Id);
 		root.addChild(identifier_Node4.Id);
-
+		root.addChild(functionCall_Node14.Id);
 		root.addChild(textLiteral_Node3.Id);
 		root.addChild(boolLiteral_Node11.Id);
 		root.addChild(floatLiteral_Node12.Id);
@@ -76,6 +79,8 @@ public class MathematikOperationSubGrammar extends Grammar {
 		secondSingleOperator_Node6.addChild(doubleOperator_Node7.Id);
 
 		doubleOperator_Node7.addChild(rightAssignment_Node10.Id);
+		
+		functionCall_Node14.addChild(doubleOperator_Node7.Id);
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
@@ -93,7 +98,8 @@ public class MathematikOperationSubGrammar extends Grammar {
 		grammarNodes.add(boolLiteral_Node11);
 		grammarNodes.add(floatLiteral_Node12);
 		grammarNodes.add(numericLiteral_Node13);
-
+		grammarNodes.add(functionCall_Node14);
+		
 	}
 
 	@Override

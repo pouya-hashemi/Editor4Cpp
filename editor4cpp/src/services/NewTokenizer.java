@@ -4,113 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import constants.GrammarLibrary;
 import entities.StatementNode;
 import entities.Token;
 import entities.TokenTypes.Comment;
 import entities.TokenTypes.WhiteSpace;
 import enums.GrammarStatus;
+import enums.TokenType;
 
-public class Tokenizer {
-
-//	public List<Token> tokenizeString(String text) {
-//		text = text.replace("\r\n", "\r");
-//		List<Token> tokens = new ArrayList<Token>();
-//		TokenHighlighter tokenHighlighter = new TokenHighlighter();
-//		TokenIdentifier tokenIdentifier = new TokenIdentifier();
-//		ErrorDetecter errorDetecter = new ErrorDetecter();
-//		StatementNode statementNode=new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
-//
-//		boolean hasError = false;
-//		String regex = "\\b\\w+\\b|\\s|\\n|\\p{Punct}";
-//		Pattern pattern = Pattern.compile(regex);
-//		Matcher matcher = pattern.matcher(text);
-//		Token prevToken = null;
-//
-//		if (matcher.find()) {
-//			Token token = new Token();
-//			token.startIndex = matcher.start();
-//			token.endIndex = matcher.end();
-//			token.value = matcher.group();
-//
-//			while (matcher.find()) {
-//				token.prevToken = prevToken;
-//				token.nextToken = new Token();
-//				token.nextToken.startIndex = matcher.start();
-//				token.nextToken.endIndex = matcher.end();
-//				token.nextToken.value = matcher.group();
-//
-//				token = tokenIdentifier.identify(token);
-//				token = tokenHighlighter.HighlightToken(token);
-//				if (!(token.tokenType instanceof WhiteSpace) && !hasError && !(token.tokenType instanceof Comment)) {
-//					
-//					var result = errorDetecter.Parse(statementNode,token);
-//					if(result.grammarStatus==GrammarStatus.failed) {
-//						errorDetecter=null;
-//						errorDetecter=new ErrorDetecter();
-//						token.error = result.error;
-//						hasError = true;
-//					}
-//					if(result.grammarStatus==GrammarStatus.refresh_Retry) {
-//						
-//						errorDetecter=null;
-//						errorDetecter=new ErrorDetecter();
-//						
-//						var secondResult = errorDetecter.Parse(statementNode,token);
-//						
-//						if(secondResult.grammarStatus==GrammarStatus.failed) {
-//							errorDetecter=null;
-//							errorDetecter=new ErrorDetecter();
-//							token.error = secondResult.error;
-//							hasError = true;
-//						}
-//					}
-//				}
-//				
-//				if (hasError && (token.value.equals("\n") || token.value.equals("\r"))) {
-//					hasError = false;
-//				}
-//
-//				tokens.add(token);
-//				prevToken = token;
-//				token = token.nextToken;
-//			}
-//			token.prevToken = prevToken;
-//			token.nextToken = null;
-//			token = tokenIdentifier.identify(token);
-//			token = tokenHighlighter.HighlightToken(token);
-//			if (!(token.tokenType instanceof WhiteSpace) && !hasError) {
-//				var result = errorDetecter.Parse(statementNode,token);
-//				if(result.grammarStatus==GrammarStatus.failed) {
-//					errorDetecter=null;
-//					errorDetecter=new ErrorDetecter();
-//					token.error = result.error;
-//					hasError = true;
-//				}
-//				if(result.grammarStatus==GrammarStatus.refresh_Retry) {
-//					
-//					errorDetecter=null;
-//					errorDetecter=new ErrorDetecter();
-//					
-//					var secondResult = errorDetecter.Parse(statementNode,token);
-//					
-//					if(secondResult.grammarStatus==GrammarStatus.failed) {
-//						errorDetecter=null;
-//						errorDetecter=new ErrorDetecter();
-//						token.error = secondResult.error;
-//						hasError = true;
-//					}
-//				}
-//				
-//				
-//				
-//
-//			}
-//			tokens.add(token);
-//		}
-//
-//		return tokens;
-//	}
+public class NewTokenizer {
 	public List<Token> tokenizeString(String text) {
 		text = text.replace("\r\n", "\r");
 		List<Token> tokens = new ArrayList<Token>();
@@ -140,12 +43,11 @@ public class Tokenizer {
 				token.nextToken.endIndex = matcher.end();
 				token.nextToken.value = matcher.group();
 				reserveTokens.add(token);
-				if(!isWhiteSpace(token.nextToken.value)) {
+				if(!isWhiteSpace(matcher.group())) {
 					for(int i=0;i<reserveTokens.size();i++) {
 						var rToken=reserveTokens.get(i);
 						if(i==0) {
 							rToken.absoluteNextToken=token.nextToken;
-							token.nextToken.absolutePrevToken=rToken;
 						}
 						rToken = tokenIdentifier.identify(rToken);
 						rToken = tokenHighlighter.HighlightToken(rToken);
@@ -225,7 +127,7 @@ public class Tokenizer {
 	
 
 	private boolean isWhiteSpace(String character) {
-		return character.equals(" ") || character.equals("\r") || character.equals("\t") || character.equals("\n");
+		return character == " " || character == "\r" || character == "\t" || character == "\n";
 	}
 
 }

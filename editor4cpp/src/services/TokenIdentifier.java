@@ -35,13 +35,13 @@ public class TokenIdentifier {
 	private List<String> dataTypes = Arrays.asList("int", "short", "long", "float", "double", "char", "bool", "void",
 			"string");
 	private List<String> keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand",
-			"bitor", "catch", "class", "compl", "concept", "const", "const_cast", "consteval",
-			"constexpr", "constinit", "continue", "co_await", "co_return", "co_yield", "decltype", "delete",
-			"dynamic_cast", "enum", "explicit", "export", "extern", "friend", "goto", "inline", "mutable", "namespace",
-			"noexcept", "not", "not_eq", "operator", "or", "or_eq", "private", "protected", "public", "register",
-			"reinterpret_cast", "requires", "return", "short", "signed", "sizeof", "static", "static_assert",
-			"static_cast", "struct", "template", "this", "thread_local", "throw", "try", "typedef", "typeid",
-			"typename", "union", "unsigned", "using", "virtual", "volatile", "xor", "xor_eq");
+			"bitor", "catch", "class", "compl", "concept", "const", "const_cast", "consteval", "constexpr", "constinit",
+			"continue", "co_await", "co_return", "co_yield", "decltype", "delete", "dynamic_cast", "enum", "explicit",
+			"export", "extern", "friend", "goto", "inline", "mutable", "namespace", "noexcept", "not", "not_eq",
+			"operator", "or", "or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires",
+			"return", "short", "signed", "sizeof", "static", "static_assert", "static_cast", "struct", "template",
+			"this", "thread_local", "throw", "try", "typedef", "typeid", "typename", "union", "unsigned", "using",
+			"virtual", "volatile", "xor", "xor_eq");
 	private List<String> directives = Arrays.asList("define", "undef", "include", "ifdef", "ifndef", "if", "else",
 			"endif");
 	private TokenType prevDataType;
@@ -112,9 +112,9 @@ public class TokenIdentifier {
 			token.tokenType = new AmpersandType();
 		} else if (isSwitchKeyword(token)) {
 			token.tokenType = new SwitchKeyword();
-		}else if (isDefaultKeyword(token)) {
+		} else if (isDefaultKeyword(token)) {
 			token.tokenType = new DefaultKeyword();
-		}else if (isNewKeyword(token)) {
+		} else if (isNewKeyword(token)) {
 			token.tokenType = new NewKeyword();
 		} else if (isNullptrKeyword(token)) {
 			token.tokenType = new NullptrKeyword();
@@ -128,6 +128,8 @@ public class TokenIdentifier {
 			token.tokenType = new OpenCurlyBracket();
 		} else if (isCloseCurlyBracket(token)) {
 			token.tokenType = new CloseCurlyBracket();
+		} else if (isFunctionIdentifier(token)) {
+			token.tokenType = new FunctionIdentifier();
 		} else if (isIdentifier(token)) {
 			var identifier = getIdentifierType(token);
 			token.tokenType = identifier;
@@ -317,6 +319,18 @@ public class TokenIdentifier {
 			return false;
 		}
 		if (keywords.contains(token.value)) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	private boolean isFunctionIdentifier(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.absoluteNextToken != null && token.absoluteNextToken.value.equals("(")) {
 			return true;
 		}
 
@@ -664,8 +678,8 @@ public class TokenIdentifier {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
 		}
-		if (token.value.equals("*") &&token.prevToken!=null && token.prevToken.tokenType instanceof DataType) {
-			identifierInProgress=true;
+		if (token.value.equals("*") && token.prevToken != null && token.prevToken.tokenType instanceof DataType) {
+			identifierInProgress = true;
 			prevDataType = token.prevToken.tokenType;
 			return true;
 		}
@@ -685,6 +699,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isCaseKeyword(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -696,6 +711,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isBreakKeyword(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -707,6 +723,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isColonType(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -718,6 +735,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isNullptrKeyword(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -741,6 +759,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isSwitchKeyword(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
@@ -752,6 +771,7 @@ public class TokenIdentifier {
 		return false;
 
 	}
+
 	private boolean isDefaultKeyword(Token token) {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
