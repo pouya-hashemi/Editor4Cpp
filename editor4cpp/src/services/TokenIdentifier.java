@@ -10,7 +10,9 @@ import entities.TokenTypes.DataTypes.*;
 import entities.TokenTypes.Identifiers.*;
 import entities.TokenTypes.Keywords.BreakKeyword;
 import entities.TokenTypes.Keywords.CaseKeyword;
+import entities.TokenTypes.Keywords.CatchKeyword;
 import entities.TokenTypes.Keywords.DefaultKeyword;
+import entities.TokenTypes.Keywords.DeleteKeyword;
 import entities.TokenTypes.Keywords.DoKeyword;
 import entities.TokenTypes.Keywords.ElseKeyword;
 import entities.TokenTypes.Keywords.ForKeyword;
@@ -18,7 +20,9 @@ import entities.TokenTypes.Keywords.IfKeyword;
 import entities.TokenTypes.Keywords.NewKeyword;
 import entities.TokenTypes.Keywords.NullKeyword;
 import entities.TokenTypes.Keywords.NullptrKeyword;
+import entities.TokenTypes.Keywords.ReturnKeyword;
 import entities.TokenTypes.Keywords.SwitchKeyword;
+import entities.TokenTypes.Keywords.TryKeyword;
 import entities.TokenTypes.Keywords.WhileKeyword;
 import entities.TokenTypes.Literals.*;
 import entities.TokenTypes.Operations.*;
@@ -35,13 +39,13 @@ public class TokenIdentifier {
 	private List<String> dataTypes = Arrays.asList("int", "short", "long", "float", "double", "char", "bool", "void",
 			"string");
 	private List<String> keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand",
-			"bitor", "catch", "class", "compl", "concept", "const", "const_cast", "consteval", "constexpr", "constinit",
-			"continue", "co_await", "co_return", "co_yield", "decltype", "delete", "dynamic_cast", "enum", "explicit",
+			"bitor", "class", "compl", "concept", "const", "const_cast", "consteval", "constexpr", "constinit",
+			"continue", "co_await", "co_return", "co_yield", "decltype", "dynamic_cast", "enum", "explicit",
 			"export", "extern", "friend", "goto", "inline", "mutable", "namespace", "noexcept", "not", "not_eq",
 			"operator", "or", "or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires",
-			"return", "short", "signed", "sizeof", "static", "static_assert", "static_cast", "struct", "template",
-			"this", "thread_local", "throw", "try", "typedef", "typeid", "typename", "union", "unsigned", "using",
-			"virtual", "volatile", "xor", "xor_eq");
+			"signed", "sizeof", "static", "static_assert", "static_cast", "struct", "template", "this", "thread_local",
+			"throw", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile", "xor",
+			"xor_eq");
 	private List<String> directives = Arrays.asList("define", "undef", "include", "ifdef", "ifndef", "if", "else",
 			"endif");
 	private TokenType prevDataType;
@@ -92,7 +96,9 @@ public class TokenIdentifier {
 			token.tokenType = new OpenBracket();
 		} else if (isCloseBracket(token)) {
 			token.tokenType = new CloseBracket();
-		} else if (isIfKeyword(token)) {
+		} else if (isDeleteKeyword(token)) {
+			token.tokenType = new DeleteKeyword();
+		}else if (isIfKeyword(token)) {
 			token.tokenType = new IfKeyword();
 		} else if (isCaseKeyword(token)) {
 			token.tokenType = new CaseKeyword();
@@ -102,6 +108,10 @@ public class TokenIdentifier {
 			token.tokenType = new ColonType();
 		} else if (isForKeyword(token)) {
 			token.tokenType = new ForKeyword();
+		} else if (isTryKeyword(token)) {
+			token.tokenType = new TryKeyword();
+		} else if (isCatchKeyword(token)) {
+			token.tokenType = new CatchKeyword();
 		} else if (isWhileKeyword(token)) {
 			token.tokenType = new WhileKeyword();
 		} else if (isDoKeyword(token)) {
@@ -116,6 +126,8 @@ public class TokenIdentifier {
 			token.tokenType = new DefaultKeyword();
 		} else if (isNewKeyword(token)) {
 			token.tokenType = new NewKeyword();
+		} else if (isReturnKeyword(token)) {
+			token.tokenType = new ReturnKeyword();
 		} else if (isNullptrKeyword(token)) {
 			token.tokenType = new NullptrKeyword();
 		} else if (isNullKeyword(token)) {
@@ -128,6 +140,8 @@ public class TokenIdentifier {
 			token.tokenType = new OpenCurlyBracket();
 		} else if (isCloseCurlyBracket(token)) {
 			token.tokenType = new CloseCurlyBracket();
+		} else if (isObjectIdentifier(token)) {
+			token.tokenType = new ObjectIdentifier();
 		} else if (isFunctionIdentifier(token)) {
 			token.tokenType = new FunctionIdentifier();
 		} else if (isIdentifier(token)) {
@@ -331,6 +345,18 @@ public class TokenIdentifier {
 			return false;
 		}
 		if (token.absoluteNextToken != null && token.absoluteNextToken.value.equals("(")) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	private boolean isObjectIdentifier(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.absolutePrevToken != null && token.absolutePrevToken.tokenType instanceof UnknownType) {
 			return true;
 		}
 
@@ -877,4 +903,51 @@ public class TokenIdentifier {
 
 		return new Operator();
 	}
+
+	private boolean isTryKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("try")) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	private boolean isCatchKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("catch")) {
+			return true;
+		}
+
+		return false;
+
+	}
+	private boolean isReturnKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("return")) {
+			return true;
+		}
+
+		return false;
+
+	}
+	private boolean isDeleteKeyword(Token token) {
+		if (commentMode != CommentMode.none || textMode != TextMode.none) {
+			return false;
+		}
+		if (token.value.equals("delete")) {
+			return true;
+		}
+
+		return false;
+
+	}
+
 }

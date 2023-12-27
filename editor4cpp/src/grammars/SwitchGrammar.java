@@ -75,19 +75,20 @@ public class SwitchGrammar extends Grammar {
 		
 		openCurlyBracket_Node5.addChild(caseStatement_Node6.Id);
 
-		caseStatement_Node6.addChild(caseStatement_Node6.Id);
 		caseStatement_Node6.addChild(default_Node7.Id);
+		caseStatement_Node6.addChild(caseStatement_Node6.Id);
 		
 		default_Node7.addChild(colon_Node8.Id);
-		
+		colon_Node8.addChild(singleBreak_Node14.Id);
+		colon_Node8.addChild(openCurlyBracket_Node10.Id);
 		colon_Node8.addChild(singleStatement_Node9.Id);
 
-		colon_Node8.addChild(openCurlyBracket_Node10.Id);
 		
 		openCurlyBracket_Node10.addChild(multiStatement_Node11.Id);
-		multiStatement_Node11.addChild(multiStatement_Node11.Id);
 		
 		multiStatement_Node11.addChild(closeCurlyBracket_Node12.Id);
+		multiStatement_Node11.addChild(multiStatement_Node11.Id);
+		
 		
 		closeCurlyBracket_Node12.addChild(closeCurlyBracket_Node13.Id);
 		

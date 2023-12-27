@@ -38,8 +38,9 @@ public class PointerDeclarationGrammar extends Grammar {
 		root.addChild(dataType_Node1.Id);
 		dataType_Node1.addChild(star_Node2.Id);
 		star_Node2.addChild(identifier_Node3.Id);
-		identifier_Node3.addChild(pointerEqualStatement_Node4.Id);
 		identifier_Node3.addChild(semicolon_Node5.Id);
+		identifier_Node3.addChild(pointerEqualStatement_Node4.Id);
+		
 		pointerEqualStatement_Node4.addChild(semicolon_Node5.Id);
 
 

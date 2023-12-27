@@ -16,6 +16,7 @@ import entities.TokenTypes.FloatingPointLiteral;
 import entities.TokenTypes.FunctionIdentifier;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Keyword;
+import entities.TokenTypes.ObjectIdentifier;
 import entities.TokenTypes.Operator;
 import entities.TokenTypes.WhiteSpace;
 import entities.TokenTypes.Literals.CharLiteral;
@@ -347,6 +348,26 @@ public class TokenIdentifierTest {
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
 				assertInstanceOf(operator.getClass(), tokens.get(i).tokenType, "index:" + i);
+			}
+		}
+
+	}
+	
+	public static Object[][] IdentifyObject_Data() {
+		return new Object[][] { { "className myClass", 2, 2 } ,{ "className myClass()", 2, 2 },{ "std::className myClass()", 5, 5 }};
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "IdentifyObject_Data")
+	public void IdentifyObject(String text, int startIndex, int endIndex) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			if (i >= startIndex && i <= endIndex) {
+				assertInstanceOf(ObjectIdentifier.class, tokens.get(i).tokenType, "index:" + i);
 			}
 		}
 

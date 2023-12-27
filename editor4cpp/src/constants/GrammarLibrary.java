@@ -6,13 +6,17 @@ import Dtos.ParsingObject;
 import grammars.ArrayGrammar;
 import grammars.AssignmentGrammar;
 import grammars.ComparisonGrammar;
+import grammars.DeleteGrammar;
 import grammars.DoWhileGrammar;
 import grammars.ForGrammar;
 import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
+import grammars.ObjectDeclarationGrammar;
 import grammars.PointerAssignmentGrammar;
 import grammars.PointerDeclarationGrammar;
+import grammars.ReturnGrammar;
 import grammars.SwitchGrammar;
+import grammars.TryCatchGrammar;
 import grammars.VariableDeclarationGrammar;
 import grammars.WhileGrammar;
 import grammars.subGrammars.ArrayValueSubGrammar;
@@ -144,6 +148,26 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new FunctionCallGrammar()));
 		return list;
 	}
+	public static List<ParsingObject> getParsingObjectsOfObjectDeclarationGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new ObjectDeclarationGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfTryCatchGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new TryCatchGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfReturnGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new ReturnGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfDeleteGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new DeleteGrammar()));
+		return list;
+	}
 	
 	public static List<ParsingObject> getParsingObjectsOfAll() {
 		var list = new ArrayList<ParsingObject>();
@@ -159,7 +183,10 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfSwitchGrammar());
 		list.addAll(getParsingObjectsOfArrayGrammar());
 		list.addAll(getParsingObjectsOfFunctionCallGrammar());
-		
+		list.addAll(getParsingObjectsOfObjectDeclarationGrammar());
+		list.addAll(getParsingObjectsOfTryCatchGrammar());
+		list.addAll(getParsingObjectsOfReturnGrammar());
+		list.addAll(getParsingObjectsOfDeleteGrammar());
 
 		return list;
 	}

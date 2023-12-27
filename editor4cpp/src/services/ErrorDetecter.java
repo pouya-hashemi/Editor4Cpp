@@ -8,6 +8,8 @@ import Dtos.StatementParsingResult;
 import entities.*;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
+import entities.TokenTypes.Literal;
+import entities.TokenTypes.Punctuations.EqualType;
 import enums.GrammarStatus;
 import interfaces.HasType;
 
@@ -45,24 +47,24 @@ public class ErrorDetecter {
 				continue;
 			}
 
-			for (UUID childId : currentNode.getChildIds()) {
-				var child = gObj.grammar.getGrammarNodeById(childId);
-
-				if (child == null) {
-					continue;
-				}
-
-				if (child.getClass() == StatementNode.class) {
-					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
-					if (!deleteList.contains(gObj))
-						deleteList.add(gObj);
-
-				}
-
-			}
-			if (deleteList.contains(gObj)) {
-				continue;
-			}
+//			for (UUID childId : currentNode.getChildIds()) {
+//				var child = gObj.grammar.getGrammarNodeById(childId);
+//
+//				if (child == null) {
+//					continue;
+//				}
+//
+//				if (child.getClass() == StatementNode.class) {
+//					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
+//					if (!deleteList.contains(gObj))
+//						deleteList.add(gObj);
+//
+//				}
+//
+//			}
+//			if (deleteList.contains(gObj)) {
+//				continue;
+//			}
 			String childError = null;
 			boolean passed = false;
 			for (UUID childId : currentNode.getChildIds()) {
@@ -75,16 +77,45 @@ public class ErrorDetecter {
 				if (child.getClass() == SingleNode.class) {
 
 					if (((SingleNode) child).tokenType.getClass().isInstance(token.tokenType)) {
-						
-						if(token.tokenType instanceof HasType) {
-							if(gObj.dataType ==null && (token.tokenType instanceof DataType|| token.tokenType instanceof Identifier )) {
-								gObj.dataType=((HasType)token.tokenType).getDataType();
+
+//						if(token.tokenType instanceof HasType) {
+//							if(gObj.dataType ==null && (token.tokenType instanceof DataType|| token.tokenType instanceof Identifier )) {
+//								gObj.dataType=((HasType)token.tokenType).getDataType();
+//							}
+//							else if(gObj.dataType !=null) {
+//								if(!gObj.dataType.canBe(((HasType)token.tokenType).getDataType())) {
+//									childError = ((SingleNode) child).tokenType.getError()+" " +gObj.dataType.getError();
+//									continue;
+//								}
+//							}
+//						}
+
+						if (token.tokenType instanceof HasType) {
+							if ((token.tokenType instanceof DataType)) {
+								gObj.dataType = ((HasType) token.tokenType).getDataType();
 							}
-							else if(gObj.dataType !=null) {
-								if(!gObj.dataType.canBe(((HasType)token.tokenType).getDataType())) {
-									childError = ((SingleNode) child).tokenType.getError()+" " +gObj.dataType.getError();
-									continue;
+							if (token.tokenType instanceof Identifier && (token.absolutePrevToken == null
+									|| !(token.absolutePrevToken.tokenType instanceof EqualType))) {
+								gObj.dataType = ((HasType) token.tokenType).getDataType();
+							}
+							if (gObj.dataType != null) {
+								if (token.tokenType instanceof Literal) {
+									if (token.absolutePrevToken != null
+											&& token.absolutePrevToken.tokenType instanceof EqualType) {
+										if (!gObj.dataType.canBe(((HasType) token.tokenType).getDataType())) {
+											childError = ((SingleNode) child).tokenType.getError() + " "
+													+ gObj.dataType.getError();
+											continue;
+										}
+									}
+								} else {
+									if (!gObj.dataType.canBe(((HasType) token.tokenType).getDataType())) {
+										childError = ((SingleNode) child).tokenType.getError() + " "
+												+ gObj.dataType.getError();
+										continue;
+									}
 								}
+
 							}
 						}
 
@@ -106,6 +137,15 @@ public class ErrorDetecter {
 						continue;
 					}
 
+				}
+				else if (child.getClass() == StatementNode.class) {
+					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
+					if (!deleteList.contains(gObj))
+						deleteList.add(gObj);
+
+				}
+				if (deleteList.contains(gObj)) {
+					continue;
 				}
 
 			}
@@ -137,7 +177,6 @@ public class ErrorDetecter {
 	}
 
 	private void breakDownChilds(ParsingObject gObj, UUID currentNodeId, UUID childId) {
-
 
 		var childNode = gObj.grammar.getGrammarNodeById(childId);
 

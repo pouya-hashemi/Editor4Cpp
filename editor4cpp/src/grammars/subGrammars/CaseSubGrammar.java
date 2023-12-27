@@ -65,8 +65,8 @@ public class CaseSubGrammar extends Grammar {
 		
 		numericLiteral_Node3.addChild(colon_Node4.Id);
 
-		colon_Node4.addChild(singleStatement_Node5.Id);
 		colon_Node4.addChild(openCurlyBracket_Node6.Id);
+		colon_Node4.addChild(singleStatement_Node5.Id);
 		
 		singleStatement_Node5.addChild(singleBreak_Node8.Id);
 		
@@ -74,8 +74,8 @@ public class CaseSubGrammar extends Grammar {
 
 		openCurlyBracket_Node6.addChild(multiStatement_Node7.Id);
 		
-		multiStatement_Node7.addChild(multiStatement_Node7.Id);
 		multiStatement_Node7.addChild(multiBreak_Node10.Id);
+		multiStatement_Node7.addChild(multiStatement_Node7.Id);
 		
 		multiBreak_Node10.addChild(multiSemicolon_Node11.Id);
 		

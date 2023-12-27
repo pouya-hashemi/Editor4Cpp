@@ -59,11 +59,11 @@ public class ArrayValueSubGrammar  extends Grammar {
 		// -----------------------------------------------------------------
 		root.addChild(openCurlyBracket_Node1.Id);
 		
-		openCurlyBracket_Node1.addChild(arrayValue_Node2.Id);
 		openCurlyBracket_Node1.addChild(textLiteral_Node3.Id);
 		openCurlyBracket_Node1.addChild(numericLiteral_Node4.Id);
 		openCurlyBracket_Node1.addChild(floatLiteral_Node5.Id);
 		openCurlyBracket_Node1.addChild(boolLiteral_Node6.Id);
+		openCurlyBracket_Node1.addChild(arrayValue_Node2.Id);
 		
 		arrayValue_Node2.addChild(commaForArrayValue_Node8.Id);
 		arrayValue_Node2.addChild(closeCurlyBracket_Node9.Id);

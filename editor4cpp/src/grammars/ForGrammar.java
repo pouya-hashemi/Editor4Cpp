@@ -88,10 +88,12 @@ public class ForGrammar extends Grammar {
 		
 		openCurlyBracket_Node11.addChild(multiStatement_Node13.Id);
 		
+		multiStatement_Node13.addChild(closeCurlyBracket_Node14.Id);
+		
 		multiStatement_Node13.addChild(multiStatement_Node13.Id);
 		
 		
-		multiStatement_Node13.addChild(closeCurlyBracket_Node14.Id);
+
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();

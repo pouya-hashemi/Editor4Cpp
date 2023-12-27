@@ -15,6 +15,8 @@ import entities.TokenTypes.TextLiteral;
 import entities.TokenTypes.Literals.BoolLiteral;
 import entities.TokenTypes.Operations.DoubleOperandOperator;
 import entities.TokenTypes.Operations.SingleOperandOperator;
+import entities.TokenTypes.Punctuations.CloseBracket;
+import entities.TokenTypes.Punctuations.OpenBracket;
 import grammars.Grammar;
 
 public class MathematikOperationSubGrammar extends Grammar {
@@ -48,15 +50,21 @@ public class MathematikOperationSubGrammar extends Grammar {
 		
 		StatementNode functionCall_Node14 = new StatementNode(
 				() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), true);
+		
+		SingleNode openBracket_Node15 = new SingleNode(new OpenBracket(), false);
+
+		SingleNode numericLiteral_Node16 = new SingleNode(new NumericLiteral(), false);
+
+		SingleNode closeBracket_Node17 = new SingleNode(new CloseBracket(), true);
 
 		// -----------------------------------------------------------------
 		root.addChild(firstSingleOperator_Node1.Id);
 		root.addChild(identifier_Node4.Id);
-		root.addChild(functionCall_Node14.Id);
 		root.addChild(textLiteral_Node3.Id);
 		root.addChild(boolLiteral_Node11.Id);
 		root.addChild(floatLiteral_Node12.Id);
 		root.addChild(numericLiteral_Node13.Id);
+		root.addChild(functionCall_Node14.Id);
 
 		firstSingleOperator_Node1.addChild(secondSingleOperator_Node2.Id);
 
@@ -81,6 +89,17 @@ public class MathematikOperationSubGrammar extends Grammar {
 		doubleOperator_Node7.addChild(rightAssignment_Node10.Id);
 		
 		functionCall_Node14.addChild(doubleOperator_Node7.Id);
+		
+		identifier_Node4.addChild(openBracket_Node15.Id);
+		
+		openBracket_Node15.addChild(numericLiteral_Node16.Id);
+		
+		numericLiteral_Node16.addChild(closeBracket_Node17.Id);
+		
+		closeBracket_Node17.addChild(openBracket_Node15.Id);
+		
+		closeBracket_Node17.addChild(doubleOperator_Node7.Id);
+		closeBracket_Node17.addChild(firstSingleOperator_Node5.Id);
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
@@ -99,6 +118,9 @@ public class MathematikOperationSubGrammar extends Grammar {
 		grammarNodes.add(floatLiteral_Node12);
 		grammarNodes.add(numericLiteral_Node13);
 		grammarNodes.add(functionCall_Node14);
+		grammarNodes.add(openBracket_Node15);
+		grammarNodes.add(numericLiteral_Node16);
+		grammarNodes.add(closeBracket_Node17);
 		
 	}
 

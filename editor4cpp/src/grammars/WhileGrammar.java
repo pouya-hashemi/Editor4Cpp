@@ -58,8 +58,8 @@ public class WhileGrammar extends Grammar {
 		closeParenthesis_Node4.addChild(openCurlyBracketForIf_Node5.Id);
 		closeParenthesis_Node4.addChild(singleStatementForIf_Node6.Id);
 		openCurlyBracketForIf_Node5.addChild(multiStatementForIf_Node7.Id);
-		multiStatementForIf_Node7.addChild(multiStatementForIf_Node7.Id);
 		multiStatementForIf_Node7.addChild(closeCurlyBracketForIf_Node8.Id);
+		multiStatementForIf_Node7.addChild(multiStatementForIf_Node7.Id);
 
 
 		if (grammarNodes == null)

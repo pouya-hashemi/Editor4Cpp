@@ -63,11 +63,15 @@ public class DoWhileGrammar extends Grammar {
 
 		// -----------------------------------------------------------------
 		root.addChild(do_Node1.Id);
-		do_Node1.addChild(singleStatementForIf_Node2.Id);
+		
 		do_Node1.addChild(openCurlyBracketForIf_Node3.Id);
+		do_Node1.addChild(singleStatementForIf_Node2.Id);
+		
 		openCurlyBracketForIf_Node3.addChild(multiStatementForIf_Node4.Id);
-		multiStatementForIf_Node4.addChild(multiStatementForIf_Node4.Id);
+		
 		multiStatementForIf_Node4.addChild(closeCurlyBracketForIf_Node5.Id);
+		multiStatementForIf_Node4.addChild(multiStatementForIf_Node4.Id);
+
 		closeCurlyBracketForIf_Node5.addChild(while_Node6.Id);
 		singleStatementForIf_Node2.addChild(while_Node6.Id);
 		while_Node6.addChild(openParenthesis_Node7.Id);

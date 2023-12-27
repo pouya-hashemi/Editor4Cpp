@@ -22,7 +22,7 @@ public class FunctionCallGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		StatementNode topLevel_Node1 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), false);
+		StatementNode functionSub_Node1 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), false);
 
 		SingleNode semicolon_Node2 = new SingleNode(new SemicolonType(), true);
 
@@ -32,15 +32,15 @@ public class FunctionCallGrammar extends Grammar {
 		
 
 		// -----------------------------------------------------------------
-		root.addChild(topLevel_Node1.Id);
+		root.addChild(functionSub_Node1.Id);
 		
-		topLevel_Node1.addChild(semicolon_Node2.Id);	
+		functionSub_Node1.addChild(semicolon_Node2.Id);	
 		
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
-		grammarNodes.add(topLevel_Node1);
+		grammarNodes.add(functionSub_Node1);
 		grammarNodes.add(semicolon_Node2);
 
 

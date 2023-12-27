@@ -117,7 +117,7 @@ public class ErrorDetecterTest {
 
 	public static String[] VariableDeclarationAndAssignmentWithLiteralOnly_Data() {
 		return new String[] { "short a=2;", "int a=2;", "long a=2;", "float a=2.3;", "double a=2.3;", "char a='s';",
-				"string a=\"asd\";", "bool a=false;", "float a=2;", "double a=2;" };
+				"string a=\"asd\";", "bool a=false;", "float a=2;", "double a=2;", "int a=2; bool b=true;" };
 	}
 
 	@ParameterizedTest
@@ -280,7 +280,7 @@ public class ErrorDetecterTest {
 	public static String[] IfStatement_Data() {
 		return new String[] { "if(2>3){int a=2;}", "if('a'>'a')", "if(\"ba\">\"asd\")", "if(true>false)", "if(2>=3)",
 				"if(2<=3)", "if(2==3)", "if(2!=3)", "if(2<3)", "if(!2<3)", "if((2<3))", "if(!(2<3))",
-				"if((2<3)&&(2>3))", "if((2<3)&&(2>3)||!(2==3))" };
+				"if((2<3)&&(2>3))", "if((2<3)&&(2>3)||!(2==3))","if(1>2){int a=2;bool b=false;}" };
 	}
 
 	@ParameterizedTest
@@ -360,7 +360,8 @@ public class ErrorDetecterTest {
 	public static String[] ForStatement_Data() {
 		return new String[] { "for(int i=0;i<=2;i++){ int a=3; }", "int i; for(i=0;i<=2;i++){ int a=3; }",
 				"for(int i=0, b=2;i<=2 && b>6;i++,b--){ int a=3;\nint a=3;\nint a=3; }",
-				"int i; for(i=0;i<=2;i++){ if(2>3){int a=2;}}" };
+				"int i; for(i=0;i<=2;i++){ if(2>3){int a=2;}}",
+				"for(int i=0;i<=2;++i){ int a=2;}" };
 	}
 
 	@ParameterizedTest
@@ -399,8 +400,12 @@ public class ErrorDetecterTest {
 	}
 
 	public static String[] SwitchTest_Data() {
-		return new String[] { "int day = 3;\r\n" + "switch (day) {\r\n" + "case 1:\r\n" + "int a=1;\r\n" + "break;\r\n"
-				+ "default:\r\n" + "int a=1;\r\n" + "break;\r\n" + "}" };
+		return new String[] {
+				"int day = 3;\r\n" + "switch (day) {\r\n" + "case 1:\r\n" + "int a=1;\r\n" + "break;\r\n"
+						+ "default:\r\n" + "int a=1;\r\n" + "break;\r\n" + "}",
+				"int num1 = 5;\r\n int num2 = 3;char operation = '+'; switch (operation) {\r\n" + "case '+':\r\n" + "num1 = num1 + num2;\r\n"
+						+ "break;\r\n" + "case '-':\r\n" + "num1 = num1 - num2;\r\n" + "break;\r\n" + "default:\r\n"
+						+ "break;\r\n" + "}" };
 	}
 
 	@ParameterizedTest
@@ -419,7 +424,8 @@ public class ErrorDetecterTest {
 	}
 
 	public static String[] ArrayTest_Data() {
-		return new String[] { "int a[5];", "int a[]={2,2};", "int a[][2]={2,2};", "int a[][2]={{2,2},{2,2}};","int array[3]={1, 2, 3};" };
+		return new String[] { "int a[5];", "int a[]={2,2};", "int a[][2]={2,2};", "int a[][2]={{2,2},{2,2}};",
+				"int array[3]={1, 2, 3};" };
 	}
 
 	@ParameterizedTest
@@ -439,12 +445,105 @@ public class ErrorDetecterTest {
 
 	public static String[] FunctionTest_Data() {
 		return new String[] { "myFunc();", "myFunc(2,1);", "int a=2;myFunc(a,1);", "int a=myFunc();",
-				"myFunc(secFunc());","std::cout.myFunc();" };
+				"myFunc(secFunc());", "std::cout.myFunc();" };
 	}
 
 	@ParameterizedTest
 	@MethodSource(value = "FunctionTest_Data")
 	public void FunctionTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	public static String[] ObjectDeclareTest_Data() {
+		return new String[] { "className myClass;", "className myClass(1);" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "ObjectDeclareTest_Data")
+	public void ObjectDeclareTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+
+	public static String[] TryCatchTest_Data() {
+		return new String[] { "try{ int a=2;}catch(...){int b=2;}", "try{ int a=2;}catch(asd e){int b=2;}",
+				"try{ int a=2;}catch(asd e){int b=2;}catch(...){int b=2;}" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "TryCatchTest_Data")
+	public void TryCatchTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+	public static String[] ReturnTest_Data() {
+		return new String[] { "return 2;" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "ReturnTest_Data")
+	public void ReturnTest_Data(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+	public static String[] DeleteTest_Data() {
+		return new String[] { "int a; delete[] a;" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "DeleteTest_Data")
+	public void DeleteTest(String text) {
+		// Arrange
+		Tokenizer tokenizer = new Tokenizer();
+		// Act
+		List<Token> tokens = tokenizer.tokenizeString(text);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
+					"index:" + i + " error: " + tokens.get(i).error);
+		}
+
+	}
+	public static String[] AssignmentWithArraysTest_Data() {
+		return new String[] { "int a[5]; int b=a[2];","int a[5]; a[2]=3;" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "AssignmentWithArraysTest_Data")
+	public void AssignmentWithArraysTest_Data(String text) {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
