@@ -60,11 +60,12 @@ public class FunctionCallSubGrammar  extends Grammar {
 //		root.addChild(unknown_Node9.Id);
 		
 		funcIdentifier_Node1.addChild(openParenthesis_Node2.Id);
+		openParenthesis_Node2.addChild(closeParenthesis_Node5.Id);
 		openParenthesis_Node2.addChild(topLevel_Node3.Id);
 		topLevel_Node3.addChild(comma_Node4.Id);
 		topLevel_Node3.addChild(closeParenthesis_Node5.Id);
 		comma_Node4.addChild(topLevel_Node3.Id);
-		openParenthesis_Node2.addChild(closeParenthesis_Node5.Id);
+		
 	
 //		unknown_Node6.addChild(colon_Node7.Id);
 //		colon_Node7.addChild(colon_Node8.Id);

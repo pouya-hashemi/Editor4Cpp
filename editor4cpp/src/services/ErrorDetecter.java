@@ -46,31 +46,13 @@ public class ErrorDetecter {
 				deleteList.add(gObj);
 				continue;
 			}
-
-//			for (UUID childId : currentNode.getChildIds()) {
-//				var child = gObj.grammar.getGrammarNodeById(childId);
-//
-//				if (child == null) {
-//					continue;
-//				}
-//
-//				if (child.getClass() == StatementNode.class) {
-//					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
-//					if (!deleteList.contains(gObj))
-//						deleteList.add(gObj);
-//
-//				}
-//
-//			}
-//			if (deleteList.contains(gObj)) {
-//				continue;
-//			}
 			String childError = null;
 			boolean passed = false;
 			for (UUID childId : currentNode.getChildIds()) {
 				var child = gObj.grammar.getGrammarNodeById(childId);
 
 				if (child == null) {
+					childError = "No child found.";
 					continue;
 				}
 
@@ -137,8 +119,7 @@ public class ErrorDetecter {
 						continue;
 					}
 
-				}
-				else if (child.getClass() == StatementNode.class) {
+				} else if (child.getClass() == StatementNode.class) {
 					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
 					if (!deleteList.contains(gObj))
 						deleteList.add(gObj);

@@ -72,6 +72,19 @@ public class AssignmentGrammar extends Grammar {
 		root.addChild(identifier_Node1.Id);
 		root.addChild(firstPreSingleOperator_Node6.Id);
 
+		if (hasSemicolon) {
+			equalStatement_Node2.addChild(semicolon_Node3.Id);
+			secondSingleOperator_Node5.addChild(semicolon_Node3.Id);
+			identifier_Node8.addChild(semicolon_Node3.Id);
+			closeBracket_Node14.addChild(semicolon_Node3.Id);
+			equalStatement_Node2.canBeEnd = false;
+			secondSingleOperator_Node5.canBeEnd = false;
+			identifier_Node8.canBeEnd = false;
+			closeBracket_Node14.canBeEnd=false;
+			semicolon_Node3.canBeEnd = true;
+
+		}
+		
 		firstPreSingleOperator_Node6.addChild(secondPreSingleOperator_Node7.Id);
 
 		secondPreSingleOperator_Node7.addChild(identifier_Node8.Id);
@@ -105,18 +118,7 @@ public class AssignmentGrammar extends Grammar {
 		
 		
 		
-		if (hasSemicolon) {
-			equalStatement_Node2.addChild(semicolon_Node3.Id);
-			secondSingleOperator_Node5.addChild(semicolon_Node3.Id);
-			identifier_Node8.addChild(semicolon_Node3.Id);
-			closeBracket_Node14.addChild(semicolon_Node3.Id);
-			equalStatement_Node2.canBeEnd = false;
-			secondSingleOperator_Node5.canBeEnd = false;
-			identifier_Node8.canBeEnd = false;
-			closeBracket_Node14.canBeEnd=false;
-			semicolon_Node3.canBeEnd = true;
-
-		}
+		
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();

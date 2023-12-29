@@ -2,19 +2,20 @@ package entities.TokenTypes;
 
 import javax.swing.text.Style;
 
+import constants.CustomStyle;
 import entities.TokenType;
 
 public class ObjectIdentifier extends TokenType {
 
 	@Override
 	public Style getTokenStyle() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return CustomStyle.defaultStyle;
 	}
 
 	@Override
 	public String getError() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return "Expected object name.";
 	}
 }

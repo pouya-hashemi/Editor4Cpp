@@ -9,7 +9,7 @@ public class Operator extends TokenType {
 
 	@Override
 	public Style getTokenStyle() {
-		return CustomStyle.defaultStyle;
+		return CustomStyle.punctStyle;
 	}
 
 	@Override

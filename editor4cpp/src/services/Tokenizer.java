@@ -120,7 +120,7 @@ public class Tokenizer {
 		StatementNode statementNode=new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 		List<Token> reserveTokens = new ArrayList<Token>();
 		boolean hasError = false;
-		String regex = "\\b\\w+\\b|\\s|\\n|\\p{Punct}";
+		String regex = "\\b\\w+\\b|\\s|\\n|[^\\w\\s]";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(text);
 		Token prevToken = null;

@@ -144,14 +144,14 @@ public class TokenIdentifier {
 			token.tokenType = new ObjectIdentifier();
 		} else if (isFunctionIdentifier(token)) {
 			token.tokenType = new FunctionIdentifier();
-		} else if (isIdentifier(token)) {
+		} else if (isDirective(token)) {
+			token.tokenType = new Directive();
+		}else if (isIdentifier(token)) {
 			var identifier = getIdentifierType(token);
 			token.tokenType = identifier;
 			if (!identifiers.stream().anyMatch(s -> s.getName() == identifier.getName()))
 				identifiers.add(identifier);
-		} else if (isDirective(token)) {
-			token.tokenType = new Directive();
-		} else {
+		}  else {
 			token.tokenType = new UnknownType();
 		}
 		return token;

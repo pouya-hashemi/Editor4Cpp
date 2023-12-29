@@ -8,6 +8,9 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.204.0",
  org.eclipse.emf.ecore;bundle-version="2.35.0",
  org.junit,
  junit-jupiter-api,
- junit-jupiter-params;bundle-version="5.10.0"
+ junit-jupiter-params;bundle-version="5.10.0",
+ org.eclipse.core.resources;bundle-version="3.19.100",
+ org.eclipse.emf.edit;bundle-version="2.19.0",
+ org.eclipse.emf.edit.ui;bundle-version="2.23.0"
 Automatic-Module-Name: editor4cpp
 Bundle-RequiredExecutionEnvironment: JavaSE-17

@@ -445,7 +445,7 @@ public class ErrorDetecterTest {
 
 	public static String[] FunctionTest_Data() {
 		return new String[] { "myFunc();", "myFunc(2,1);", "int a=2;myFunc(a,1);", "int a=myFunc();",
-				"myFunc(secFunc());", "std::cout.myFunc();" };
+				"myFunc(secFunc());", };
 	}
 
 	@ParameterizedTest

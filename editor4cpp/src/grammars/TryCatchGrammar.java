@@ -118,6 +118,7 @@ public class TryCatchGrammar extends Grammar {
 		grammarNodes.add(thirdDot_Node12);
 		grammarNodes.add(openCurlyBracket_Node13);
 		grammarNodes.add(closeCurlyBracket_Node14);
+		grammarNodes.add(multiStatement_Node15);
 
 
 	}

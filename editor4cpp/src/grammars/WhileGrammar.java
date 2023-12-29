@@ -36,18 +36,13 @@ public class WhileGrammar extends Grammar {
 
 		SingleNode closeParenthesis_Node4 = new SingleNode(new CloseParenthesisType(), false,false);
 
-		SingleNode openCurlyBracketForIf_Node5 = new SingleNode(new OpenCurlyBracket(), false);
+		SingleNode openCurlyBracket_Node5 = new SingleNode(new OpenCurlyBracket(), false);
 
-		StatementNode singleStatementForIf_Node6 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
+		StatementNode singleStatement_Node6 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
 
-		StatementNode multiStatementForIf_Node7 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
+		StatementNode multiStatement_Node7 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 
-		SingleNode closeCurlyBracketForIf_Node8 = new SingleNode(new CloseCurlyBracket(), true);
-		
-		
-
-		
-		
+		SingleNode closeCurlyBracket_Node8 = new SingleNode(new CloseCurlyBracket(), true);
 		
 
 		// -----------------------------------------------------------------
@@ -55,11 +50,14 @@ public class WhileGrammar extends Grammar {
 		while_Node1.addChild(openParenthesis_Node2.Id);
 		openParenthesis_Node2.addChild(comparesionStatement_Node3.Id);
 		comparesionStatement_Node3.addChild(closeParenthesis_Node4.Id);
-		closeParenthesis_Node4.addChild(openCurlyBracketForIf_Node5.Id);
-		closeParenthesis_Node4.addChild(singleStatementForIf_Node6.Id);
-		openCurlyBracketForIf_Node5.addChild(multiStatementForIf_Node7.Id);
-		multiStatementForIf_Node7.addChild(closeCurlyBracketForIf_Node8.Id);
-		multiStatementForIf_Node7.addChild(multiStatementForIf_Node7.Id);
+		
+		closeParenthesis_Node4.addChild(openCurlyBracket_Node5.Id);
+		closeParenthesis_Node4.addChild(singleStatement_Node6.Id);
+		
+		openCurlyBracket_Node5.addChild(multiStatement_Node7.Id);
+		
+		multiStatement_Node7.addChild(closeCurlyBracket_Node8.Id);
+		multiStatement_Node7.addChild(multiStatement_Node7.Id);
 
 
 		if (grammarNodes == null)
@@ -69,10 +67,10 @@ public class WhileGrammar extends Grammar {
 		grammarNodes.add(openParenthesis_Node2);
 		grammarNodes.add(comparesionStatement_Node3);
 		grammarNodes.add(closeParenthesis_Node4);
-		grammarNodes.add(openCurlyBracketForIf_Node5);
-		grammarNodes.add(singleStatementForIf_Node6);
-		grammarNodes.add(multiStatementForIf_Node7);
-		grammarNodes.add(closeCurlyBracketForIf_Node8);
+		grammarNodes.add(openCurlyBracket_Node5);
+		grammarNodes.add(singleStatement_Node6);
+		grammarNodes.add(multiStatement_Node7);
+		grammarNodes.add(closeCurlyBracket_Node8);
 		
 	}
 	

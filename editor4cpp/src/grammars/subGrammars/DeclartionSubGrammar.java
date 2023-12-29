@@ -43,18 +43,11 @@ public class DeclartionSubGrammar extends Grammar {
 				() -> GrammarLibrary.getParsingObjectsOfEqualSubGrammar(), true);
 
 		StatementNode declartionSubGrammar_Node5 = new StatementNode(
-				() -> GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(hasSemicolon), true);
+				() -> GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(false), true);
 
 		// -----------------------------------------------------------------
 		root.addChild(identifier_Node1.Id);
-
-		identifier_Node1.addChild(comma_Node3.Id);
-		identifier_Node1.addChild(equalStatement_Node4.Id);
-
-		comma_Node3.addChild(declartionSubGrammar_Node5.Id);
-
-		equalStatement_Node4.addChild(comma_Node3.Id);
-
+		
 		if (hasSemicolon) {
 			identifier_Node1.addChild(semicolon_Node2.Id);
 			equalStatement_Node4.addChild(semicolon_Node2.Id);
@@ -65,6 +58,15 @@ public class DeclartionSubGrammar extends Grammar {
 			semicolon_Node2.canBeEnd = true;
 
 		}
+
+		identifier_Node1.addChild(comma_Node3.Id);
+		identifier_Node1.addChild(equalStatement_Node4.Id);
+
+		comma_Node3.addChild(declartionSubGrammar_Node5.Id);
+
+		equalStatement_Node4.addChild(comma_Node3.Id);
+
+		
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();

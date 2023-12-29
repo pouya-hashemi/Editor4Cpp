@@ -50,15 +50,6 @@ public class DoWhileGrammar extends Grammar {
 		SingleNode semicolon_Node10 = new SingleNode(new SemicolonType(), true,true);
 
 		
-
-		
-
-		
-		
-		
-
-		
-		
 		
 
 		// -----------------------------------------------------------------
@@ -73,7 +64,9 @@ public class DoWhileGrammar extends Grammar {
 		multiStatementForIf_Node4.addChild(multiStatementForIf_Node4.Id);
 
 		closeCurlyBracketForIf_Node5.addChild(while_Node6.Id);
+		
 		singleStatementForIf_Node2.addChild(while_Node6.Id);
+		
 		while_Node6.addChild(openParenthesis_Node7.Id);
 		openParenthesis_Node7.addChild(comparesionStatement_Node8.Id);
 		comparesionStatement_Node8.addChild(closeParenthesis_Node9.Id);

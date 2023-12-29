@@ -39,28 +39,28 @@ public class ForGrammar extends Grammar {
 		}, false);
 
 		
-		SingleNode semicolon_Node5= new SingleNode(new SemicolonType(), false);
+		SingleNode semicolon_Node4= new SingleNode(new SemicolonType(), false);
 		
-		StatementNode comparesionStatement_Node6 = new StatementNode(
+		StatementNode comparesionStatement_Node5 = new StatementNode(
 				() -> GrammarLibrary.getParsingObjectsOfComparison(), false);
 		
-		SingleNode semicolon_Node7= new SingleNode(new SemicolonType(), false);
+		SingleNode semicolon_Node6= new SingleNode(new SemicolonType(), false);
 		
-		StatementNode assignment_Node8 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAssignment(false), false);
+		StatementNode assignment_Node7 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAssignment(false), false);
 
-		SingleNode comma_Node9= new SingleNode(new CommaType(), false);
+		SingleNode comma_Node8= new SingleNode(new CommaType(), false);
 		
-		SingleNode closeParenthesis_Node10 = new SingleNode(new CloseParenthesisType(), false, false);
+		SingleNode closeParenthesis_Node9 = new SingleNode(new CloseParenthesisType(), false, false);
 
-		SingleNode openCurlyBracket_Node11 = new SingleNode(new OpenCurlyBracket(), false);
+		SingleNode openCurlyBracket_Node10 = new SingleNode(new OpenCurlyBracket(), false);
 
-		StatementNode singleStatement_Node12 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(),
+		StatementNode singleStatement_Node11 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(),
 				true);
 
-		StatementNode multiStatement_Node13 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(),
+		StatementNode multiStatement_Node12 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(),
 				false);
 
-		SingleNode closeCurlyBracket_Node14 = new SingleNode(new CloseCurlyBracket(), true);
+		SingleNode closeCurlyBracket_Node13 = new SingleNode(new CloseCurlyBracket(), true);
 
 		
 
@@ -69,28 +69,27 @@ public class ForGrammar extends Grammar {
 		for_Node1.addChild(openParenthesis_Node2.Id);
 		openParenthesis_Node2.addChild(assignment_Node3.Id);
 		
-		assignment_Node3.addChild(semicolon_Node5.Id);
+		assignment_Node3.addChild(semicolon_Node4.Id);
 		
-		semicolon_Node5.addChild(comparesionStatement_Node6.Id);
-		comparesionStatement_Node6.addChild(semicolon_Node7.Id);
-		semicolon_Node7.addChild(assignment_Node8.Id);
-		
-		
-		assignment_Node8.addChild(comma_Node9.Id);
-		assignment_Node8.addChild(closeParenthesis_Node10.Id);
-		
-		comma_Node9.addChild(assignment_Node8.Id);
+		semicolon_Node4.addChild(comparesionStatement_Node5.Id);
+		comparesionStatement_Node5.addChild(semicolon_Node6.Id);
+		semicolon_Node6.addChild(assignment_Node7.Id);
 		
 		
-		closeParenthesis_Node10.addChild(openCurlyBracket_Node11.Id);
+		assignment_Node7.addChild(comma_Node8.Id);
+		assignment_Node7.addChild(closeParenthesis_Node9.Id);
 		
-		closeParenthesis_Node10.addChild(singleStatement_Node12.Id);
+		comma_Node8.addChild(assignment_Node7.Id);
 		
-		openCurlyBracket_Node11.addChild(multiStatement_Node13.Id);
 		
-		multiStatement_Node13.addChild(closeCurlyBracket_Node14.Id);
+		closeParenthesis_Node9.addChild(openCurlyBracket_Node10.Id);
+		closeParenthesis_Node9.addChild(singleStatement_Node11.Id);
 		
-		multiStatement_Node13.addChild(multiStatement_Node13.Id);
+		openCurlyBracket_Node10.addChild(multiStatement_Node12.Id);
+		
+		multiStatement_Node12.addChild(closeCurlyBracket_Node13.Id);
+		
+		multiStatement_Node12.addChild(multiStatement_Node12.Id);
 		
 		
 
@@ -101,16 +100,16 @@ public class ForGrammar extends Grammar {
 		grammarNodes.add(for_Node1);
 		grammarNodes.add(openParenthesis_Node2);
 		grammarNodes.add(assignment_Node3);
-		grammarNodes.add(semicolon_Node5);
-		grammarNodes.add(comparesionStatement_Node6);
-		grammarNodes.add(semicolon_Node7);
-		grammarNodes.add(assignment_Node8);
-		grammarNodes.add(comma_Node9);
-		grammarNodes.add(closeParenthesis_Node10);
-		grammarNodes.add(openCurlyBracket_Node11);
-		grammarNodes.add(singleStatement_Node12);
-		grammarNodes.add(multiStatement_Node13);
-		grammarNodes.add(closeCurlyBracket_Node14);
+		grammarNodes.add(semicolon_Node4);
+		grammarNodes.add(comparesionStatement_Node5);
+		grammarNodes.add(semicolon_Node6);
+		grammarNodes.add(assignment_Node7);
+		grammarNodes.add(comma_Node8);
+		grammarNodes.add(closeParenthesis_Node9);
+		grammarNodes.add(openCurlyBracket_Node10);
+		grammarNodes.add(singleStatement_Node11);
+		grammarNodes.add(multiStatement_Node12);
+		grammarNodes.add(closeCurlyBracket_Node13);
 
 	}
 
