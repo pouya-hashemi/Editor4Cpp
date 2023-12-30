@@ -22,7 +22,7 @@ public class DoWhileAndForTests {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
@@ -42,7 +42,7 @@ public class DoWhileAndForTests {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
 
@@ -61,7 +61,7 @@ public class DoWhileAndForTests {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
@@ -82,7 +82,7 @@ public class DoWhileAndForTests {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
 

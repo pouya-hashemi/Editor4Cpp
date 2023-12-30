@@ -48,7 +48,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -76,7 +76,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -103,7 +103,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -127,7 +127,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -151,7 +151,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -174,7 +174,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -196,7 +196,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -218,7 +218,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -240,7 +240,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -260,7 +260,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -279,7 +279,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -298,7 +298,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -318,7 +318,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -343,7 +343,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {
@@ -363,7 +363,7 @@ public class TokenIdentifierTest {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			if (i >= startIndex && i <= endIndex) {

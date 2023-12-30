@@ -12,6 +12,7 @@ import entities.Token;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TextEditor extends JTextPane {
 
@@ -28,7 +29,10 @@ public class TextEditor extends JTextPane {
 	private boolean needSave = false;
 
 	public TextEditor() {
+
 		setFont(new Font("Monospaced", Font.PLAIN, 14));
+		setTabStops(4);
+		
 		// add default Style to editor
 		tokenizer = new Tokenizer();
 		doc = getStyledDocument();
@@ -36,23 +40,16 @@ public class TextEditor extends JTextPane {
 		addStyleToDocument();
 
 		addKeyListener(new java.awt.event.KeyAdapter() {
-			public void keyTyped(java.awt.event.KeyEvent evt) {
+			public void keyTyped(java.awt.event.KeyEvent e) {
+
 				SwingUtilities.invokeLater(() -> {
 					if (!needSave)
 						needSave = true;
 					errorTokens.clear();
 					setToolTipText(null);
-					List<Token> tokens = tokenizer.tokenizeString(getText());
-
-					for (Token token : tokens) {
-						doc.setCharacterAttributes(token.startIndex, token.value.length(), token.tokenStyle, false);
-						if (token.error != null && token.error.length() > 0) {
-							errorTokens.add(token);
-							doc.setCharacterAttributes(token.startIndex, token.value.length(), CustomStyle.errorStyle,
-									false);
-						}
-					}
+					buildText(getText(), false);
 				});
+
 			}
 		});
 
@@ -75,10 +72,7 @@ public class TextEditor extends JTextPane {
 
 	public void setEditorText(String text) {
 		this.setText(text);
-		List<Token> tokens = tokenizer.tokenizeString(text);
-		for (Token token : tokens) {
-			doc.setCharacterAttributes(token.startIndex, token.value.length(), token.tokenStyle, false);
-		}
+		buildText(text, true);
 
 	}
 
@@ -169,11 +163,63 @@ public class TextEditor extends JTextPane {
 		}
 		return false;
 	}
+
 	public boolean getNeedSave() {
 		return needSave;
 	}
+
 	public void setNeedSave(boolean value) {
-		 needSave=value;
+		needSave = value;
 	}
+
+	public void formatText() {
+		buildText(getText(), true);
+	}
+
+	public void buildText(String text, boolean formatText) {
+		List<Token> tokens = tokenizer.tokenizeString(text, formatText);
+		
+		if (formatText)
+			setText(String.join("", tokens.stream().map(a -> a.value).collect(Collectors.toList())));
+		int currentIndex = 0;
+		for (int i = 0; i < tokens.size(); i++) {
+			var token = tokens.get(i);
+			doc.setCharacterAttributes(currentIndex, token.value.length(), token.tokenStyle, false);
+			if (token.error != null && token.error.length() > 0) {
+				token.startIndex=currentIndex;
+				token.startIndex=currentIndex+token.value.length();
+				errorTokens.add(token);
+				doc.setCharacterAttributes(currentIndex, token.value.length(), CustomStyle.errorStyle, false);
+			}
+			currentIndex += token.value.length();
+		}
+//		for (Token token : tokens) {
+//			doc.setCharacterAttributes(token.startIndex, token.value.length(), token.tokenStyle, false);
+//			if (token.error != null && token.error.length() > 0) {
+//				errorTokens.add(token);
+//				doc.setCharacterAttributes(token.startIndex, token.value.length(), CustomStyle.errorStyle, false);
+//			}
+//		}
+	}
+	
+	private void setTabStops( int tabSize) {
+        // Calculate the width of a single space
+        int spaceWidth = getFontMetrics(getFont()).charWidth(' ');
+
+        // Calculate the tab width based on the specified number of spaces
+        int tabWidth = tabSize * spaceWidth;
+
+        // Create a TabSet with the calculated tab width
+        TabStop[] tabStops = new TabStop[10];  // You can adjust the number of tab stops
+        for (int i = 0; i < tabStops.length; i++) {
+            tabStops[i] = new TabStop((i + 1) * tabWidth);
+        }
+        TabSet tabSet = new TabSet(tabStops);
+
+        // Apply the TabSet to the text pane's paragraph attributes
+        SimpleAttributeSet paragraphAttributes = new SimpleAttributeSet();
+        StyleConstants.setTabSet(paragraphAttributes, tabSet);
+        getStyledDocument().setParagraphAttributes(0, getDocument().getLength(), paragraphAttributes, false);
+    }
 
 }

@@ -128,6 +128,24 @@ public class MainView extends ViewPart {
 		});
 
 		toolbar.add(saveButton);
+		
+		ImageIcon formatIcon = new ImageIcon(MainView.class.getResource("/resources/f.png"));
+
+		JButton formatButton = new JButton(formatIcon);
+
+		Dimension formatButtonSize = new Dimension(16, 16);
+		formatButton.setPreferredSize(formatButtonSize);
+		formatButton.setMaximumSize(formatButtonSize);
+		formatButton.setMinimumSize(formatButtonSize);
+
+		formatButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editor.formatText();
+			}
+		});
+		
+		toolbar.add(formatButton);
 	}
 
 	private void saveChanges() {
@@ -192,7 +210,7 @@ public class MainView extends ViewPart {
 	public void addProperty(String propertyName, String propertyValue) {
 		TableItem item = new TableItem(table, SWT.BORDER);
 		item.setText(0, propertyName);
-		item.setText(1, propertyValue);
+		item.setText(1, propertyValue==null?"":propertyValue);
 //		packColumns();
 		TableEditor tableEditor = new TableEditor(table);
 		Button button = new Button(table, SWT.BUTTON1);

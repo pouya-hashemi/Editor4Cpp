@@ -368,7 +368,7 @@ public class TokenIdentifier {
 		if (commentMode != CommentMode.none || textMode != TextMode.none) {
 			return false;
 		}
-		if (token.value.equals(" ") || token.value.equals("\n") || token.value.equals("\r")) {
+		if (token.value.equals(" ") || token.value.equals("\n") || token.value.equals("\r")|| token.value.equals("\t")) {
 			// after dataType
 			if (token.prevToken != null && token.prevToken.tokenType instanceof DataType) {
 				identifierInProgress = true;

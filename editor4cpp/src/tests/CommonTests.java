@@ -85,7 +85,7 @@ public class CommonTests {
 		// Arrange
 		Tokenizer tokenizer = new Tokenizer();
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text);
+		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
