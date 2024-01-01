@@ -10,13 +10,8 @@ import entities.SingleNode;
 import entities.StatementNode;
 import entities.TokenTypes.ObjectIdentifier;
 import entities.TokenTypes.UnknownType;
-import entities.TokenTypes.Keywords.ElseKeyword;
-import entities.TokenTypes.Keywords.IfKeyword;
-import entities.TokenTypes.Punctuations.CloseCurlyBracket;
 import entities.TokenTypes.Punctuations.CloseParenthesisType;
-import entities.TokenTypes.Punctuations.ColonType;
 import entities.TokenTypes.Punctuations.CommaType;
-import entities.TokenTypes.Punctuations.OpenCurlyBracket;
 import entities.TokenTypes.Punctuations.OpenParenthesisType;
 import entities.TokenTypes.Punctuations.SemicolonType;
 

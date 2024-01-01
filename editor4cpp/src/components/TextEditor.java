@@ -72,7 +72,7 @@ public class TextEditor extends JTextPane {
 
 	public void setEditorText(String text) {
 		this.setText(text);
-		buildText(text, true);
+		buildText(text, false);
 
 	}
 
@@ -184,10 +184,11 @@ public class TextEditor extends JTextPane {
 		int currentIndex = 0;
 		for (int i = 0; i < tokens.size(); i++) {
 			var token = tokens.get(i);
+			token.startIndex=currentIndex;
+			token.endIndex=currentIndex+token.value.length();
 			doc.setCharacterAttributes(currentIndex, token.value.length(), token.tokenStyle, false);
 			if (token.error != null && token.error.length() > 0) {
-				token.startIndex=currentIndex;
-				token.startIndex=currentIndex+token.value.length();
+				
 				errorTokens.add(token);
 				doc.setCharacterAttributes(currentIndex, token.value.length(), CustomStyle.errorStyle, false);
 			}

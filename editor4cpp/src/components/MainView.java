@@ -7,7 +7,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -111,11 +110,11 @@ public class MainView extends ViewPart {
 		JToolBar toolbar = new JToolBar();
 		frame.add(toolbar, "North");
 
-		ImageIcon saveIcon = new ImageIcon(MainView.class.getResource("/resources/save.png"));
+//		ImageIcon saveIcon = new ImageIcon(MainView.class.getResource("/resources/save.png"));
 
-		JButton saveButton = new JButton(saveIcon);
+		JButton saveButton = new JButton("S");
 
-		Dimension buttonSize = new Dimension(16, 16);
+		Dimension buttonSize = new Dimension(24, 24);
 		saveButton.setPreferredSize(buttonSize);
 		saveButton.setMaximumSize(buttonSize);
 		saveButton.setMinimumSize(buttonSize);
@@ -129,11 +128,11 @@ public class MainView extends ViewPart {
 
 		toolbar.add(saveButton);
 		
-		ImageIcon formatIcon = new ImageIcon(MainView.class.getResource("/resources/f.png"));
+//		ImageIcon formatIcon = new ImageIcon(MainView.class.getResource("/resources/f.png"));
 
-		JButton formatButton = new JButton(formatIcon);
+		JButton formatButton = new JButton("F");
 
-		Dimension formatButtonSize = new Dimension(16, 16);
+		Dimension formatButtonSize = new Dimension(24, 24);
 		formatButton.setPreferredSize(formatButtonSize);
 		formatButton.setMaximumSize(formatButtonSize);
 		formatButton.setMinimumSize(formatButtonSize);

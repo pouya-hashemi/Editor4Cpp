@@ -25,7 +25,6 @@ import entities.TokenTypes.Operations.DoubleComparisonOperator;
 import entities.TokenTypes.Operations.LogicalNotOperator;
 import entities.TokenTypes.Operations.LogicalOperator;
 import entities.TokenTypes.Operations.SingleComparisonOperator;
-import services.NewTokenizer;
 import services.Tokenizer;
 
 public class TokenIdentifierTest {

@@ -4,20 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import constants.GrammarLibrary;
 import entities.GrammarNode;
 import entities.SingleNode;
-import entities.StatementNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Keywords.DeleteKeyword;
-import entities.TokenTypes.Keywords.DoKeyword;
-import entities.TokenTypes.Keywords.WhileKeyword;
 import entities.TokenTypes.Punctuations.CloseBracket;
-import entities.TokenTypes.Punctuations.CloseCurlyBracket;
-import entities.TokenTypes.Punctuations.CloseParenthesisType;
 import entities.TokenTypes.Punctuations.OpenBracket;
-import entities.TokenTypes.Punctuations.OpenCurlyBracket;
-import entities.TokenTypes.Punctuations.OpenParenthesisType;
 import entities.TokenTypes.Punctuations.SemicolonType;
 
 public class DeleteGrammar extends Grammar {

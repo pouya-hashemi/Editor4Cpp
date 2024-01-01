@@ -8,7 +8,6 @@ import constants.GrammarLibrary;
 import entities.GrammarNode;
 import entities.SingleNode;
 import entities.StatementNode;
-import entities.TokenTypes.Identifier;
 import entities.TokenTypes.ObjectIdentifier;
 import entities.TokenTypes.Keywords.ReturnKeyword;
 import entities.TokenTypes.Punctuations.SemicolonType;

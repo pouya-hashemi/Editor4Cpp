@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import constants.CustomStyle;
 import constants.GrammarLibrary;
 import entities.StatementNode;
 import entities.Token;
@@ -351,20 +348,9 @@ public class Tokenizer {
 		return character.equals("\t");
 	}
 
-	private boolean isEnd(String character) {
-		return character.equals(";");
-	}
 
 	private boolean isNextLine(String character) {
 		return character.equals("\n") || character.equals("\r");
-	}
-
-	private Token getNextLineToken(Token prevToken, Token nextToken) {
-		var token = new Token();
-		token.value = "\r";
-		token.prevToken = prevToken;
-		token.nextToken = nextToken;
-		return token;
 	}
 
 	private Token getSpaceToken(Token prevToken, Token nextToken) {
