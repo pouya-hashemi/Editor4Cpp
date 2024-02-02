@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.DataType;
 
 
@@ -35,9 +35,9 @@ public class VariableDeclarationGrammar extends Grammar {
 		rootNodeId=root.Id;
 
 		
-		SingleNode dataType_Node1 = new SingleNode(new DataType(),false);
+		TerminalNode dataType_Node1 = new TerminalNode(new DataType(),false);
 
-		StatementNode assignment_Node2=new StatementNode(()->GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(hasSemicolon),true);
+		NonTerminalNode assignment_Node2=new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(hasSemicolon),true);
 		
 
 		root.addChild(dataType_Node1.Id);

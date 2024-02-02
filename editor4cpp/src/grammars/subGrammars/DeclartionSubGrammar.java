@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Punctuations.CommaType;
 import entities.TokenTypes.Punctuations.SemicolonType;
@@ -33,16 +33,16 @@ public class DeclartionSubGrammar extends Grammar {
 	private void initGrammar(boolean hasSemicolon) {
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode identifier_Node1 = new SingleNode(new Identifier(""), true);
+		TerminalNode identifier_Node1 = new TerminalNode(new Identifier(""), true);
 
-		SingleNode semicolon_Node2 = new SingleNode(new SemicolonType(), false);
+		TerminalNode semicolon_Node2 = new TerminalNode(new SemicolonType(), false);
 
-		SingleNode comma_Node3 = new SingleNode(new CommaType(), false);
+		TerminalNode comma_Node3 = new TerminalNode(new CommaType(), false);
 
-		StatementNode equalStatement_Node4 = new StatementNode(
+		NonTerminalNode equalStatement_Node4 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfEqualSubGrammar(), true);
 
-		StatementNode declartionSubGrammar_Node5 = new StatementNode(
+		NonTerminalNode declartionSubGrammar_Node5 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(false), true);
 
 		// -----------------------------------------------------------------

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.ObjectIdentifier;
 import entities.TokenTypes.Keywords.ReturnKeyword;
 import entities.TokenTypes.Punctuations.SemicolonType;
@@ -24,15 +24,15 @@ public class ReturnGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode return_Node1 = new SingleNode(new ReturnKeyword(), false);
+		TerminalNode return_Node1 = new TerminalNode(new ReturnKeyword(), false);
 
-		StatementNode topLevel_Node2 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfFunctionCallGrammar(),false);
+		NonTerminalNode topLevel_Node2 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfFunctionCallGrammar(),false);
 
-		SingleNode objectIdentifier_Node3 = new SingleNode(new ObjectIdentifier(), false);
+		TerminalNode objectIdentifier_Node3 = new TerminalNode(new ObjectIdentifier(), false);
 
-		StatementNode pointerEqualStatement_Node4 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),false);
+		NonTerminalNode pointerEqualStatement_Node4 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),false);
 
-		SingleNode semicolon_Node5 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node5 = new TerminalNode(new SemicolonType(), true);
 		// -----------------------------------------------------------------
 		root.addChild(return_Node1.Id);
 		

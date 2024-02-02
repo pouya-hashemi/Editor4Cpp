@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import Dtos.ParsingObject;
 import Dtos.StatementParsingResult;
+import constants.GrammarLibrary;
 import entities.*;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
@@ -14,26 +15,26 @@ import enums.GrammarStatus;
 import interfaces.HasType;
 
 public class ErrorDetecter {
-	public List<ParsingObject> currentGrammars = null;
-	public List<ParsingObject> previousGrammars = null;
+	private List<ParsingObject> currentExpressions = null;
+	private List<ParsingObject> previousExpressions = null;
 
-	public StatementParsingResult Parse(StatementNode statementNode, Token token) {
+	public StatementParsingResult Parse( Token token) {
 
-		if (currentGrammars == null)
-			currentGrammars = statementNode.cloneParsingObject();
+		if (currentExpressions == null)
+			currentExpressions = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false).cloneParsingObject();
 
-		var previousGrammars = new ArrayList<ParsingObject>();
-		for (ParsingObject po : currentGrammars) {
-			previousGrammars.add(po.clone());
+		previousExpressions = new ArrayList<ParsingObject>();
+		for (ParsingObject po : currentExpressions) {
+			previousExpressions.add(po.clone());
 		}
 
-		var maxProgress = previousGrammars.stream().mapToInt(ParsingObject::getProgressCounter).max().orElse(0);
+		var maxProgress = previousExpressions.stream().mapToInt(ParsingObject::getProgressCounter).max().orElse(0);
 
 		var deleteList = new ArrayList<ParsingObject>();
-		String finalError = null;
-		for (int i = 0; i < currentGrammars.size(); i++) {
+		List<String> finalError = new ArrayList<String>();
+		for (int i = 0; i < currentExpressions.size(); i++) {
 
-			var gObj = currentGrammars.get(i);
+			var gObj = currentExpressions.get(i);
 
 			var currentNode = gObj.grammar.getGrammarNodeById(gObj.currentNodeId);
 
@@ -46,31 +47,19 @@ public class ErrorDetecter {
 				deleteList.add(gObj);
 				continue;
 			}
-			String childError = null;
+			List<String> childErrors = new ArrayList<String>();
 			boolean passed = false;
 			for (UUID childId : currentNode.getChildIds()) {
 				var child = gObj.grammar.getGrammarNodeById(childId);
 
 				if (child == null) {
-					childError = "No child found.";
+					childErrors.add("No child found.");
 					continue;
 				}
 
-				if (child.getClass() == SingleNode.class) {
+				if (child.getClass() == TerminalNode.class) {
 
-					if (((SingleNode) child).tokenType.getClass().isInstance(token.tokenType)) {
-
-//						if(token.tokenType instanceof HasType) {
-//							if(gObj.dataType ==null && (token.tokenType instanceof DataType|| token.tokenType instanceof Identifier )) {
-//								gObj.dataType=((HasType)token.tokenType).getDataType();
-//							}
-//							else if(gObj.dataType !=null) {
-//								if(!gObj.dataType.canBe(((HasType)token.tokenType).getDataType())) {
-//									childError = ((SingleNode) child).tokenType.getError()+" " +gObj.dataType.getError();
-//									continue;
-//								}
-//							}
-//						}
+					if (((TerminalNode) child).tokenType.getClass().isInstance(token.tokenType)) {
 
 						if (token.tokenType instanceof HasType) {
 							if ((token.tokenType instanceof DataType)) {
@@ -85,15 +74,15 @@ public class ErrorDetecter {
 									if (token.absolutePrevToken != null
 											&& token.absolutePrevToken.tokenType instanceof EqualType) {
 										if (!gObj.dataType.canBe(((HasType) token.tokenType).getDataType())) {
-											childError = ((SingleNode) child).tokenType.getError() + " "
-													+ gObj.dataType.getError();
+											childErrors.add(((TerminalNode) child).tokenType.getError() + " "
+													+ gObj.dataType.getError());
 											continue;
 										}
 									}
 								} else {
 									if (!gObj.dataType.canBe(((HasType) token.tokenType).getDataType())) {
-										childError = ((SingleNode) child).tokenType.getError() + " "
-												+ gObj.dataType.getError();
+										childErrors.add(((TerminalNode) child).tokenType.getError() + " "
+												+ gObj.dataType.getError());
 										continue;
 									}
 								}
@@ -115,11 +104,11 @@ public class ErrorDetecter {
 							break;
 						}
 					} else {
-						childError = ((SingleNode) child).tokenType.getError();
+						childErrors.add(((TerminalNode) child).tokenType.getError());
 						continue;
 					}
 
-				} else if (child.getClass() == StatementNode.class) {
+				} else if (child.getClass() == NonTerminalNode.class) {
 					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
 					if (!deleteList.contains(gObj))
 						deleteList.add(gObj);
@@ -131,24 +120,28 @@ public class ErrorDetecter {
 
 			}
 			if (!passed) {
-				if (gObj.getProgressCounter() >= maxProgress)
-					finalError = childError;
+				if (gObj.getProgressCounter() >= maxProgress && childErrors != null && !childErrors.isEmpty()) {
+					for (String childError : childErrors)
+						if (childError != null && childError.length()>0&&!finalError.contains(childError))
+							finalError.add(childError);
+				}
+
 				gObj.grammarStatus = GrammarStatus.failed;
 				deleteList.add(gObj);
 			}
 
 		}
 
-		currentGrammars.removeAll(deleteList);
+		currentExpressions.removeAll(deleteList);
 		var result = new StatementParsingResult();
 
-		if (currentGrammars.isEmpty()) {
-			if (previousGrammars.stream().anyMatch(a -> a.grammarStatus == GrammarStatus.isEnded)) {
+		if (currentExpressions.isEmpty()) {
+			if (previousExpressions.stream().anyMatch(a -> a.grammarStatus == GrammarStatus.isEnded)) {
 				result.grammarStatus = GrammarStatus.refresh_Retry;
 			} else {
 				result.grammarStatus = GrammarStatus.failed;
 
-				result.error = finalError;
+				result.error = String.join(" - ", finalError);
 			}
 		} else {
 			result.grammarStatus = GrammarStatus.processing;
@@ -161,18 +154,18 @@ public class ErrorDetecter {
 
 		var childNode = gObj.grammar.getGrammarNodeById(childId);
 
-		if (childNode.getClass() == SingleNode.class) {
+		if (childNode.getClass() == TerminalNode.class) {
 
 			return;
 		}
 
 		var nextNodes = childNode.getChildIds();
 
-		for (ParsingObject parsingObject : ((StatementNode) childNode).cloneParsingObject()) {
+		for (ParsingObject parsingObject : ((NonTerminalNode) childNode).cloneParsingObject()) {
 
 			var newParsingObj = gObj.clone();
 
-			List<GrammarNode> nodesToAdd = parsingObject.grammar.getPureNodes();
+			List<GrammarNode> nodesToAdd = parsingObject.grammar.getNodesExceptRoot();
 
 			nodesToAdd.stream().filter(a -> a.canBeEnd).forEach(o -> {
 				o.addChild(nextNodes);
@@ -190,13 +183,13 @@ public class ErrorDetecter {
 			currentNode.get().removeChild(childId);
 			currentNode.get()
 					.addChild(parsingObject.grammar.getGrammarNodeById(parsingObject.grammar.rootNodeId).getChildIds());
-			currentGrammars.add(newParsingObj);
+			currentExpressions.add(newParsingObj);
 		}
 
 	}
 
 	public void refresh() {
-		currentGrammars = null;
-		previousGrammars = null;
+		currentExpressions = null;
+		previousExpressions = null;
 	}
 }

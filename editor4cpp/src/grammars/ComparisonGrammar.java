@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Literal;
 import entities.TokenTypes.Operations.DoubleComparisonOperator;
@@ -29,31 +29,31 @@ public class ComparisonGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
 
-		SingleNode openParenthesis_Node1 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node1 = new TerminalNode(new OpenParenthesisType(), false);
 
-		SingleNode logicalNot_Node2 = new SingleNode(new LogicalNotOperator(), false);
+		TerminalNode logicalNot_Node2 = new TerminalNode(new LogicalNotOperator(), false);
 
-		SingleNode identifier_Node3 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node3 = new TerminalNode(new Identifier(""), false);
 
-		SingleNode literal_Node4 = new SingleNode(new Literal(), false);
+		TerminalNode literal_Node4 = new TerminalNode(new Literal(), false);
 
-		SingleNode singleComparisonOperator_Node5 = new SingleNode(new SingleComparisonOperator(), false);
+		TerminalNode singleComparisonOperator_Node5 = new TerminalNode(new SingleComparisonOperator(), false);
 
-		SingleNode firstDoubleComparisonOperator_Node6 = new SingleNode(new DoubleComparisonOperator(), false);
+		TerminalNode firstDoubleComparisonOperator_Node6 = new TerminalNode(new DoubleComparisonOperator(), false);
 
-		SingleNode secondDoubleComparisonOperator_Node7 = new SingleNode(new DoubleComparisonOperator(), false);
+		TerminalNode secondDoubleComparisonOperator_Node7 = new TerminalNode(new DoubleComparisonOperator(), false);
 
-		SingleNode identifier_Node8 = new SingleNode(new Identifier(""), true);
+		TerminalNode identifier_Node8 = new TerminalNode(new Identifier(""), true);
 
-		SingleNode literal_Node9 = new SingleNode(new Literal(), true);
+		TerminalNode literal_Node9 = new TerminalNode(new Literal(), true);
 
-		SingleNode logicalOperator_Node10 = new SingleNode(new LogicalOperator(), false);
+		TerminalNode logicalOperator_Node10 = new TerminalNode(new LogicalOperator(), false);
 
-		SingleNode closeParenthesis_Node11 = new SingleNode(new CloseParenthesisType(), true,true);
+		TerminalNode closeParenthesis_Node11 = new TerminalNode(new CloseParenthesisType(), true);
 
-		SingleNode secondLogicalOperator_Node12 = new SingleNode(new LogicalOperator(), false);
+		TerminalNode secondLogicalOperator_Node12 = new TerminalNode(new LogicalOperator(), false);
 		
-		StatementNode comparison_Node13 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfComparison(), false);
+		NonTerminalNode comparison_Node13 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfComparison(), false);
 
 		// -----------------------------------------------------------------
 		root.addChild(openParenthesis_Node1.Id);

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Punctuations.SemicolonType;
@@ -24,15 +24,15 @@ public class PointerDeclarationGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode dataType_Node1 = new SingleNode(new DataType(), false);
+		TerminalNode dataType_Node1 = new TerminalNode(new DataType(), false);
 
-		SingleNode star_Node2 = new SingleNode(new StarType(), false);
+		TerminalNode star_Node2 = new TerminalNode(new StarType(), false);
 		
-		SingleNode identifier_Node3 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node3 = new TerminalNode(new Identifier(""), false);
 
-		StatementNode pointerEqualStatement_Node4 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfPointerEqualSubGrammar(),false);
+		NonTerminalNode pointerEqualStatement_Node4 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfPointerEqualSubGrammar(),false);
 		
-		SingleNode semicolon_Node5 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node5 = new TerminalNode(new SemicolonType(), true);
 
 		// -----------------------------------------------------------------
 		root.addChild(dataType_Node1.Id);

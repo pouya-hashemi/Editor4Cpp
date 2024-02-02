@@ -5,33 +5,37 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import constants.GrammarLibrary;
-import entities.StatementNode;
+import entities.NonTerminalNode;
 import entities.Token;
 import entities.TokenTypes.Comment;
 import entities.TokenTypes.WhiteSpace;
 import enums.GrammarStatus;
+import interfaces.ITokenizer;
 
-public class Tokenizer {
+public class Tokenizer implements ITokenizer {
 	private int tabCounter;
 	private int currentTabNumber;
 
 	public List<Token> tokenizeString(String text, boolean formatText) {
-		text = text.replace("\r\n", "\r");
 		List<Token> tokens = new ArrayList<Token>();
 		TokenHighlighter tokenHighlighter = new TokenHighlighter();
 		TokenIdentifier tokenIdentifier = new TokenIdentifier();
 		ErrorDetecter errorDetecter = new ErrorDetecter();
-		StatementNode statementNode = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
+		
 		List<Token> reserveTokens = new ArrayList<Token>();
+		
 		boolean hasError = false;
-		String regex = "\\b\\w+\\b|\\s|\\n|[^\\w\\s]";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(text);
 		Token prevToken = null;
 		tabCounter = 0;
 		int openParenthesisCount = 0;
 		currentTabNumber = 0;
 		boolean equalBracket = false;
+		
+		text = text.replace("\r\n", "\r");
+		String regex = "\\b\\w+\\b|\\s|\\n|[^\\w\\s]";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(text);
+	
 
 		if (matcher.find()) {
 
@@ -225,7 +229,7 @@ public class Tokenizer {
 						if (!(rToken.tokenType instanceof WhiteSpace) && !hasError
 								&& !(rToken.tokenType instanceof Comment)) {
 
-							var result = errorDetecter.Parse(statementNode, rToken);
+							var result = errorDetecter.Parse( rToken);
 							if (result.grammarStatus == GrammarStatus.failed) {
 								errorDetecter = null;
 								errorDetecter = new ErrorDetecter();
@@ -237,7 +241,7 @@ public class Tokenizer {
 								errorDetecter = null;
 								errorDetecter = new ErrorDetecter();
 
-								var secondResult = errorDetecter.Parse(statementNode, rToken);
+								var secondResult = errorDetecter.Parse( rToken);
 
 								if (secondResult.grammarStatus == GrammarStatus.failed) {
 									errorDetecter = null;
@@ -272,7 +276,7 @@ public class Tokenizer {
 				rToken = tokenHighlighter.HighlightToken(rToken);
 				if (!(rToken.tokenType instanceof WhiteSpace) && !hasError && !(rToken.tokenType instanceof Comment)) {
 
-					var result = errorDetecter.Parse(statementNode, rToken);
+					var result = errorDetecter.Parse( rToken);
 					if (result.grammarStatus == GrammarStatus.failed) {
 						errorDetecter = null;
 						errorDetecter = new ErrorDetecter();
@@ -284,7 +288,7 @@ public class Tokenizer {
 						errorDetecter = null;
 						errorDetecter = new ErrorDetecter();
 
-						var secondResult = errorDetecter.Parse(statementNode, rToken);
+						var secondResult = errorDetecter.Parse( rToken);
 
 						if (secondResult.grammarStatus == GrammarStatus.failed) {
 							errorDetecter = null;
@@ -307,7 +311,7 @@ public class Tokenizer {
 			token = tokenIdentifier.identify(token);
 			token = tokenHighlighter.HighlightToken(token);
 			if (!(token.tokenType instanceof WhiteSpace) && !hasError) {
-				var result = errorDetecter.Parse(statementNode, token);
+				var result = errorDetecter.Parse( token);
 				if (result.grammarStatus == GrammarStatus.failed) {
 					errorDetecter = null;
 					errorDetecter = new ErrorDetecter();
@@ -319,7 +323,7 @@ public class Tokenizer {
 					errorDetecter = null;
 					errorDetecter = new ErrorDetecter();
 
-					var secondResult = errorDetecter.Parse(statementNode, token);
+					var secondResult = errorDetecter.Parse( token);
 
 					if (secondResult.grammarStatus == GrammarStatus.failed) {
 						errorDetecter = null;

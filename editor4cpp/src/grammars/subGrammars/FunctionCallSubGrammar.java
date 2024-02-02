@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.FunctionIdentifier;
 import entities.TokenTypes.Punctuations.CloseParenthesisType;
 import entities.TokenTypes.Punctuations.CommaType;
@@ -26,15 +26,15 @@ public class FunctionCallSubGrammar  extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode funcIdentifier_Node1 = new SingleNode(new FunctionIdentifier(), false);
+		TerminalNode funcIdentifier_Node1 = new TerminalNode(new FunctionIdentifier(), false);
 
-		SingleNode openParenthesis_Node2 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node2 = new TerminalNode(new OpenParenthesisType(), false);
 
-		StatementNode topLevel_Node3 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), false);
+		NonTerminalNode topLevel_Node3 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), false);
 
-		SingleNode comma_Node4 = new SingleNode(new CommaType(), false);
+		TerminalNode comma_Node4 = new TerminalNode(new CommaType(), false);
 		
-		SingleNode closeParenthesis_Node5 = new SingleNode(new CloseParenthesisType(), true);
+		TerminalNode closeParenthesis_Node5 = new TerminalNode(new CloseParenthesisType(), true);
 		
 //		SingleNode unknown_Node6 = new SingleNode(new UnknownType(), false);
 //		SingleNode colon_Node7 = new SingleNode(new ColonType(), false);

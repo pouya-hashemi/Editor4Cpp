@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Operations.DoubleOperandOperator;
 import entities.TokenTypes.Operations.SingleOperandOperator;
 import entities.TokenTypes.Punctuations.CloseParenthesisType;
@@ -22,17 +22,17 @@ public class MathematikOperationTopLayerSubGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode openParenthesis_Node1 = new SingleNode(new OpenParenthesisType(), false);
-		StatementNode mathOp_Node2 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationSubGrammar(),true);
-		StatementNode mathToplayer_Node3 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),false);
-		SingleNode closeParenthesis_Node4 = new SingleNode(new CloseParenthesisType(), true);
-		SingleNode firstSingleOperator_Node5 = new SingleNode(new SingleOperandOperator(), false);
-		SingleNode secondSingleOperator_Node6 = new SingleNode(new SingleOperandOperator(), true);
-		SingleNode doubleOperator_Node7 = new SingleNode(new DoubleOperandOperator(), false);
-		StatementNode mathTopLayer_Node8 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),true);
+		TerminalNode openParenthesis_Node1 = new TerminalNode(new OpenParenthesisType(), false);
+		NonTerminalNode mathOp_Node2 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationSubGrammar(),true);
+		NonTerminalNode mathToplayer_Node3 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),false);
+		TerminalNode closeParenthesis_Node4 = new TerminalNode(new CloseParenthesisType(), true);
+		TerminalNode firstSingleOperator_Node5 = new TerminalNode(new SingleOperandOperator(), false);
+		TerminalNode secondSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), true);
+		TerminalNode doubleOperator_Node7 = new TerminalNode(new DoubleOperandOperator(), false);
+		NonTerminalNode mathTopLayer_Node8 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),true);
 		
-		SingleNode firstPreSingleOperator_Node9 = new SingleNode(new SingleOperandOperator(), false);
-		SingleNode secondPreSingleOperator_Node10 = new SingleNode(new SingleOperandOperator(), false);
+		TerminalNode firstPreSingleOperator_Node9 = new TerminalNode(new SingleOperandOperator(), false);
+		TerminalNode secondPreSingleOperator_Node10 = new TerminalNode(new SingleOperandOperator(), false);
 		
 
 		// -----------------------------------------------------------------

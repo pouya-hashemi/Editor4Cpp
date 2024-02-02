@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Punctuations.SemicolonType;
 
 
@@ -22,9 +22,9 @@ public class FunctionCallGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		StatementNode functionSub_Node1 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), false);
+		NonTerminalNode functionSub_Node1 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), false);
 
-		SingleNode semicolon_Node2 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node2 = new TerminalNode(new SemicolonType(), true);
 
 		
 

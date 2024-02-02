@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.NumericLiteral;
@@ -28,31 +28,31 @@ public class ArrayGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode dataType_Node1 = new SingleNode(new DataType(), false);
+		TerminalNode dataType_Node1 = new TerminalNode(new DataType(), false);
 
-		SingleNode identifier_Node2 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node2 = new TerminalNode(new Identifier(""), false);
 		
-		SingleNode openBracketForOmit_Node3 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracketForOmit_Node3 = new TerminalNode(new OpenBracket(), false);
 		
-		SingleNode openBracket_Node4 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracket_Node4 = new TerminalNode(new OpenBracket(), false);
 		
-		SingleNode numLiteralForOmit_Node5 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numLiteralForOmit_Node5 = new TerminalNode(new NumericLiteral(), false);
 		
-		SingleNode closeBracketForOmit_Node6 = new SingleNode(new CloseBracket(), false);
+		TerminalNode closeBracketForOmit_Node6 = new TerminalNode(new CloseBracket(), false);
 		
-		SingleNode closeBracket_Node7 = new SingleNode(new CloseBracket(), false);
+		TerminalNode closeBracket_Node7 = new TerminalNode(new CloseBracket(), false);
 		
-		SingleNode openBracket_Node8 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracket_Node8 = new TerminalNode(new OpenBracket(), false);
 		
-		SingleNode numLiteral_Node9 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numLiteral_Node9 = new TerminalNode(new NumericLiteral(), false);
 		
-		SingleNode closeBracket_Node10 = new SingleNode(new CloseBracket(), false);
+		TerminalNode closeBracket_Node10 = new TerminalNode(new CloseBracket(), false);
 		
-		SingleNode Equal_Node11 = new SingleNode(new EqualType(), false);
+		TerminalNode Equal_Node11 = new TerminalNode(new EqualType(), false);
 
-		StatementNode arrayValue_Node12 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfArrayValueSubGrammar(),false);
+		NonTerminalNode arrayValue_Node12 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfArrayValueSubGrammar(),false);
 
-		SingleNode semicolon_Node13 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node13 = new TerminalNode(new SemicolonType(), true);
 
 		
 

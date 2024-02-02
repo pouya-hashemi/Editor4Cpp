@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.NumericLiteral;
 import entities.TokenTypes.Operations.SingleOperandOperator;
@@ -39,34 +39,34 @@ public class AssignmentGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
 
-		SingleNode identifier_Node1 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node1 = new TerminalNode(new Identifier(""), false);
 
-		StatementNode equalStatement_Node2 = new StatementNode(
+		NonTerminalNode equalStatement_Node2 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfEqualSubGrammar(), true);
 
-		SingleNode semicolon_Node3 = new SingleNode(new SemicolonType(), false);
+		TerminalNode semicolon_Node3 = new TerminalNode(new SemicolonType(), false);
 
-		SingleNode firstSingleOperator_Node4 = new SingleNode(new SingleOperandOperator(), false);
+		TerminalNode firstSingleOperator_Node4 = new TerminalNode(new SingleOperandOperator(), false);
 
-		SingleNode secondSingleOperator_Node5 = new SingleNode(new SingleOperandOperator(), true);
+		TerminalNode secondSingleOperator_Node5 = new TerminalNode(new SingleOperandOperator(), true);
 
-		SingleNode firstPreSingleOperator_Node6 = new SingleNode(new SingleOperandOperator(), false);
+		TerminalNode firstPreSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
 
-		SingleNode secondPreSingleOperator_Node7 = new SingleNode(new SingleOperandOperator(), false);
+		TerminalNode secondPreSingleOperator_Node7 = new TerminalNode(new SingleOperandOperator(), false);
 
-		SingleNode identifier_Node8 = new SingleNode(new Identifier(""), true);
+		TerminalNode identifier_Node8 = new TerminalNode(new Identifier(""), true);
 
-		SingleNode openBracket_Node9 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracket_Node9 = new TerminalNode(new OpenBracket(), false);
 
-		SingleNode numericLiteral_Node10 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numericLiteral_Node10 = new TerminalNode(new NumericLiteral(), false);
 
-		SingleNode closeBracket_Node11 = new SingleNode(new CloseBracket(), false);
+		TerminalNode closeBracket_Node11 = new TerminalNode(new CloseBracket(), false);
 
-		SingleNode openBracket_Node12 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracket_Node12 = new TerminalNode(new OpenBracket(), false);
 
-		SingleNode numericLiteral_Node13 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numericLiteral_Node13 = new TerminalNode(new NumericLiteral(), false);
 
-		SingleNode closeBracket_Node14 = new SingleNode(new CloseBracket(), true);
+		TerminalNode closeBracket_Node14 = new TerminalNode(new CloseBracket(), true);
 
 		// -----------------------------------------------------------------
 		root.addChild(identifier_Node1.Id);

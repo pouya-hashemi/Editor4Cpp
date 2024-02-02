@@ -27,7 +27,7 @@ public class Grammar implements Cloneable  {
 	}
 
 
-	public List<GrammarNode> getPureNodes() {
+	public List<GrammarNode> getNodesExceptRoot() {
 		var nodes = new ArrayList<GrammarNode>();
 		for (GrammarNode node : this.grammarNodes.stream().filter(a -> a.Id != this.rootNodeId)
 				.collect(Collectors.toList())) {

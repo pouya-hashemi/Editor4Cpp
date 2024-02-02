@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Keywords.DoKeyword;
 import entities.TokenTypes.Keywords.WhileKeyword;
 import entities.TokenTypes.Punctuations.CloseCurlyBracket;
@@ -29,25 +29,25 @@ public class DoWhileGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode do_Node1 = new SingleNode(new DoKeyword(), false);
+		TerminalNode do_Node1 = new TerminalNode(new DoKeyword(), false);
 
-		StatementNode singleStatementForIf_Node2 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
+		NonTerminalNode singleStatementForIf_Node2 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 		
-		SingleNode openCurlyBracketForIf_Node3 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracketForIf_Node3 = new TerminalNode(new OpenCurlyBracket(), false);
 		
-		StatementNode multiStatementForIf_Node4 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
+		NonTerminalNode multiStatementForIf_Node4 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 
-		SingleNode closeCurlyBracketForIf_Node5 = new SingleNode(new CloseCurlyBracket(), false);
+		TerminalNode closeCurlyBracketForIf_Node5 = new TerminalNode(new CloseCurlyBracket(), false);
 		
-		SingleNode while_Node6 = new SingleNode(new WhileKeyword(), false);
+		TerminalNode while_Node6 = new TerminalNode(new WhileKeyword(), false);
 		
-		SingleNode openParenthesis_Node7 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node7 = new TerminalNode(new OpenParenthesisType(), false);
 
-		StatementNode comparesionStatement_Node8 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfComparison(),false);
+		NonTerminalNode comparesionStatement_Node8 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfComparison(),false);
 
-		SingleNode closeParenthesis_Node9 = new SingleNode(new CloseParenthesisType(), false);
+		TerminalNode closeParenthesis_Node9 = new TerminalNode(new CloseParenthesisType(), false);
 		
-		SingleNode semicolon_Node10 = new SingleNode(new SemicolonType(), true,true);
+		TerminalNode semicolon_Node10 = new TerminalNode(new SemicolonType(), true);
 
 		
 		

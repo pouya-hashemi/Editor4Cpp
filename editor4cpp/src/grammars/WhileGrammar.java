@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Keywords.WhileKeyword;
 import entities.TokenTypes.Punctuations.CloseCurlyBracket;
 import entities.TokenTypes.Punctuations.CloseParenthesisType;
@@ -28,21 +28,21 @@ public class WhileGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode while_Node1 = new SingleNode(new WhileKeyword(), false);
+		TerminalNode while_Node1 = new TerminalNode(new WhileKeyword(), false);
 
-		SingleNode openParenthesis_Node2 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node2 = new TerminalNode(new OpenParenthesisType(), false);
 
-		StatementNode comparesionStatement_Node3 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfComparison(),false);
+		NonTerminalNode comparesionStatement_Node3 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfComparison(),false);
 
-		SingleNode closeParenthesis_Node4 = new SingleNode(new CloseParenthesisType(), false,false);
+		TerminalNode closeParenthesis_Node4 = new TerminalNode(new CloseParenthesisType(), false);
 
-		SingleNode openCurlyBracket_Node5 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node5 = new TerminalNode(new OpenCurlyBracket(), false);
 
-		StatementNode singleStatement_Node6 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
+		NonTerminalNode singleStatement_Node6 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
 
-		StatementNode multiStatement_Node7 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
+		NonTerminalNode multiStatement_Node7 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 
-		SingleNode closeCurlyBracket_Node8 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracket_Node8 = new TerminalNode(new CloseCurlyBracket(), true);
 		
 
 		// -----------------------------------------------------------------

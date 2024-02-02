@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.FloatingPointLiteral;
 import entities.TokenTypes.NumericLiteral;
 import entities.TokenTypes.TextLiteral;
@@ -30,27 +30,27 @@ public class ArrayValueSubGrammar  extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
 		
-		SingleNode openCurlyBracket_Node1 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node1 = new TerminalNode(new OpenCurlyBracket(), false);
 		
-		StatementNode arrayValue_Node2 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfArrayValueSubGrammar(), false);
+		NonTerminalNode arrayValue_Node2 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfArrayValueSubGrammar(), false);
 
-		SingleNode textLiteral_Node3 = new SingleNode(new TextLiteral(), false);
+		TerminalNode textLiteral_Node3 = new TerminalNode(new TextLiteral(), false);
 
-		SingleNode numericLiteral_Node4 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numericLiteral_Node4 = new TerminalNode(new NumericLiteral(), false);
 
-		SingleNode floatLiteral_Node5 = new SingleNode(new FloatingPointLiteral(), false);
+		TerminalNode floatLiteral_Node5 = new TerminalNode(new FloatingPointLiteral(), false);
 
-		SingleNode boolLiteral_Node6 = new SingleNode(new BoolLiteral(), false);
+		TerminalNode boolLiteral_Node6 = new TerminalNode(new BoolLiteral(), false);
 		
-		SingleNode commaForLiteral_Node7 = new SingleNode(new CommaType(), false);
+		TerminalNode commaForLiteral_Node7 = new TerminalNode(new CommaType(), false);
 		
-		SingleNode commaForArrayValue_Node8 = new SingleNode(new CommaType(), false);
+		TerminalNode commaForArrayValue_Node8 = new TerminalNode(new CommaType(), false);
 		
-		SingleNode closeCurlyBracket_Node9 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracket_Node9 = new TerminalNode(new CloseCurlyBracket(), true);
 		
-		SingleNode secondFloatLiteral_Node10 = new SingleNode(new FloatingPointLiteral(), false);
+		TerminalNode secondFloatLiteral_Node10 = new TerminalNode(new FloatingPointLiteral(), false);
 		
-		SingleNode ThirdFloatLiteral_Node11 = new SingleNode(new FloatingPointLiteral(), false);
+		TerminalNode ThirdFloatLiteral_Node11 = new TerminalNode(new FloatingPointLiteral(), false);
 
 		// -----------------------------------------------------------------
 		root.addChild(openCurlyBracket_Node1.Id);

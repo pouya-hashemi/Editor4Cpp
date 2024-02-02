@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.FloatingPointLiteral;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.NumericLiteral;
@@ -35,27 +35,27 @@ public class MathematikOperationSubGrammar extends Grammar {
 //		SingleNode firstSingleOperator_Node1 = new SingleNode(new SingleOperandOperator(), false);
 //		SingleNode secondSingleOperator_Node2 = new SingleNode(new SingleOperandOperator(), false);
 
-		SingleNode textLiteral_Node1 = new SingleNode(new TextLiteral(), true);
-		SingleNode boolLiteral_Node2 = new SingleNode(new BoolLiteral(), true);
-		SingleNode floatLiteral_Node3 = new SingleNode(new FloatingPointLiteral(), false);
-		SingleNode numericLiteral_Node4 = new SingleNode(new NumericLiteral(), true);
-		SingleNode identifier_Node5 = new SingleNode(new Identifier(""), true);
-		SingleNode firstSingleOperator_Node6 = new SingleNode(new SingleOperandOperator(), false);
-		SingleNode secondSingleOperator_Node7 = new SingleNode(new SingleOperandOperator(), true);
-		SingleNode doubleOperator_Node8 = new SingleNode(new DoubleOperandOperator(), false);
-		SingleNode secondFloatingPoint_Node9 = new SingleNode(new FloatingPointLiteral(), false);
-		SingleNode thirdFloatingPoint_Node10 = new SingleNode(new FloatingPointLiteral(), true);
-		StatementNode rightAssignment_Node11 = new StatementNode(
+		TerminalNode textLiteral_Node1 = new TerminalNode(new TextLiteral(), true);
+		TerminalNode boolLiteral_Node2 = new TerminalNode(new BoolLiteral(), true);
+		TerminalNode floatLiteral_Node3 = new TerminalNode(new FloatingPointLiteral(), false);
+		TerminalNode numericLiteral_Node4 = new TerminalNode(new NumericLiteral(), true);
+		TerminalNode identifier_Node5 = new TerminalNode(new Identifier(""), true);
+		TerminalNode firstSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
+		TerminalNode secondSingleOperator_Node7 = new TerminalNode(new SingleOperandOperator(), true);
+		TerminalNode doubleOperator_Node8 = new TerminalNode(new DoubleOperandOperator(), false);
+		TerminalNode secondFloatingPoint_Node9 = new TerminalNode(new FloatingPointLiteral(), false);
+		TerminalNode thirdFloatingPoint_Node10 = new TerminalNode(new FloatingPointLiteral(), true);
+		NonTerminalNode rightAssignment_Node11 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), true);
 		
-		StatementNode functionCall_Node12 = new StatementNode(
+		NonTerminalNode functionCall_Node12 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), true);
 		
-		SingleNode openBracket_Node13 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracket_Node13 = new TerminalNode(new OpenBracket(), false);
 
-		SingleNode numericLiteral_Node14 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numericLiteral_Node14 = new TerminalNode(new NumericLiteral(), false);
 
-		SingleNode closeBracket_Node15 = new SingleNode(new CloseBracket(), true);
+		TerminalNode closeBracket_Node15 = new TerminalNode(new CloseBracket(), true);
 
 		// -----------------------------------------------------------------
 //		root.addChild(firstSingleOperator_Node1.Id);

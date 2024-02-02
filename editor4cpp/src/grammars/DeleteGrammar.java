@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import entities.GrammarNode;
-import entities.SingleNode;
+import entities.TerminalNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Keywords.DeleteKeyword;
 import entities.TokenTypes.Punctuations.CloseBracket;
@@ -25,15 +25,15 @@ public class DeleteGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode delete_Node1 = new SingleNode(new DeleteKeyword(), false);
+		TerminalNode delete_Node1 = new TerminalNode(new DeleteKeyword(), false);
 		
-		SingleNode openBracket_Node2 = new SingleNode(new OpenBracket(), false);
+		TerminalNode openBracket_Node2 = new TerminalNode(new OpenBracket(), false);
 		
-		SingleNode closeBracket_Node3 = new SingleNode(new CloseBracket(), false);
+		TerminalNode closeBracket_Node3 = new TerminalNode(new CloseBracket(), false);
 		
-		SingleNode identifier_Node4 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node4 = new TerminalNode(new Identifier(""), false);
 		
-		SingleNode semicolon_Node5 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node5 = new TerminalNode(new SemicolonType(), true);
 
 
 

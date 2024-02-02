@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Keywords.NewKeyword;
@@ -30,26 +30,26 @@ public class PointerEqualSubGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode equal_Node1 = new SingleNode(new EqualType(), false);
+		TerminalNode equal_Node1 = new TerminalNode(new EqualType(), false);
 
-		SingleNode ampersand_Node2 = new SingleNode(new AmpersandType(), false);
+		TerminalNode ampersand_Node2 = new TerminalNode(new AmpersandType(), false);
 		
-		SingleNode newKeyword_Node3 = new SingleNode(new NewKeyword(), false);
+		TerminalNode newKeyword_Node3 = new TerminalNode(new NewKeyword(), false);
 		
-		SingleNode nullptrKeyword_Node4 = new SingleNode(new NullptrKeyword(), true);
+		TerminalNode nullptrKeyword_Node4 = new TerminalNode(new NullptrKeyword(), true);
 		
-		SingleNode nullKeyword_Node5 = new SingleNode(new NullKeyword(), true);
+		TerminalNode nullKeyword_Node5 = new TerminalNode(new NullKeyword(), true);
 		
-		SingleNode identifier_Node6 = new SingleNode(new Identifier(""), true);
+		TerminalNode identifier_Node6 = new TerminalNode(new Identifier(""), true);
 		
-		SingleNode dataType_Node7 = new SingleNode(new DataType(), false);
+		TerminalNode dataType_Node7 = new TerminalNode(new DataType(), false);
 		
-		SingleNode openParenthesis_Node8 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node8 = new TerminalNode(new OpenParenthesisType(), false);
 
-		StatementNode mathTopLayer_Node9 = new StatementNode(
+		NonTerminalNode mathTopLayer_Node9 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), false);
 		
-		SingleNode closeParenthesis_Node10 = new SingleNode(new CloseParenthesisType(), true);
+		TerminalNode closeParenthesis_Node10 = new TerminalNode(new CloseParenthesisType(), true);
 		
 
 

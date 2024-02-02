@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Keywords.BreakKeyword;
 import entities.TokenTypes.Keywords.DefaultKeyword;
@@ -31,38 +31,38 @@ public class SwitchGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode switch_Node1 = new SingleNode(new SwitchKeyword(), false);
+		TerminalNode switch_Node1 = new TerminalNode(new SwitchKeyword(), false);
 
-		SingleNode openParenthesis_Node2 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node2 = new TerminalNode(new OpenParenthesisType(), false);
 
-		SingleNode identifier_Node3 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node3 = new TerminalNode(new Identifier(""), false);
 
-		SingleNode closeParenthesis_Node4 = new SingleNode(new CloseParenthesisType(), false);
+		TerminalNode closeParenthesis_Node4 = new TerminalNode(new CloseParenthesisType(), false);
 		
-		SingleNode openCurlyBracket_Node5 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node5 = new TerminalNode(new OpenCurlyBracket(), false);
 
-		StatementNode caseStatement_Node6 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfCaseSubGrammar(), false);
+		NonTerminalNode caseStatement_Node6 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfCaseSubGrammar(), false);
 
-		SingleNode default_Node7 = new SingleNode(new DefaultKeyword(), false);
+		TerminalNode default_Node7 = new TerminalNode(new DefaultKeyword(), false);
 		
-		SingleNode colon_Node8= new SingleNode(new ColonType(), false);
+		TerminalNode colon_Node8= new TerminalNode(new ColonType(), false);
 		
-		StatementNode singleStatement_Node9 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
+		NonTerminalNode singleStatement_Node9 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
 		
-		SingleNode openCurlyBracket_Node10 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node10 = new TerminalNode(new OpenCurlyBracket(), false);
 		
-		StatementNode multiStatement_Node11 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
+		NonTerminalNode multiStatement_Node11 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
 		
-		SingleNode closeCurlyBracket_Node12 = new SingleNode(new CloseCurlyBracket(), false);
-		SingleNode closeCurlyBracket_Node13 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracket_Node12 = new TerminalNode(new CloseCurlyBracket(), false);
+		TerminalNode closeCurlyBracket_Node13 = new TerminalNode(new CloseCurlyBracket(), true);
 		
-		SingleNode singleBreak_Node14 = new SingleNode(new BreakKeyword(), false);
+		TerminalNode singleBreak_Node14 = new TerminalNode(new BreakKeyword(), false);
 		
-		SingleNode singleSemicolon_Node15 = new SingleNode(new SemicolonType(), false);
+		TerminalNode singleSemicolon_Node15 = new TerminalNode(new SemicolonType(), false);
 		
-		SingleNode multiBreak_Node16 = new SingleNode(new BreakKeyword(), false);
+		TerminalNode multiBreak_Node16 = new TerminalNode(new BreakKeyword(), false);
 		
-		SingleNode multiSemicolon_Node17 = new SingleNode(new SemicolonType(), false);
+		TerminalNode multiSemicolon_Node17 = new TerminalNode(new SemicolonType(), false);
 
 		// -----------------------------------------------------------------
 		root.addChild(switch_Node1.Id);

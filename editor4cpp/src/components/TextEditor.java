@@ -1,44 +1,39 @@
 package components;
 
-import services.Tokenizer;
 import javax.swing.*;
 import javax.swing.text.*;
 import constants.CustomStyle;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-
 import entities.Token;
-
+import interfaces.ITokenizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TextEditor extends JTextPane {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 3526352590503713441L;
-	/**
-	 * 
-	 */
-	private StyledDocument doc;
-	private Tokenizer tokenizer;
+
+
+	private ITokenizer tokenizer;
 	private List<Token> errorTokens;
 	private boolean needSave = false;
 
-	public TextEditor() {
-
+	public TextEditor(ITokenizer tokenizer) {
+		this.tokenizer = tokenizer;
+		errorTokens = new ArrayList<Token>();
+		
 		setFont(new Font("Monospaced", Font.PLAIN, 14));
 		setTabStops(4);
+		addEventListeners();
 		
-		// add default Style to editor
-		tokenizer = new Tokenizer();
-		doc = getStyledDocument();
-		errorTokens = new ArrayList<Token>();
-		addStyleToDocument();
 
+	}
+
+	private void addEventListeners() {
 		addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyTyped(java.awt.event.KeyEvent e) {
 
@@ -67,89 +62,10 @@ public class TextEditor extends JTextPane {
 				}
 			}
 		});
-
 	}
-
 	public void setEditorText(String text) {
 		this.setText(text);
 		buildText(text, false);
-
-	}
-
-	private void addStyleToDocument() {
-		Style keywordStyle = doc.addStyle("keywordStyle", null);
-		StyleConstants.setForeground(keywordStyle, Color.decode("#0f31ba"));
-		StyleConstants.setBold(keywordStyle, true);
-		StyleConstants.setUnderline(keywordStyle, false);
-		CustomStyle.keywordStyle = keywordStyle;
-
-		// Define the style for comments
-		Style commentStyle = doc.addStyle("commentStyle", null);
-		StyleConstants.setForeground(commentStyle, Color.decode("#0b7a1e"));
-		StyleConstants.setItalic(commentStyle, true);
-		StyleConstants.setUnderline(commentStyle, false);
-		StyleConstants.setBold(commentStyle, false);
-
-		CustomStyle.commentStyle = commentStyle;
-
-		// Define the style for string
-		Style stringStyle = doc.addStyle("stringStyle", null);
-		StyleConstants.setForeground(stringStyle, Color.decode("#d6491a"));
-		StyleConstants.setUnderline(stringStyle, false);
-		StyleConstants.setBold(stringStyle, false);
-
-		CustomStyle.stringStyle = stringStyle;
-
-		// Define the style for number
-		Style numberStyle = doc.addStyle("numberStyle", null);
-		StyleConstants.setForeground(numberStyle, Color.decode("#fcad03"));
-		StyleConstants.setUnderline(numberStyle, false);
-		StyleConstants.setBold(numberStyle, false);
-
-		CustomStyle.numberStyle = numberStyle;
-		// Define the style for function
-		Style funcStyle = doc.addStyle("funcStyle", null);
-		StyleConstants.setForeground(funcStyle, Color.decode("#db03fc"));
-		StyleConstants.setUnderline(funcStyle, false);
-		StyleConstants.setBold(funcStyle, false);
-
-		CustomStyle.funcStyle = funcStyle;
-		// Define the style for punctuations
-		Style punctStyle = doc.addStyle("punctStyle", null);
-		StyleConstants.setForeground(punctStyle, Color.decode("#9803fc"));
-		StyleConstants.setUnderline(punctStyle, false);
-		StyleConstants.setBold(punctStyle, true);
-
-		CustomStyle.punctStyle = punctStyle;
-		// Define the style for directives
-		Style directiveStyle = doc.addStyle("directiveStyle", null);
-		StyleConstants.setForeground(directiveStyle, Color.decode("#535453"));
-		StyleConstants.setUnderline(directiveStyle, false);
-		StyleConstants.setBold(directiveStyle, false);
-
-		CustomStyle.directiveStyle = directiveStyle;
-
-		// Define the style for classes
-		Style classStyle = doc.addStyle("classStyle", null);
-		StyleConstants.setForeground(classStyle, Color.decode("#006d60"));
-		StyleConstants.setUnderline(classStyle, false);
-		StyleConstants.setBold(classStyle, false);
-
-		CustomStyle.classStyle = classStyle;
-
-		Style defaultStyle = doc.addStyle("defaultStyle", null);
-		StyleConstants.setForeground(defaultStyle, Color.BLACK);
-		StyleConstants.setUnderline(defaultStyle, false);
-		StyleConstants.setBold(defaultStyle, false);
-
-		CustomStyle.defaultStyle = defaultStyle;
-
-		Style errorStyle = doc.addStyle("errorStyle", null);
-		StyleConstants.setForeground(errorStyle, Color.RED);
-		StyleConstants.setUnderline(errorStyle, true);
-		StyleConstants.setBold(errorStyle, true);
-
-		CustomStyle.errorStyle = errorStyle;
 
 	}
 
@@ -177,6 +93,7 @@ public class TextEditor extends JTextPane {
 	}
 
 	public void buildText(String text, boolean formatText) {
+		var doc = getStyledDocument();
 		List<Token> tokens = tokenizer.tokenizeString(text, formatText);
 		
 		if (formatText)
@@ -194,13 +111,6 @@ public class TextEditor extends JTextPane {
 			}
 			currentIndex += token.value.length();
 		}
-//		for (Token token : tokens) {
-//			doc.setCharacterAttributes(token.startIndex, token.value.length(), token.tokenStyle, false);
-//			if (token.error != null && token.error.length() > 0) {
-//				errorTokens.add(token);
-//				doc.setCharacterAttributes(token.startIndex, token.value.length(), CustomStyle.errorStyle, false);
-//			}
-//		}
 	}
 	
 	private void setTabStops( int tabSize) {

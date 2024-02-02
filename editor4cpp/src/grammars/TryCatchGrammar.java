@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.ObjectIdentifier;
 import entities.TokenTypes.UnknownType;
 import entities.TokenTypes.Keywords.CatchKeyword;
@@ -30,35 +30,35 @@ public class TryCatchGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode try_Node1 = new SingleNode(new TryKeyword(), false);
+		TerminalNode try_Node1 = new TerminalNode(new TryKeyword(), false);
 
-		SingleNode openCurlyBracket_Node2 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node2 = new TerminalNode(new OpenCurlyBracket(), false);
 
-		StatementNode multiStatement_Node3 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
+		NonTerminalNode multiStatement_Node3 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
 
-		SingleNode closeCurlyBracket_Node4 = new SingleNode(new CloseCurlyBracket(), false);
+		TerminalNode closeCurlyBracket_Node4 = new TerminalNode(new CloseCurlyBracket(), false);
 		
-		SingleNode catch_Node5 = new SingleNode(new CatchKeyword(), false);
+		TerminalNode catch_Node5 = new TerminalNode(new CatchKeyword(), false);
 		
-		SingleNode openParenthesis_Node6 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node6 = new TerminalNode(new OpenParenthesisType(), false);
 		
-		SingleNode unknown_Node7 = new SingleNode(new UnknownType(), false);
+		TerminalNode unknown_Node7 = new TerminalNode(new UnknownType(), false);
 		
-		SingleNode objectIdentifier_Node8 = new SingleNode(new ObjectIdentifier(), false);
+		TerminalNode objectIdentifier_Node8 = new TerminalNode(new ObjectIdentifier(), false);
 
-		SingleNode closeParenthesis_Node9 = new SingleNode(new CloseParenthesisType(), false);
+		TerminalNode closeParenthesis_Node9 = new TerminalNode(new CloseParenthesisType(), false);
 		
-		SingleNode firstDot_Node10 = new SingleNode(new DotType(), false);
-		SingleNode secondDot_Node11 = new SingleNode(new DotType(), false);
-		SingleNode thirdDot_Node12 = new SingleNode(new DotType(), false);
+		TerminalNode firstDot_Node10 = new TerminalNode(new DotType(), false);
+		TerminalNode secondDot_Node11 = new TerminalNode(new DotType(), false);
+		TerminalNode thirdDot_Node12 = new TerminalNode(new DotType(), false);
 		
 		
 		
-		SingleNode openCurlyBracket_Node13 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node13 = new TerminalNode(new OpenCurlyBracket(), false);
 		
-		StatementNode multiStatement_Node15 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
+		NonTerminalNode multiStatement_Node15 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
 		
-		SingleNode closeCurlyBracket_Node14 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracket_Node14 = new TerminalNode(new CloseCurlyBracket(), true);
 		
 
 		// -----------------------------------------------------------------

@@ -1,17 +1,11 @@
 package components;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
@@ -28,6 +22,10 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import common.AppSelectionListener;
+import interfaces.ITokenizer;
+import services.NewTokenizer;
+import services.Tokenizer;
+
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -38,29 +36,22 @@ public class MainView extends ViewPart {
 	private JFrame frame;
 	private TableItem selectedItem = null;
 	private TextEditor editor;
+	private ITokenizer tokenizer;
 	private EStringToStringMapEntryImpl entry;
 	private boolean closing = false;
 	private List<Button> buttons = new ArrayList<>();
 	private List<TableEditor> tableEditors = new ArrayList<>();
-
+	
 	public MainView() {
-		frame = new JFrame("Editor4CPP");
+		tokenizer=new NewTokenizer();
+		editor=new TextEditor(tokenizer);
+		frame = new EditorFrame(editor,()->saveChanges());
 
-		frame.addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentShown(java.awt.event.ComponentEvent evt) {
-				// Center the JFrame on the screen after it is realized
-				SwingUtilities.invokeLater(() -> frame.setLocationRelativeTo(null));
-			}
-		});
+		addSaveOnFrameClosingEventListener();
 
-		frame.setSize(500, 500);
+	}
 
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		editor = new TextEditor();
-
-		JScrollPane scrollPane = new JScrollPane(editor);
-		frame.getContentPane().add(scrollPane);
-
+	private void addSaveOnFrameClosingEventListener() {
 		frame.addWindowListener(new WindowAdapter() {
 
 			@Override
@@ -72,7 +63,6 @@ public class MainView extends ViewPart {
 							"Save Changes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 							new Object[] { "Yes", "No", "Cancel" }, "Cancel");
 
-					// Handle the user's choice
 					switch (result) {
 					case JOptionPane.YES_OPTION:
 						saveChanges();
@@ -102,51 +92,8 @@ public class MainView extends ViewPart {
 			}
 
 		});
-
-		addToolbar();
 	}
-
-	private void addToolbar() {
-		JToolBar toolbar = new JToolBar();
-		frame.add(toolbar, "North");
-
-//		ImageIcon saveIcon = new ImageIcon(MainView.class.getResource("/resources/save.png"));
-
-		JButton saveButton = new JButton("S");
-
-		Dimension buttonSize = new Dimension(24, 24);
-		saveButton.setPreferredSize(buttonSize);
-		saveButton.setMaximumSize(buttonSize);
-		saveButton.setMinimumSize(buttonSize);
-
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveChanges();
-			}
-		});
-
-		toolbar.add(saveButton);
-		
-//		ImageIcon formatIcon = new ImageIcon(MainView.class.getResource("/resources/f.png"));
-
-		JButton formatButton = new JButton("F");
-
-		Dimension formatButtonSize = new Dimension(24, 24);
-		formatButton.setPreferredSize(formatButtonSize);
-		formatButton.setMaximumSize(formatButtonSize);
-		formatButton.setMinimumSize(formatButtonSize);
-
-		formatButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				editor.formatText();
-			}
-		});
-		
-		toolbar.add(formatButton);
-	}
-
+	
 	private void saveChanges() {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
@@ -183,7 +130,7 @@ public class MainView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -206,7 +153,7 @@ public class MainView extends ViewPart {
 		table.setLinesVisible(true);
 	}
 
-	public void addProperty(String propertyName, String propertyValue) {
+	private void addProperty(String propertyName, String propertyValue) {
 		TableItem item = new TableItem(table, SWT.BORDER);
 		item.setText(0, propertyName);
 		item.setText(1, propertyValue==null?"":propertyValue);
@@ -254,7 +201,14 @@ public class MainView extends ViewPart {
 	}
 
 	public void setEntry(EStringToStringMapEntryImpl entry) {
+		if(entry==null) {
+			throw new NullPointerException("MainView>>SetEntry>>argument entry is null");
+		}
+		clear();
 		this.entry = entry;
+		addProperty("Key", entry.getKey());
+    	addProperty("Value", entry.getValue());
+		
 	}
 
 	private void packColumns() {

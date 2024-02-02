@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.NumericLiteral;
 import entities.TokenTypes.TextLiteral;
 import entities.TokenTypes.Keywords.BreakKeyword;
@@ -30,29 +30,29 @@ public class CaseSubGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode case_Node1 = new SingleNode(new CaseKeyword(), false);
+		TerminalNode case_Node1 = new TerminalNode(new CaseKeyword(), false);
 
-		SingleNode textLiteral_Node2 = new SingleNode(new TextLiteral(), false);
+		TerminalNode textLiteral_Node2 = new TerminalNode(new TextLiteral(), false);
 
-		SingleNode numericLiteral_Node3 = new SingleNode(new NumericLiteral(), false);
+		TerminalNode numericLiteral_Node3 = new TerminalNode(new NumericLiteral(), false);
 
-		SingleNode colon_Node4 = new SingleNode(new ColonType(), false);
+		TerminalNode colon_Node4 = new TerminalNode(new ColonType(), false);
 
-		StatementNode singleStatement_Node5 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), true);
+		NonTerminalNode singleStatement_Node5 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), true);
 
-		SingleNode openCurlyBracket_Node6 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracket_Node6 = new TerminalNode(new OpenCurlyBracket(), false);
 		
-		StatementNode multiStatement_Node7 = new StatementNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
+		NonTerminalNode multiStatement_Node7 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false);
 		
-		SingleNode singleBreak_Node8= new SingleNode(new BreakKeyword(), false);
+		TerminalNode singleBreak_Node8= new TerminalNode(new BreakKeyword(), false);
 		
-		SingleNode singleSemicolon_Node9= new SingleNode(new SemicolonType(), true);
+		TerminalNode singleSemicolon_Node9= new TerminalNode(new SemicolonType(), true);
 		
-		SingleNode multiBreak_Node10= new SingleNode(new BreakKeyword(), false);
+		TerminalNode multiBreak_Node10= new TerminalNode(new BreakKeyword(), false);
 		
-		SingleNode multiSemicolon_Node11= new SingleNode(new SemicolonType(), false);
+		TerminalNode multiSemicolon_Node11= new TerminalNode(new SemicolonType(), false);
 		
-		SingleNode closeCurlyBracket_Node12 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracket_Node12 = new TerminalNode(new CloseCurlyBracket(), true);
 
 		// -----------------------------------------------------------------
 		root.addChild(case_Node1.Id);

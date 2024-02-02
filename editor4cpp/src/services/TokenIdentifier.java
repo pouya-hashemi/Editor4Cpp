@@ -35,7 +35,6 @@ public class TokenIdentifier {
 	private TextMode textMode = TextMode.none;
 	private boolean identifierInProgress = false;
 	private List<Identifier> identifiers = new ArrayList<Identifier>();
-
 	private List<String> dataTypes = Arrays.asList("int", "short", "long", "float", "double", "char", "bool", "void",
 			"string");
 	private List<String> keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand",
@@ -380,8 +379,6 @@ public class TokenIdentifier {
 				identifierInProgress = true;
 			}
 
-//			if (token.nextToken != null && token.nextToken.tokenType == TokenType.comma)
-//				identifierInProgress = true;
 			return true;
 		}
 

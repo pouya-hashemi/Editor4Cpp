@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Keywords.ElseKeyword;
 import entities.TokenTypes.Keywords.IfKeyword;
 import entities.TokenTypes.Punctuations.CloseCurlyBracket;
@@ -26,31 +26,31 @@ public class IfGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode if_Node1 = new SingleNode(new IfKeyword(), false);
+		TerminalNode if_Node1 = new TerminalNode(new IfKeyword(), false);
 
-		SingleNode openParenthesis_Node2 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node2 = new TerminalNode(new OpenParenthesisType(), false);
 
-		StatementNode comparesionStatement_Node3 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfComparison(),false);
+		NonTerminalNode comparesionStatement_Node3 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfComparison(),false);
 
-		SingleNode closeParenthesis_Node4 = new SingleNode(new CloseParenthesisType(), false,false);
+		TerminalNode closeParenthesis_Node4 = new TerminalNode(new CloseParenthesisType(), false);
 
-		SingleNode openCurlyBracketForIf_Node5 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracketForIf_Node5 = new TerminalNode(new OpenCurlyBracket(), false);
 
-		StatementNode singleStatementForIf_Node6 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
+		NonTerminalNode singleStatementForIf_Node6 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
 
-		StatementNode multiStatementForIf_Node7 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
+		NonTerminalNode multiStatementForIf_Node7 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 
-		SingleNode closeCurlyBracketForIf_Node8 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracketForIf_Node8 = new TerminalNode(new CloseCurlyBracket(), true);
 		
-		SingleNode else_Node9 = new SingleNode(new ElseKeyword(), false);
+		TerminalNode else_Node9 = new TerminalNode(new ElseKeyword(), false);
 		
-		SingleNode openCurlyBracketForElse_Node10 = new SingleNode(new OpenCurlyBracket(), false);
+		TerminalNode openCurlyBracketForElse_Node10 = new TerminalNode(new OpenCurlyBracket(), false);
 
-		StatementNode singleStatementForElse_Node11 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
+		NonTerminalNode singleStatementForElse_Node11 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),true);
 
-		StatementNode multiStatementForElse_Node12 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
+		NonTerminalNode multiStatementForElse_Node12 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfAll(),false);
 
-		SingleNode closeCurlyBracketForElse_Node13 = new SingleNode(new CloseCurlyBracket(), true);
+		TerminalNode closeCurlyBracketForElse_Node13 = new TerminalNode(new CloseCurlyBracket(), true);
 
 		
 		

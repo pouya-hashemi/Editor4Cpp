@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Operations.DoubleOperandOperator;
 import entities.TokenTypes.Punctuations.EqualType;
 import grammars.Grammar;
@@ -22,11 +22,11 @@ public class EqualSubGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		SingleNode equal_Node1 = new SingleNode(new EqualType(), false);
+		TerminalNode equal_Node1 = new TerminalNode(new EqualType(), false);
 
-		SingleNode singleOperator_Node2 = new SingleNode(new DoubleOperandOperator(), false);
+		TerminalNode singleOperator_Node2 = new TerminalNode(new DoubleOperandOperator(), false);
 
-		StatementNode mathTopLayer_Node3 = new StatementNode(
+		NonTerminalNode mathTopLayer_Node3 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), true);
 
 		// -----------------------------------------------------------------

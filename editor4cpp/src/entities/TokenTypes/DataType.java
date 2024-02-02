@@ -5,7 +5,7 @@ import interfaces.HasType;
 
 public class DataType extends Keyword implements HasType{
 
-	public DataTypes dataType;
+	protected DataTypes dataType;
 	@Override
 	public String getError() {
 		

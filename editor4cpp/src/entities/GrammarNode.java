@@ -8,17 +8,15 @@ public class GrammarNode implements Cloneable {
 	public UUID Id;
 	protected List<UUID> childIds;
 	public boolean canBeEnd;
-	public boolean countParenthesis;
 
 	public GrammarNode() {
 		Id = UUID.randomUUID();
 	}
 
-	public GrammarNode(UUID id, List<UUID> childIds, boolean canBeEnd,boolean countParenthesis) {
+	public GrammarNode(UUID id, List<UUID> childIds, boolean canBeEnd) {
 		this.Id = id;
 		this.childIds = childIds;
 		this.canBeEnd = canBeEnd;
-		this.countParenthesis=countParenthesis;
 	}
 
 	public void addChild(UUID id) {
@@ -51,7 +49,7 @@ public class GrammarNode implements Cloneable {
 		if (this.childIds != null)
 			for (UUID id : this.childIds)
 				newIds.add( UUID.fromString(id.toString()));
-		return new GrammarNode(this.Id, newIds, this.canBeEnd,this.countParenthesis);
+		return new GrammarNode(this.Id, newIds, this.canBeEnd);
 	}
 
 }

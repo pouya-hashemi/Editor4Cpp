@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.ObjectIdentifier;
 import entities.TokenTypes.UnknownType;
 import entities.TokenTypes.Punctuations.CloseParenthesisType;
@@ -32,19 +32,19 @@ public class ObjectDeclarationGrammar extends Grammar {
 //
 //		SingleNode colon_Node3 = new SingleNode(new ColonType(), false);
 
-		SingleNode unknown_Node4 = new SingleNode(new UnknownType(), false);
+		TerminalNode unknown_Node4 = new TerminalNode(new UnknownType(), false);
 
-		SingleNode objectIdentifier_Node5 = new SingleNode(new ObjectIdentifier(), false);
+		TerminalNode objectIdentifier_Node5 = new TerminalNode(new ObjectIdentifier(), false);
 
-		SingleNode openParenthesis_Node6 = new SingleNode(new OpenParenthesisType(), false);
+		TerminalNode openParenthesis_Node6 = new TerminalNode(new OpenParenthesisType(), false);
 		
-		StatementNode parameters_Node7 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),false);
+		NonTerminalNode parameters_Node7 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),false);
 
-		SingleNode comma_Node8 = new SingleNode(new CommaType(), false);
+		TerminalNode comma_Node8 = new TerminalNode(new CommaType(), false);
 		
-		SingleNode closeParenthesis_Node9 = new SingleNode(new CloseParenthesisType(), false);
+		TerminalNode closeParenthesis_Node9 = new TerminalNode(new CloseParenthesisType(), false);
 		
-		SingleNode semicolon_Node10 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node10 = new TerminalNode(new SemicolonType(), true);
 		
 		
 

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import constants.GrammarLibrary;
 import entities.GrammarNode;
-import entities.SingleNode;
-import entities.StatementNode;
+import entities.TerminalNode;
+import entities.NonTerminalNode;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Punctuations.SemicolonType;
 
@@ -22,11 +22,11 @@ public class PointerAssignmentGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		SingleNode identifier_Node1 = new SingleNode(new Identifier(""), false);
+		TerminalNode identifier_Node1 = new TerminalNode(new Identifier(""), false);
 
-		SingleNode semicolon_Node2 = new SingleNode(new SemicolonType(), true);
+		TerminalNode semicolon_Node2 = new TerminalNode(new SemicolonType(), true);
 
-		StatementNode pointerEqualStatement_Node3 = new StatementNode(()->GrammarLibrary.getParsingObjectsOfPointerEqualSubGrammar(),false);
+		NonTerminalNode pointerEqualStatement_Node3 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfPointerEqualSubGrammar(),false);
 
 
 		// -----------------------------------------------------------------
