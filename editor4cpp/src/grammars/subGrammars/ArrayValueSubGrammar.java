@@ -48,9 +48,9 @@ public class ArrayValueSubGrammar  extends Grammar {
 		
 		TerminalNode closeCurlyBracket_Node9 = new TerminalNode(new CloseCurlyBracket(), true);
 		
-		TerminalNode secondFloatLiteral_Node10 = new TerminalNode(new FloatingPointLiteral(), false);
+//		TerminalNode secondFloatLiteral_Node10 = new TerminalNode(new FloatingPointLiteral(), false);
 		
-		TerminalNode ThirdFloatLiteral_Node11 = new TerminalNode(new FloatingPointLiteral(), false);
+//		TerminalNode ThirdFloatLiteral_Node11 = new TerminalNode(new FloatingPointLiteral(), false);
 
 		// -----------------------------------------------------------------
 		root.addChild(openCurlyBracket_Node1.Id);
@@ -65,14 +65,14 @@ public class ArrayValueSubGrammar  extends Grammar {
 		arrayValue_Node2.addChild(closeCurlyBracket_Node9.Id);
 		commaForArrayValue_Node8.addChild(arrayValue_Node2.Id);
 		
-		textLiteral_Node3.addChild(textLiteral_Node3.Id);
+//		textLiteral_Node3.addChild(textLiteral_Node3.Id);
 		textLiteral_Node3.addChild(commaForLiteral_Node7.Id);
 		
 		numericLiteral_Node4.addChild(commaForLiteral_Node7.Id);
 		
-		floatLiteral_Node5.addChild(secondFloatLiteral_Node10.Id);
+//		floatLiteral_Node5.addChild(secondFloatLiteral_Node10.Id);
 		
-		secondFloatLiteral_Node10.addChild(ThirdFloatLiteral_Node11.Id);
+//		secondFloatLiteral_Node10.addChild(ThirdFloatLiteral_Node11.Id);
 
 		
 		
@@ -82,8 +82,8 @@ public class ArrayValueSubGrammar  extends Grammar {
 		textLiteral_Node3.addChild(commaForLiteral_Node7.Id);
 		textLiteral_Node3.addChild(closeCurlyBracket_Node9.Id);
 		
-		ThirdFloatLiteral_Node11.addChild(commaForLiteral_Node7.Id);
-		ThirdFloatLiteral_Node11.addChild(closeCurlyBracket_Node9.Id);
+		floatLiteral_Node5.addChild(commaForLiteral_Node7.Id);
+		floatLiteral_Node5.addChild(closeCurlyBracket_Node9.Id);
 		
 		numericLiteral_Node4.addChild(commaForLiteral_Node7.Id);
 		numericLiteral_Node4.addChild(closeCurlyBracket_Node9.Id);
@@ -101,8 +101,8 @@ public class ArrayValueSubGrammar  extends Grammar {
 		grammarNodes.add(commaForLiteral_Node7);
 		grammarNodes.add(commaForArrayValue_Node8);
 		grammarNodes.add(closeCurlyBracket_Node9);
-		grammarNodes.add(secondFloatLiteral_Node10);
-		grammarNodes.add(ThirdFloatLiteral_Node11);
+//		grammarNodes.add(secondFloatLiteral_Node10);
+//		grammarNodes.add(ThirdFloatLiteral_Node11);
 
 
 	}

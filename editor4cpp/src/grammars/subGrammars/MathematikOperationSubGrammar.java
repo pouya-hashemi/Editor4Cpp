@@ -37,14 +37,14 @@ public class MathematikOperationSubGrammar extends Grammar {
 
 		TerminalNode textLiteral_Node1 = new TerminalNode(new TextLiteral(), true);
 		TerminalNode boolLiteral_Node2 = new TerminalNode(new BoolLiteral(), true);
-		TerminalNode floatLiteral_Node3 = new TerminalNode(new FloatingPointLiteral(), false);
+		TerminalNode floatLiteral_Node3 = new TerminalNode(new FloatingPointLiteral(), true);
 		TerminalNode numericLiteral_Node4 = new TerminalNode(new NumericLiteral(), true);
 		TerminalNode identifier_Node5 = new TerminalNode(new Identifier(""), true);
-		TerminalNode firstSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
+//		TerminalNode firstSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
 		TerminalNode secondSingleOperator_Node7 = new TerminalNode(new SingleOperandOperator(), true);
 		TerminalNode doubleOperator_Node8 = new TerminalNode(new DoubleOperandOperator(), false);
-		TerminalNode secondFloatingPoint_Node9 = new TerminalNode(new FloatingPointLiteral(), false);
-		TerminalNode thirdFloatingPoint_Node10 = new TerminalNode(new FloatingPointLiteral(), true);
+//		TerminalNode secondFloatingPoint_Node9 = new TerminalNode(new FloatingPointLiteral(), false);
+//		TerminalNode thirdFloatingPoint_Node10 = new TerminalNode(new FloatingPointLiteral(), true);
 		NonTerminalNode rightAssignment_Node11 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), true);
 		
@@ -71,18 +71,18 @@ public class MathematikOperationSubGrammar extends Grammar {
 
 //		secondSingleOperator_Node2.addChild(identifier_Node7.Id);
 
-		textLiteral_Node1.addChild(textLiteral_Node1.Id);
+//		textLiteral_Node1.addChild(textLiteral_Node1.Id);
 
-		floatLiteral_Node3.addChild(secondFloatingPoint_Node9.Id);
-		secondFloatingPoint_Node9.addChild(thirdFloatingPoint_Node10.Id);
-		thirdFloatingPoint_Node10.addChild(doubleOperator_Node8.Id);
+//		floatLiteral_Node3.addChild(secondFloatingPoint_Node9.Id);
+//		secondFloatingPoint_Node9.addChild(thirdFloatingPoint_Node10.Id);
+		floatLiteral_Node3.addChild(doubleOperator_Node8.Id);
 
 		numericLiteral_Node4.addChild(doubleOperator_Node8.Id);
 
 		identifier_Node5.addChild(doubleOperator_Node8.Id);
-		identifier_Node5.addChild(firstSingleOperator_Node6.Id);
+		identifier_Node5.addChild(secondSingleOperator_Node7.Id);
 
-		firstSingleOperator_Node6.addChild(secondSingleOperator_Node7.Id);
+//		firstSingleOperator_Node6.addChild(secondSingleOperator_Node7.Id);
 
 		secondSingleOperator_Node7.addChild(doubleOperator_Node8.Id);
 
@@ -99,7 +99,7 @@ public class MathematikOperationSubGrammar extends Grammar {
 		closeBracket_Node15.addChild(openBracket_Node13.Id);
 		
 		closeBracket_Node15.addChild(doubleOperator_Node8.Id);
-		closeBracket_Node15.addChild(firstSingleOperator_Node6.Id);
+		closeBracket_Node15.addChild(secondSingleOperator_Node7.Id);
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
@@ -111,11 +111,11 @@ public class MathematikOperationSubGrammar extends Grammar {
 		grammarNodes.add(floatLiteral_Node3);
 		grammarNodes.add(numericLiteral_Node4);
 		grammarNodes.add(identifier_Node5);
-		grammarNodes.add(firstSingleOperator_Node6);
+//		grammarNodes.add(firstSingleOperator_Node6);
 		grammarNodes.add(secondSingleOperator_Node7);
 		grammarNodes.add(doubleOperator_Node8);
-		grammarNodes.add(secondFloatingPoint_Node9);
-		grammarNodes.add(thirdFloatingPoint_Node10);
+//		grammarNodes.add(secondFloatingPoint_Node9);
+//		grammarNodes.add(thirdFloatingPoint_Node10);
 		grammarNodes.add(rightAssignment_Node11);
 		grammarNodes.add(functionCall_Node12);
 		grammarNodes.add(openBracket_Node13);

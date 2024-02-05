@@ -23,8 +23,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import common.AppSelectionListener;
 import interfaces.ITokenizer;
-import services.NewTokenizer;
-import services.Tokenizer;
+import services.VTokenizer;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -43,7 +42,7 @@ public class MainView extends ViewPart {
 	private List<TableEditor> tableEditors = new ArrayList<>();
 	
 	public MainView() {
-		tokenizer=new NewTokenizer();
+		tokenizer=new VTokenizer();
 		editor=new TextEditor(tokenizer);
 		frame = new EditorFrame(editor,()->saveChanges());
 

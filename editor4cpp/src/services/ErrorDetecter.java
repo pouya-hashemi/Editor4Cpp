@@ -141,7 +141,7 @@ public class ErrorDetecter {
 			} else {
 				result.grammarStatus = GrammarStatus.failed;
 
-				result.error = String.join(" - ", finalError);
+				token.errors.addAll(finalError);
 			}
 		} else {
 			result.grammarStatus = GrammarStatus.processing;

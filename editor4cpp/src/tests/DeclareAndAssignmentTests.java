@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import entities.Token;
-import services.Tokenizer;
+import services.VTokenizer;
 
 public class DeclareAndAssignmentTests {
 
@@ -23,13 +23,12 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "DeclarationSubGrammarTests_Data")
 	public void DeclarationSubGrammarTests(String text) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue( tokens.get(i).errors.size() == 0,"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -44,11 +43,11 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "DeclarationSubGrammarErrorTests_Data")
 	public void DeclarationSubGrammarErrorTests(String text, int index) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue( tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 
@@ -61,13 +60,13 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "EqualSubGrammarTests_Data")
 	public void EqualSubGrammarTests(String text) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue( tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -81,11 +80,11 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "EqualSubGrammarErrorTests_Data")
 	public void EqualSubGrammarErrorTests(String text, int index) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 
@@ -100,13 +99,13 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "MathematicTopLayerTests_Data")
 	public void MathematicTopLayerTests(String text) {
 // Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 // Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 // Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue( tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -120,11 +119,11 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "MathematicTopLayerErrorsTests_Data")
 	public void MathematicTopLayerErrorsTests(String text, int index) {
 // Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 // Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 // Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 ////////////////////////////////////////////////////////////////////////////////
@@ -140,13 +139,13 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "MathematicOperationTests_Data")
 	public void MathematicOperationTests(String text) {
 // Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 // Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 // Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue(tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -163,11 +162,11 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "MathematicOperationErrorsTests_Data")
 	public void MathematicOperationErrorsTests(String text, int index) {
 // Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 // Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 // Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 /////////////////////////////////////////////////////////////////////////////////////
@@ -181,13 +180,13 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "AssignmentTests_Data")
 	public void AssignmentTests(String text) {
 // Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 // Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 // Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue(tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -200,11 +199,11 @@ public class DeclareAndAssignmentTests {
 	@MethodSource(value = "AssignmentErrorsTests_Data")
 	public void AssignmentErrorsTests_Data(String text, int index) {
 // Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 // Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 // Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 	

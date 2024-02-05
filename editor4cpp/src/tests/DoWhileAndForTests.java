@@ -1,14 +1,11 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import entities.Token;
-import services.Tokenizer;
+import services.VTokenizer;
 
 public class DoWhileAndForTests {
 	public static String[] DoWhileTests_Data() {
@@ -20,13 +17,13 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "DoWhileTests_Data")
 	public void DoWhileTests(String text) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue(tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -40,11 +37,11 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "DoWhileTestsErrors_Data")
 	public void DoWhileTestsErrors(String text, int index) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 
@@ -59,13 +56,13 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "ForTests_Data")
 	public void ForTests(String text) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue( tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -80,11 +77,11 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "ForErrorTests_Data")
 	public void ForErrorTests(String text, int index) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 }

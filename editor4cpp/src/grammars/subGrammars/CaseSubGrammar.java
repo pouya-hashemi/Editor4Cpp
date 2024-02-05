@@ -60,7 +60,7 @@ public class CaseSubGrammar extends Grammar {
 		case_Node1.addChild(textLiteral_Node2.Id);
 		case_Node1.addChild(numericLiteral_Node3.Id);
 		
-		textLiteral_Node2.addChild(textLiteral_Node2.Id);
+//		textLiteral_Node2.addChild(textLiteral_Node2.Id);
 		textLiteral_Node2.addChild(colon_Node4.Id);
 		
 		numericLiteral_Node3.addChild(colon_Node4.Id);

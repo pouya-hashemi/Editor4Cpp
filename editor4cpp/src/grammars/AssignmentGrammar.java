@@ -46,11 +46,11 @@ public class AssignmentGrammar extends Grammar {
 
 		TerminalNode semicolon_Node3 = new TerminalNode(new SemicolonType(), false);
 
-		TerminalNode firstSingleOperator_Node4 = new TerminalNode(new SingleOperandOperator(), false);
+//		TerminalNode firstSingleOperator_Node4 = new TerminalNode(new SingleOperandOperator(), false);
 
 		TerminalNode secondSingleOperator_Node5 = new TerminalNode(new SingleOperandOperator(), true);
 
-		TerminalNode firstPreSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
+//		TerminalNode firstPreSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
 
 		TerminalNode secondPreSingleOperator_Node7 = new TerminalNode(new SingleOperandOperator(), false);
 
@@ -70,7 +70,7 @@ public class AssignmentGrammar extends Grammar {
 
 		// -----------------------------------------------------------------
 		root.addChild(identifier_Node1.Id);
-		root.addChild(firstPreSingleOperator_Node6.Id);
+		root.addChild(secondPreSingleOperator_Node7.Id);
 
 		if (hasSemicolon) {
 			equalStatement_Node2.addChild(semicolon_Node3.Id);
@@ -85,13 +85,13 @@ public class AssignmentGrammar extends Grammar {
 
 		}
 		
-		firstPreSingleOperator_Node6.addChild(secondPreSingleOperator_Node7.Id);
+//		firstPreSingleOperator_Node6.addChild(secondPreSingleOperator_Node7.Id);
 
 		secondPreSingleOperator_Node7.addChild(identifier_Node8.Id);
 
 		
 		identifier_Node1.addChild(openBracket_Node9.Id);
-		identifier_Node1.addChild(firstSingleOperator_Node4.Id);
+		identifier_Node1.addChild(secondSingleOperator_Node5.Id);
 		identifier_Node1.addChild(equalStatement_Node2.Id);
 
 		
@@ -101,12 +101,12 @@ public class AssignmentGrammar extends Grammar {
 		numericLiteral_Node10.addChild(closeBracket_Node11.Id);
 
 		closeBracket_Node11.addChild(equalStatement_Node2.Id);
-		closeBracket_Node11.addChild(firstSingleOperator_Node4.Id);
+		closeBracket_Node11.addChild(secondSingleOperator_Node5.Id);
 		closeBracket_Node11.addChild(openBracket_Node9.Id);
 
 		
 
-		firstSingleOperator_Node4.addChild(secondSingleOperator_Node5.Id);
+//		firstSingleOperator_Node4.addChild(secondSingleOperator_Node5.Id);
 
 		identifier_Node8.addChild(openBracket_Node12.Id);
 		
@@ -126,9 +126,9 @@ public class AssignmentGrammar extends Grammar {
 		grammarNodes.add(identifier_Node1);
 		grammarNodes.add(equalStatement_Node2);
 		grammarNodes.add(semicolon_Node3);
-		grammarNodes.add(firstSingleOperator_Node4);
+//		grammarNodes.add(firstSingleOperator_Node4);
 		grammarNodes.add(secondSingleOperator_Node5);
-		grammarNodes.add(firstPreSingleOperator_Node6);
+//		grammarNodes.add(firstPreSingleOperator_Node6);
 		grammarNodes.add(secondPreSingleOperator_Node7);
 		grammarNodes.add(identifier_Node8);
 		grammarNodes.add(openBracket_Node9);

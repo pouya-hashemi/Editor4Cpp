@@ -8,6 +8,7 @@ import grammars.AssignmentGrammar;
 import grammars.ComparisonGrammar;
 import grammars.DeleteGrammar;
 import grammars.DoWhileGrammar;
+import grammars.EndOfTextGrammar;
 import grammars.ForGrammar;
 import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
@@ -148,11 +149,11 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new FunctionCallGrammar()));
 		return list;
 	}
-	public static List<ParsingObject> getParsingObjectsOfObjectDeclarationGrammar() {
-		var list = new ArrayList<ParsingObject>();
-		list.add(new ParsingObject(new ObjectDeclarationGrammar()));
-		return list;
-	}
+//	public static List<ParsingObject> getParsingObjectsOfObjectDeclarationGrammar() {
+//		var list = new ArrayList<ParsingObject>();
+//		list.add(new ParsingObject(new ObjectDeclarationGrammar()));
+//		return list;
+//	}
 	public static List<ParsingObject> getParsingObjectsOfTryCatchGrammar() {
 		var list = new ArrayList<ParsingObject>();
 		list.add(new ParsingObject(new TryCatchGrammar()));
@@ -168,7 +169,11 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new DeleteGrammar()));
 		return list;
 	}
-	
+	public static List<ParsingObject> getParsingObjectsOfEndOfTextGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new EndOfTextGrammar()));
+		return list;
+	}
 	public static List<ParsingObject> getParsingObjectsOfAll() {
 		var list = new ArrayList<ParsingObject>();
 
@@ -183,10 +188,11 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfSwitchGrammar());
 		list.addAll(getParsingObjectsOfArrayGrammar());
 		list.addAll(getParsingObjectsOfFunctionCallGrammar());
-		list.addAll(getParsingObjectsOfObjectDeclarationGrammar());
+//		list.addAll(getParsingObjectsOfObjectDeclarationGrammar());
 		list.addAll(getParsingObjectsOfTryCatchGrammar());
 		list.addAll(getParsingObjectsOfReturnGrammar());
 		list.addAll(getParsingObjectsOfDeleteGrammar());
+		list.addAll(getParsingObjectsOfEndOfTextGrammar());
 
 		return list;
 	}

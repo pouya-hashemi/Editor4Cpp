@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import entities.Token;
+import entities.TokenTypes.EndOfText;
 import interfaces.ITokenizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,7 @@ import java.util.stream.Collectors;
 
 public class TextEditor extends JTextPane {
 
-
 	private static final long serialVersionUID = 3526352590503713441L;
-
 
 	private ITokenizer tokenizer;
 	private List<Token> errorTokens;
@@ -25,11 +24,10 @@ public class TextEditor extends JTextPane {
 	public TextEditor(ITokenizer tokenizer) {
 		this.tokenizer = tokenizer;
 		errorTokens = new ArrayList<Token>();
-		
+
 		setFont(new Font("Monospaced", Font.PLAIN, 14));
 		setTabStops(4);
 		addEventListeners();
-		
 
 	}
 
@@ -57,12 +55,16 @@ public class TextEditor extends JTextPane {
 					@SuppressWarnings("deprecation")
 					int offset = viewToModel(e.getPoint());
 					for (Token errorToken : errorTokens)
-						if (getWordUnderMouse(offset, errorToken))
-							setToolTipText(errorToken.error);
+						if (getWordUnderMouse(offset, errorToken)) {
+							var errors = errorToken.errors.subList(0, Math.min(errorToken.errors.size(), 5));
+							var message = String.join("  -*-  ", errors);
+							setToolTipText(message);
+						}
 				}
 			}
 		});
 	}
+
 	public void setEditorText(String text) {
 		this.setText(text);
 		buildText(text, false);
@@ -95,42 +97,55 @@ public class TextEditor extends JTextPane {
 	public void buildText(String text, boolean formatText) {
 		var doc = getStyledDocument();
 		List<Token> tokens = tokenizer.tokenizeString(text, formatText);
-		
+
 		if (formatText)
 			setText(String.join("", tokens.stream().map(a -> a.value).collect(Collectors.toList())));
 		int currentIndex = 0;
 		for (int i = 0; i < tokens.size(); i++) {
 			var token = tokens.get(i);
-			token.startIndex=currentIndex;
-			token.endIndex=currentIndex+token.value.length();
+			token.startIndex = currentIndex;
+			token.endIndex = currentIndex + token.value.length();
 			doc.setCharacterAttributes(currentIndex, token.value.length(), token.tokenStyle, false);
-			if (token.error != null && token.error.length() > 0) {
-				
-				errorTokens.add(token);
-				doc.setCharacterAttributes(currentIndex, token.value.length(), CustomStyle.errorStyle, false);
+			if (token.errors.size() > 0) {
+				if (token.tokenType instanceof EndOfText &&i>0) {
+					var prevToken = tokens.get(i - 1);
+					if (errorTokens.contains(prevToken)) {
+						prevToken = errorTokens.get(errorTokens.indexOf(prevToken));
+						prevToken.errors.addAll(token.errors);
+					}else {
+						prevToken.errors.addAll(token.errors);
+						errorTokens.add(prevToken);
+					}
+					doc.setCharacterAttributes(currentIndex- prevToken.value.length(), prevToken.value.length(), CustomStyle.errorStyle, false);
+					
+				}
+				else {
+					errorTokens.add(token);
+					doc.setCharacterAttributes(currentIndex, token.value.length(), CustomStyle.errorStyle, false);
+				}
 			}
 			currentIndex += token.value.length();
 		}
 	}
-	
-	private void setTabStops( int tabSize) {
-        // Calculate the width of a single space
-        int spaceWidth = getFontMetrics(getFont()).charWidth(' ');
 
-        // Calculate the tab width based on the specified number of spaces
-        int tabWidth = tabSize * spaceWidth;
+	private void setTabStops(int tabSize) {
+		// Calculate the width of a single space
+		int spaceWidth = getFontMetrics(getFont()).charWidth(' ');
 
-        // Create a TabSet with the calculated tab width
-        TabStop[] tabStops = new TabStop[10];  // You can adjust the number of tab stops
-        for (int i = 0; i < tabStops.length; i++) {
-            tabStops[i] = new TabStop((i + 1) * tabWidth);
-        }
-        TabSet tabSet = new TabSet(tabStops);
+		// Calculate the tab width based on the specified number of spaces
+		int tabWidth = tabSize * spaceWidth;
 
-        // Apply the TabSet to the text pane's paragraph attributes
-        SimpleAttributeSet paragraphAttributes = new SimpleAttributeSet();
-        StyleConstants.setTabSet(paragraphAttributes, tabSet);
-        getStyledDocument().setParagraphAttributes(0, getDocument().getLength(), paragraphAttributes, false);
-    }
+		// Create a TabSet with the calculated tab width
+		TabStop[] tabStops = new TabStop[10]; // You can adjust the number of tab stops
+		for (int i = 0; i < tabStops.length; i++) {
+			tabStops[i] = new TabStop((i + 1) * tabWidth);
+		}
+		TabSet tabSet = new TabSet(tabStops);
+
+		// Apply the TabSet to the text pane's paragraph attributes
+		SimpleAttributeSet paragraphAttributes = new SimpleAttributeSet();
+		StyleConstants.setTabSet(paragraphAttributes, tabSet);
+		getStyledDocument().setParagraphAttributes(0, getDocument().getLength(), paragraphAttributes, false);
+	}
 
 }

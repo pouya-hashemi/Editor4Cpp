@@ -39,7 +39,7 @@ public class ComparisonGrammar extends Grammar {
 
 		TerminalNode singleComparisonOperator_Node5 = new TerminalNode(new SingleComparisonOperator(), false);
 
-		TerminalNode firstDoubleComparisonOperator_Node6 = new TerminalNode(new DoubleComparisonOperator(), false);
+//		TerminalNode firstDoubleComparisonOperator_Node6 = new TerminalNode(new DoubleComparisonOperator(), false);
 
 		TerminalNode secondDoubleComparisonOperator_Node7 = new TerminalNode(new DoubleComparisonOperator(), false);
 
@@ -51,7 +51,7 @@ public class ComparisonGrammar extends Grammar {
 
 		TerminalNode closeParenthesis_Node11 = new TerminalNode(new CloseParenthesisType(), true);
 
-		TerminalNode secondLogicalOperator_Node12 = new TerminalNode(new LogicalOperator(), false);
+//		TerminalNode secondLogicalOperator_Node12 = new TerminalNode(new LogicalOperator(), false);
 		
 		NonTerminalNode comparison_Node13 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfComparison(), false);
 
@@ -68,13 +68,13 @@ public class ComparisonGrammar extends Grammar {
 		logicalNot_Node2.addChild(literal_Node4.Id);// E28
 		
 		identifier_Node3.addChild(singleComparisonOperator_Node5.Id);// E7
-		identifier_Node3.addChild(firstDoubleComparisonOperator_Node6.Id);// E8
+		identifier_Node3.addChild(secondDoubleComparisonOperator_Node7.Id);// E8
 		
 		literal_Node4.addChild(singleComparisonOperator_Node5.Id);// E9
-		literal_Node4.addChild(firstDoubleComparisonOperator_Node6.Id);// E10
-		literal_Node4.addChild(literal_Node4.Id);// E25
+		literal_Node4.addChild(secondDoubleComparisonOperator_Node7.Id);// E10
+//		literal_Node4.addChild(literal_Node4.Id);// E25
 		
-		firstDoubleComparisonOperator_Node6.addChild(secondDoubleComparisonOperator_Node7.Id);// E11
+//		firstDoubleComparisonOperator_Node6.addChild(secondDoubleComparisonOperator_Node7.Id);// E11
 		
 		singleComparisonOperator_Node5.addChild(identifier_Node8.Id);// E12
 		singleComparisonOperator_Node5.addChild(literal_Node9.Id);// E13
@@ -87,14 +87,14 @@ public class ComparisonGrammar extends Grammar {
 		
 		identifier_Node8.addChild(logicalOperator_Node10.Id);// E18
 		
-		logicalOperator_Node10.addChild(secondLogicalOperator_Node12.Id);// E29
+//		logicalOperator_Node10.addChild(logicalOperator_Node10.Id);// E29
 		
 		closeParenthesis_Node11.addChild(logicalOperator_Node10.Id);// E21
 		
-		secondLogicalOperator_Node12.addChild(literal_Node4.Id);// E22
-		secondLogicalOperator_Node12.addChild(identifier_Node3.Id);// E23
-		secondLogicalOperator_Node12.addChild(openParenthesis_Node1.Id);// E24
-		secondLogicalOperator_Node12.addChild(logicalNot_Node2.Id);// E30
+		logicalOperator_Node10.addChild(literal_Node4.Id);// E22
+		logicalOperator_Node10.addChild(identifier_Node3.Id);// E23
+		logicalOperator_Node10.addChild(openParenthesis_Node1.Id);// E24
+		logicalOperator_Node10.addChild(logicalNot_Node2.Id);// E30
 
 		comparison_Node13.addChild(closeParenthesis_Node11.Id);
 
@@ -106,13 +106,13 @@ public class ComparisonGrammar extends Grammar {
 		grammarNodes.add(identifier_Node3);
 		grammarNodes.add(literal_Node4);
 		grammarNodes.add(singleComparisonOperator_Node5);
-		grammarNodes.add(firstDoubleComparisonOperator_Node6);
+//		grammarNodes.add(firstDoubleComparisonOperator_Node6);
 		grammarNodes.add(secondDoubleComparisonOperator_Node7);
 		grammarNodes.add(identifier_Node8);
 		grammarNodes.add(literal_Node9);
 		grammarNodes.add(logicalOperator_Node10);
 		grammarNodes.add(closeParenthesis_Node11);
-		grammarNodes.add(secondLogicalOperator_Node12);
+//		grammarNodes.add(secondLogicalOperator_Node12);
 		grammarNodes.add(comparison_Node13);
 
 

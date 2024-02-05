@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import entities.Token;
-import services.Tokenizer;
+import services.VTokenizer;
 
 public class WhileAndComparisonTests {
 	public static String[] ComparisonTests_Data() {
@@ -24,13 +24,13 @@ public class WhileAndComparisonTests {
 	@MethodSource(value = "ComparisonTests_Data")
 	public void ComparisonTests(String text) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).error == null || tokens.get(i).error.length() == 0,
-					"index:" + i + " error: " + tokens.get(i).error);
+			assertTrue(tokens.get(i).errors.size() == 0,
+					"index:" + i + " error: " + tokens.get(i).errors.get(0));
 		}
 
 	}
@@ -45,11 +45,11 @@ public class WhileAndComparisonTests {
 	@MethodSource(value = "ComparisonErrorsTests")
 	public void ComparisonErrorsTests(String text, int index) {
 		// Arrange
-		Tokenizer tokenizer = new Tokenizer();
+		VTokenizer tokenizer = new VTokenizer();
 		// Act
 		List<Token> tokens = tokenizer.tokenizeString(text,false);
 		// Assert
-		assertTrue(tokens.get(index).error != null && tokens.get(index).error.length() > 0, tokens.get(index).error);
+		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 
 	}
 
