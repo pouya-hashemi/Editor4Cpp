@@ -54,6 +54,7 @@ public class WhileGrammar extends Grammar {
 		closeParenthesis_Node4.addChild(openCurlyBracket_Node5.Id);
 		closeParenthesis_Node4.addChild(singleStatement_Node6.Id);
 		
+		openCurlyBracket_Node5.addChild(closeCurlyBracket_Node8.Id);
 		openCurlyBracket_Node5.addChild(multiStatement_Node7.Id);
 		
 		multiStatement_Node7.addChild(closeCurlyBracket_Node8.Id);

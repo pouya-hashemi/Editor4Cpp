@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.CommonCharacters;
 import entities.Token;
 import entities.TokenTypes.*;
 import entities.TokenTypes.DataTypes.*;
@@ -15,116 +16,35 @@ import entities.TokenTypes.Literals.*;
 import entities.TokenTypes.Operations.*;
 import entities.TokenTypes.Punctuations.*;
 import enums.DataTypes;
-import enums.GrammarStatus;
 import interfaces.ITokenizer;
 
-public class VTokenizer implements ITokenizer {
-	private TokenHighlighter tokenHighlighter;
-	private ErrorDetecter errorDetecter;
-	private TextFormatting textFormatting;
+public class VTokenizer implements ITokenizer{
 	private TokenBuffer buffer;
-	private Map<String, DataType> dataTypes = new HashMap<>();
+	private Map<String, DataType> dataTypes;
 	private List<Identifier> identifiers;
-	private boolean declarationInProgress = false;
+	private boolean declarationInProgress;
 	private DataTypes dataTypeInProgress;
 	private List<String> keywords;
 
 	public VTokenizer() {
-		tokenHighlighter = new TokenHighlighter();
-
-		initDataTypes();
-		initKeywords();
-
-	}
-
-	@Override
-	public List<Token> tokenizeString(String text, boolean formatText) {
-		errorDetecter = new ErrorDetecter();
-		textFormatting = new TextFormatting();
+		dataTypes = new HashMap<>();
+		keywords=new ArrayList<String>();
 		identifiers = new ArrayList<Identifier>();
 		declarationInProgress = false;
-		List<Token> tokens = new ArrayList<Token>();
-		buffer = new TokenBuffer(text);
-		var token = getNextToken();
-		boolean hasError = false;
-		while (true) {
-
-			if (hasError && isNextLine(token.value)) {
-				hasError = false;
-			}
-			tokenHighlighter.HighlightToken(token);
-
-			if (token.tokenType instanceof WhiteSpace || token.tokenType instanceof Comment) {
-				if (!formatText)
-					tokens.add(token);
-				var prevToken = token;
-				token = getNextToken();
-				if (token != null)
-					token.absolutePrevToken = prevToken;
-				continue;
-			}
-
-			if (!hasError) {
-				var result = errorDetecter.Parse(token);
-
-				if (result.grammarStatus == GrammarStatus.failed) {
-					errorDetecter = null;
-					errorDetecter = new ErrorDetecter();
-//					token.error = result.error;
-					hasError = true;
-				}
-				if (result.grammarStatus == GrammarStatus.refresh_Retry) {
-
-					errorDetecter = null;
-					errorDetecter = new ErrorDetecter();
-
-					var secondResult = errorDetecter.Parse(token);
-
-					if (secondResult.grammarStatus == GrammarStatus.failed) {
-						errorDetecter = null;
-						errorDetecter = new ErrorDetecter();
-//						token.errors.add(text) = secondResult.error;
-						hasError = true;
-					}
-				}
-			}
-			if (formatText) {
-				
-				var formattingResult = textFormatting.FormatToken(token);
-				if(formattingResult.getRemoveBefore()>0) {
-					for(int i=0;i<formattingResult.getRemoveBefore();i++) {
-						tokens.remove(tokens.size()-(i+1));
-					}
-				}
-				
-				if (formattingResult.getInsertBefore().size() > 0) {
-					tokens.addAll(formattingResult.getInsertBefore());
-				}
-				
-				tokens.add(token);
-
-				if (formattingResult.getInsertAfter().size() > 0) {
-					tokens.addAll(formattingResult.getInsertAfter());
-				}
-			} else {
-				tokens.add(token);
-			}
-
-			var prevToken = token;
-
-			if (token.tokenType instanceof EndOfText) {
-				break;
-			}
-			token = getNextToken();
-			if (token != null)
-				token.absolutePrevToken = prevToken;
-
-		}
-
-		return tokens;
+		buffer = new TokenBuffer();
+		initDataTypes();
+		initKeywords();
+		
+		
 	}
 
-	private Token getNextToken() {
+	public void setTextAndRestart(String text) {
+		identifiers.clear();
+		declarationInProgress = false;
+		buffer.setTextAndReset(text);
+	}
+
+	public Token getNextToken() {
 		var next = buffer.peek();
 
 		if (next == null)
@@ -253,7 +173,7 @@ public class VTokenizer implements ITokenizer {
 		var nextChar = buffer.peek();
 
 		while (nextChar != null
-				&& (Character.isAlphabetic(nextChar.charAt(0)) || Character.isDigit(nextChar.charAt(0)))) {
+				&& (Character.isAlphabetic(nextChar.charAt(0)) || Character.isDigit(nextChar.charAt(0))||nextChar.equals("_"))) {
 			token.value += buffer.consume();
 			nextChar = buffer.peek();
 		}
@@ -475,7 +395,7 @@ public class VTokenizer implements ITokenizer {
 	private Token processSingleLineComment() {
 		var token = new Token(buffer.consume(), new Comment());
 		var currentChar = "";
-		while (!isNextLine(buffer.peek())) {
+		while (!CommonCharacters.isNextLine(buffer.peek())) {
 			currentChar = buffer.consume();
 			if (currentChar == null) {
 				return token;
@@ -602,12 +522,6 @@ public class VTokenizer implements ITokenizer {
 
 	}
 
-	private boolean isNextLine(String value) {
-		if (value == null)
-			return false;
-		if (value.equals("\r") || value.equals("\n"))
-			return true;
-		return false;
-	}
+
 
 }

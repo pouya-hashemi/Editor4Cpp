@@ -5,9 +5,12 @@ import java.util.regex.Pattern;
 
 public class TokenBuffer {
 	private Matcher matcher;
-	private int currentIndex = 0;
+	private int currentIndex;
 
-	public TokenBuffer(String text) {
+	public TokenBuffer() {
+		currentIndex=0;
+	}
+	public void setTextAndReset(String text) {
 		currentIndex = 0;
 		text = text.replace("\r\n", "\r");
 		Pattern pattern = Pattern.compile("[\\s\\S]");
@@ -15,12 +18,16 @@ public class TokenBuffer {
 	}
 
 	public String peek() {
+		if(matcher == null)
+			throw new NullPointerException("The matcher of buffer is null. remmember to set the ;text before calling peek()");
 		if (!matcher.find(currentIndex)) {
 			return null;
 		}
 		return matcher.group();
 	}
 	public String peek(int extraSteps) {
+		if(matcher == null)
+			throw new NullPointerException("The matcher of buffer is null. remmember to set the ;text before calling peek()");
 		if (!matcher.find(currentIndex+extraSteps)) {
 			return null;
 		}
@@ -28,11 +35,12 @@ public class TokenBuffer {
 	}
 
 	public String consume() {
+		if(matcher == null)
+			throw new NullPointerException("The matcher of buffer is null. remmember to set the ;text before calling consume()");
 		if (!matcher.find(currentIndex++)) {
 			return null;
 		}
 		return matcher.group();
 
 	}
-
 }

@@ -85,7 +85,9 @@ public class ForGrammar extends Grammar {
 		closeParenthesis_Node9.addChild(openCurlyBracket_Node10.Id);
 		closeParenthesis_Node9.addChild(singleStatement_Node11.Id);
 		
+		openCurlyBracket_Node10.addChild(closeCurlyBracket_Node13.Id);
 		openCurlyBracket_Node10.addChild(multiStatement_Node12.Id);
+		
 		
 		multiStatement_Node12.addChild(closeCurlyBracket_Node13.Id);
 		

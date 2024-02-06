@@ -6,6 +6,10 @@ import java.util.List;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import entities.Token;
+import services.Parser;
+import services.ParsingFacade;
+import services.TextFormatting;
+import services.TokenHighlighter;
 import services.VTokenizer;
 
 //"int a[5];", "int a[]={2};", "int a[]={2,1};","int a[]={\"a\"};","int a[]={\"a\",\"b\"};", "int a[2]={2,1};",
@@ -19,18 +23,19 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "newData")
 	public void newD(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 		}
 
 	}
 
 	public static String[] noError_Data() {
-		return new String[] { "int a;", "int  a;", "int\n a;", "int a", "int a=2;", "int a =2;", "int a = 2;",
+		return new String[] { "int a;", "int  a;", "int\n a;", "int a;", "int a=2;", "int a =2;", "int a = 2;",
 				"int a= 2;", "int a=2 ;", "char a='a';", "char a ='a';", "char a= 'a';", "char a='a' ;",
 				"char a = ' a ' ;", "int a,b;", "int a, b;", "int a,  b;", "int a ,b;", "int a  ,b;", "int a,b,c;",
 				"int a,b=2;", "int a,b=2,c;", "int a , b=2 , c;", "int a;int a;", "float a=2;", "float a=2.2;",
@@ -42,20 +47,21 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "noError_Data")
 	public void noError(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 		}
 
 	}
 
 	public static Object[][] detectError_Data() {
-		return new Object[][] { { "int a:", 2 }, { "int a='a';", 3 }, { "int a, b:", 4 }, { "int a , b:", 4 },
-				{ "int a , b=2:", 6 }, { "int a,b=2,c:", 8 }, { "int a,2", 3 }, { "int a,'", 3 },
-				{ "int a;int a:", 5 } };
+		return new Object[][] { { "int a:", 3 }, { "int a='a';", 4 }, { "int a, b:", 6 }, { "int a , b:", 7 },
+				{ "int a , b=2:", 9 }, { "int a,b=2,c:", 9 }, { "int a,2", 4 }, { "int a,'", 4 },
+				{ "int a;int a:", 7 } };
 
 	}
 
@@ -63,12 +69,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "detectError_Data")
 	public void detectError(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0, "");
 
 	}
 
@@ -84,19 +91,20 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "variableDeclaration_Data")
 	public void variableDeclaration(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 		}
 
 	}
 
 	public static Object[][] variableDeclarationError_Data() {
-		return new Object[][] { { "int 2a;", 1 }, { "short 2a;", 1 }, { "long 2a;", 1 }, { "float 2a;", 1 },
-				{ "double 2a;", 1 }, { "char 2a;", 1 }, { "string 2a;", 1 }, { "bool 2a;", 1 } };
+		return new Object[][] { { "int 2a;", 2 }, { "short 2a;", 2 }, { "long 2a;", 2 }, { "float 2a;", 2 },
+				{ "double 2a;", 2 }, { "char 2a;", 2 }, { "string 2a;", 2 }, { "bool 2a;", 2 } };
 
 	}
 
@@ -104,11 +112,12 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "variableDeclarationError_Data")
 	public void variableDeclarationError(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0, "");
 
 	}
 
@@ -121,24 +130,25 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableDeclarationAndAssignmentWithLiteralOnly_Data")
 	public void VariableDeclarationAndAssignmentWithLiteralOnly(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
 	}
 
 	public static Object[][] VariableAssignmentWithLiteralOnlyErrors_Data() {
-		return new Object[][] { { "short a=32768;", 3 }, { "int a=2147483648;", 3 }, { "short a=2.3;", 3 },
-				{ "int a=2.3;", 3 }, { "long a=2.3;", 3 }, { "char a=2;", 3 }, { "string a=2;", 3 },
-				{ "char a=\"ss\";", 3 }, { "string a='a';", 3 }, { "long a=\"asd\";", 3 }, { "int a=\"asd\";", 3 },
-				{ "short a=\"asd\";", 3 }, { "long a='a';", 3 }, { "short a='a';", 3 }, { "int a='a';", 3 },
-				{ "float a='a';", 3 }, { "double a='a';", 3 }, { "float a=\"asd\";", 3 }, { "double a=\"asd\";", 3 },
-				{ "bool a=\"asd\";", 3 }, { "bool a='a';", 3 }, { "bool a=2;", 3 }, { "bool a=2.3;", 3 } };
+		return new Object[][] { { "short a=32768;", 4 }, { "int a=2147483648;", 4 }, { "short a=2.3;", 4 },
+				{ "int a=2.3;", 4 }, { "long a=2.3;", 4 }, { "char a=2;", 4 }, { "string a=2;", 4 },
+				{ "char a=\"ss\";", 4 }, { "string a='a';", 4 }, { "long a=\"asd\";", 4 }, { "int a=\"asd\";", 4 },
+				{ "short a=\"asd\";", 4 }, { "long a='a';", 4 }, { "short a='a';", 4 }, { "int a='a';", 4 },
+				{ "float a='a';", 4 }, { "double a='a';", 4 }, { "float a=\"asd\";", 4 }, { "double a=\"asd\";", 4 },
+				{ "bool a=\"asd\";", 4 }, { "bool a='a';", 4 }, { "bool a=2;", 4 }, { "bool a=2.3;", 4 } };
 
 	}
 
@@ -146,11 +156,12 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithLiteralOnlyErrors_Data")
 	public void VariableAssignmentWithLiteralOnlyErrors(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0, "");
 
 	}
 
@@ -164,22 +175,23 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithIdentifierOnly_Data")
 	public void VariableAssignmentWithIdentifierOnly(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
 	}
 
 	public static Object[][] VariableAssignmentWithIdentifiersOnlyErrors_Data() {
-		return new Object[][] { { "float a=2.3;short b=a;", 8 }, { "float a=2.3;int b=a;", 8 },
-				{ "float a=2.3;long b=a;", 8 }, { "double a=2.3;short b=a;", 8 }, { "double a=2.3;int b=a;", 8 },
-				{ "double a=2.3;long b=a;", 8 }, { "int a=2;char b=a;", 8 }, { "long a=2;char b=a;", 8 },
-				{ "short a=2;char b=a;", 8 }, { "int a=2;string b=a;", 8 }, { "int a=2;bool b=a;", 8 }, };
+		return new Object[][] { { "float a=2.3;short b=a;", 10 }, { "float a=2.3;int b=a;", 10 },
+				{ "float a=2.3;long b=a;", 10 }, { "double a=2.3;short b=a;", 10 }, { "double a=2.3;int b=a;", 10 },
+				{ "double a=2.3;long b=a;", 10 }, { "int a=2;char b=a;", 10 }, { "long a=2;char b=a;", 10 },
+				{ "short a=2;char b=a;", 10 }, { "int a=2;string b=a;", 10 }, { "int a=2;bool b=a;", 10 }, };
 
 	}
 
@@ -187,11 +199,12 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithIdentifiersOnlyErrors_Data")
 	public void VariableAssignmentWithIdentifiersOnlyErrors(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0, "");
 
 	}
 
@@ -205,12 +218,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithAritmeticOperations_Data")
 	public void VariableAssignmentWithAritmeticOperations(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -225,20 +239,21 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithAritmeticOperationsAndParenthesis_Data")
 	public void VariableAssignmentWithAritmeticOperationsAndParenthesis_Data(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
 	}
 
 	public static Object[][] VariableAssignmentWithAritmeticOperationsAndParenthesisErrors_Data() {
-		return new Object[][] { { "int a=2(", 4 }, { "int a=2+(+", 6 }, { "int a=2+(1*)", 8 }, { "int a=)", 3 },
-				{ "int a=2)", 4 }, { "int a=(2+2;", 7 }, };
+		return new Object[][] { { "int a=2(", 5 }, { "int a=2+(+", 7 }, { "int a=2+(1*)", 9 }, { "int a=)", 4 },
+				{ "int a=2)", 5 }, { "int a=(2+2;", 8 }, };
 
 	}
 
@@ -246,11 +261,12 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithAritmeticOperationsAndParenthesisErrors_Data")
 	public void VariableAssignmentWithAritmeticOperationsAndParenthesisErrors(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0, "");
 
 	}
 
@@ -263,33 +279,35 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "VariableAssignmentWithLiteralOnly_Data")
 	public void VariableAssignmentWithLiteralOnly(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
 	}
 
 	public static String[] IfStatement_Data() {
-		return new String[] { "if(2>3){int a=2;}", "if('a'>'a')", "if(\"ba\">\"asd\")", "if(true>false)", "if(2>=3)",
-				"if(2<=3)", "if(2==3)", "if(2!=3)", "if(2<3)", "if(!2<3)", "if((2<3))", "if(!(2<3))",
-				"if((2<3)&&(2>3))", "if((2<3)&&(2>3)||!(2==3))", "if(1>2){int a=2;bool b=false;}" };
+		return new String[] { "if(2>3){int a=2;}", "if('a'>'a'){}", "if(\"ba\">\"asd\"){}", "if(true>false){}", "if(2>=3){}",
+				"if(2<=3){}", "if(2==3){}", "if(2!=3){}", "if(2<3){}", "if(!2<3){}", "if((2<3)){}", "if(!(2<3)){}",
+				"if((2<3)&&(2>3)){}", "if((2<3)&&(2>3)||!(2==3)){}", "if(1>2){int a=2;bool b=false;}" };
 	}
 
 	@ParameterizedTest
 	@MethodSource(value = "IfStatement_Data")
 	public void IfStatement(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -303,12 +321,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "CompeleteIfStatement_Data")
 	public void CompeleteIfStatement_Data(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -323,12 +342,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "WhileStatement_Data")
 	public void WhileStatement(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -343,12 +363,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "DoWhileStatement_Data")
 	public void DoWhileStatement_Data(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -364,12 +385,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "ForStatement_Data")
 	public void ForStatement(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -384,12 +406,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "PointerTest_Data")
 	public void PointerTest(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -408,12 +431,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "SwitchTest_Data")
 	public void SwitchTest(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -428,12 +452,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "ArrayTest_Data")
 	public void ArrayTest(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -448,12 +473,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "FunctionTest_Data")
 	public void FunctionTest(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -467,12 +493,12 @@ public class ErrorDetecterTest {
 //	@MethodSource(value = "ObjectDeclareTest_Data")
 //	public void ObjectDeclareTest(String text) {
 //		// Arrange
-//		VTokenizer tokenizer = new VTokenizer();
+//		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 //		// Act
-//		List<Token> tokens = tokenizer.tokenizeString(text,false);
+//		List<Token> tokens = parsingFacade.tokenizeString(text,false);
 //		// Assert
 //		for (int i = 0; i < tokens.size(); i++) {
-//			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+//			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 //					
 //		}
 //
@@ -486,12 +512,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "TryCatchTest_Data")
 	public void TryCatchTest(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -505,12 +532,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "ReturnTest_Data")
 	public void ReturnTest_Data(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -524,12 +552,13 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "DeleteTest_Data")
 	public void DeleteTest(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
@@ -543,33 +572,17 @@ public class ErrorDetecterTest {
 	@MethodSource(value = "AssignmentWithArraysTest_Data")
 	public void AssignmentWithArraysTest_Data(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
+		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " + tokens.get(i).errors.get(0));
+			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
 
 	}
-	public static String[] testtt() {
-		return new String[] { "if" };
-	}
-
-	@ParameterizedTest
-	@MethodSource(value = "testtt")
-	public void testtt(String text) {
-		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
-		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text, false);
-		// Assert
-		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i + " error: " );
-					
-		}
-
-	}
+	
 
 }

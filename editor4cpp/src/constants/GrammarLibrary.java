@@ -8,7 +8,7 @@ import grammars.AssignmentGrammar;
 import grammars.ComparisonGrammar;
 import grammars.DeleteGrammar;
 import grammars.DoWhileGrammar;
-import grammars.EndOfTextGrammar;
+import grammars.SemicolonGrammar;
 import grammars.ForGrammar;
 import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
@@ -169,9 +169,9 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new DeleteGrammar()));
 		return list;
 	}
-	public static List<ParsingObject> getParsingObjectsOfEndOfTextGrammar() {
+	public static List<ParsingObject> getParsingObjectsOfSemicolon() {
 		var list = new ArrayList<ParsingObject>();
-		list.add(new ParsingObject(new EndOfTextGrammar()));
+		list.add(new ParsingObject(new SemicolonGrammar()));
 		return list;
 	}
 	public static List<ParsingObject> getParsingObjectsOfAll() {
@@ -192,7 +192,7 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfTryCatchGrammar());
 		list.addAll(getParsingObjectsOfReturnGrammar());
 		list.addAll(getParsingObjectsOfDeleteGrammar());
-		list.addAll(getParsingObjectsOfEndOfTextGrammar());
+		list.addAll(getParsingObjectsOfSemicolon());
 
 		return list;
 	}

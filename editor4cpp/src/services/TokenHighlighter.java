@@ -1,14 +1,13 @@
 package services;
 
 import entities.Token;
+import interfaces.ITokenHighlighter;
 
-public class TokenHighlighter {
+public class TokenHighlighter implements ITokenHighlighter {
 
-	public Token HighlightToken(Token token) {
+	public void HighlightToken(Token token) {
 		
 		token.tokenStyle=token.tokenType.getTokenStyle();
-		
-		return token;
 
 	}
 }

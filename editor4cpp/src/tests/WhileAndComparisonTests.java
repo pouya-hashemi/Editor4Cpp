@@ -8,6 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import entities.Token;
+import services.Parser;
+import services.ParsingFacade;
+import services.TextFormatting;
+import services.TokenHighlighter;
 import services.VTokenizer;
 
 public class WhileAndComparisonTests {
@@ -24,13 +28,15 @@ public class WhileAndComparisonTests {
 	@MethodSource(value = "ComparisonTests_Data")
 	public void ComparisonTests(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text,false);
+		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			assertTrue(tokens.get(i).errors.size() == 0,
-					"index:" + i + " error: " + tokens.get(i).errors.get(0));
+					"index:" + i);
 		}
 
 	}
@@ -45,9 +51,11 @@ public class WhileAndComparisonTests {
 	@MethodSource(value = "ComparisonErrorsTests")
 	public void ComparisonErrorsTests(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text,false);
+		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
 		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
 

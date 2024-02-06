@@ -8,7 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import entities.Token;
 import entities.TokenTypes.EndOfText;
-import interfaces.ITokenizer;
+import entities.TokenTypes.WhiteSpace;
+import interfaces.IParsingFacade;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +18,12 @@ public class TextEditor extends JTextPane {
 
 	private static final long serialVersionUID = 3526352590503713441L;
 
-	private ITokenizer tokenizer;
+	private IParsingFacade parsingFacade;
 	private List<Token> errorTokens;
 	private boolean needSave = false;
 
-	public TextEditor(ITokenizer tokenizer) {
-		this.tokenizer = tokenizer;
+	public TextEditor(IParsingFacade parsingFacade) {
+		this.parsingFacade = parsingFacade;
 		errorTokens = new ArrayList<Token>();
 
 		setFont(new Font("Monospaced", Font.PLAIN, 14));
@@ -96,27 +97,31 @@ public class TextEditor extends JTextPane {
 
 	public void buildText(String text, boolean formatText) {
 		var doc = getStyledDocument();
-		List<Token> tokens = tokenizer.tokenizeString(text, formatText);
+		List<Token> tokens = parsingFacade.ParseText(text, formatText);
 
 		if (formatText)
 			setText(String.join("", tokens.stream().map(a -> a.value).collect(Collectors.toList())));
 		int currentIndex = 0;
-		for (int i = 0; i < tokens.size(); i++) {
+		var size=tokens.size();
+		for (int i = 0; i < size; i++) {
 			var token = tokens.get(i);
 			token.startIndex = currentIndex;
 			token.endIndex = currentIndex + token.value.length();
 			doc.setCharacterAttributes(currentIndex, token.value.length(), token.tokenStyle, false);
 			if (token.errors.size() > 0) {
 				if (token.tokenType instanceof EndOfText &&i>0) {
-					var prevToken = tokens.get(i - 1);
+					var j=2;
+					var prevToken = tokens.get( size- j);
+					while(prevToken.tokenType instanceof WhiteSpace&& j<size) {
+						 prevToken = tokens.get(size - ++j);
+					}
 					if (errorTokens.contains(prevToken)) {
-						prevToken = errorTokens.get(errorTokens.indexOf(prevToken));
-						prevToken.errors.addAll(token.errors);
+						continue;
 					}else {
 						prevToken.errors.addAll(token.errors);
 						errorTokens.add(prevToken);
 					}
-					doc.setCharacterAttributes(currentIndex- prevToken.value.length(), prevToken.value.length(), CustomStyle.errorStyle, false);
+					doc.setCharacterAttributes(prevToken.startIndex, prevToken.value.length(), CustomStyle.errorStyle, false);
 					
 				}
 				else {

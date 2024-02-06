@@ -14,7 +14,8 @@ public class TokenBufferTest {
 	@MethodSource(value = "getTokenTest_Data")
 	public void getTokenTest(String text,int currentIndex,String expectedValue) {
 		// Arrange
-		TokenBuffer tokenBuffer=new TokenBuffer(text);
+		TokenBuffer tokenBuffer=new TokenBuffer();
+		tokenBuffer.setTextAndReset(text);
 		for(int i=0;i<currentIndex;i++)
 			tokenBuffer.consume();
 		// Act

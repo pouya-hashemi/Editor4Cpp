@@ -6,32 +6,33 @@ import java.util.UUID;
 import entities.GrammarNode;
 import entities.TerminalNode;
 import entities.TokenTypes.EndOfText;
+import entities.TokenTypes.Punctuations.SemicolonType;
 
 
-public class EndOfTextGrammar extends Grammar {
-	public EndOfTextGrammar(int id,List<GrammarNode> grammarNodes,UUID rootNodeId) {
+public class SemicolonGrammar extends Grammar {
+	public SemicolonGrammar(int id,List<GrammarNode> grammarNodes,UUID rootNodeId) {
 		super(id,grammarNodes,rootNodeId);
 
 	}
 	
 	
-	public EndOfTextGrammar() {
+	public SemicolonGrammar() {
 		super();
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		TerminalNode endOfText_Node1 = new TerminalNode(new EndOfText(), false);
+		TerminalNode semicolon_Node1 = new TerminalNode(new SemicolonType(), false);
 
 
 		// -----------------------------------------------------------------
-		root.addChild(endOfText_Node1.Id);
+		root.addChild(semicolon_Node1.Id);
 
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
-		grammarNodes.add(endOfText_Node1);
+		grammarNodes.add(semicolon_Node1);
 
 	}
 	
@@ -43,7 +44,7 @@ public class EndOfTextGrammar extends Grammar {
 		for(GrammarNode node:this.grammarNodes) {
 			nodes.add(node.clone());
 		}
-		return new EndOfTextGrammar(this.Id,nodes,this.rootNodeId);
+		return new SemicolonGrammar(this.Id,nodes,this.rootNodeId);
 	}
 
 }

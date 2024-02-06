@@ -63,6 +63,7 @@ public class IfGrammar extends Grammar {
 		comparesionStatement_Node3.addChild(closeParenthesis_Node4.Id);
 		closeParenthesis_Node4.addChild(openCurlyBracketForIf_Node5.Id);
 		closeParenthesis_Node4.addChild(singleStatementForIf_Node6.Id);
+		openCurlyBracketForIf_Node5.addChild(closeCurlyBracketForIf_Node8.Id);
 		openCurlyBracketForIf_Node5.addChild(multiStatementForIf_Node7.Id);
 		multiStatementForIf_Node7.addChild(closeCurlyBracketForIf_Node8.Id);
 		multiStatementForIf_Node7.addChild(multiStatementForIf_Node7.Id);
@@ -71,6 +72,7 @@ public class IfGrammar extends Grammar {
 		else_Node9.addChild(if_Node1.Id);
 		else_Node9.addChild(openCurlyBracketForElse_Node10.Id);
 		else_Node9.addChild(singleStatementForElse_Node11.Id);
+		openCurlyBracketForElse_Node10.addChild(closeCurlyBracketForElse_Node13.Id);
 		openCurlyBracketForElse_Node10.addChild(multiStatementForElse_Node12.Id);
 		multiStatementForElse_Node12.addChild(closeCurlyBracketForElse_Node13.Id);
 		multiStatementForElse_Node12.addChild(multiStatementForElse_Node12.Id);

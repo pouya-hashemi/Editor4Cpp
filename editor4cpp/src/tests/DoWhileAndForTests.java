@@ -5,6 +5,10 @@ import java.util.List;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import entities.Token;
+import services.Parser;
+import services.ParsingFacade;
+import services.TextFormatting;
+import services.TokenHighlighter;
 import services.VTokenizer;
 
 public class DoWhileAndForTests {
@@ -17,13 +21,14 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "DoWhileTests_Data")
 	public void DoWhileTests(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text,false);
+		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			assertTrue(tokens.get(i).errors.size() == 0,
-					"index:" + i + " error: " + tokens.get(i).errors.get(0));
+					"index:" + i);
 		}
 
 	}
@@ -37,11 +42,12 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "DoWhileTestsErrors_Data")
 	public void DoWhileTestsErrors(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text,false);
+		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0,"");
 
 	}
 
@@ -56,20 +62,21 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "ForTests_Data")
 	public void ForTests(String text) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text,false);
+		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
 			assertTrue( tokens.get(i).errors.size() == 0,
-					"index:" + i + " error: " + tokens.get(i).errors.get(0));
+					"index:" + i);
 		}
 
 	}
 
 	public static Object[][] ForErrorTests_Data() {
 		return new Object[][] { { "for(int i=0,long b=2;i<=2;i++)int a=2;", 8 },
-				{ "for(int i=0,;i<=2;i++)int a=2;", 8 }, { "for(int i=0;i<=2;i++,)int a=2;", 17 } };
+				{ "for(int i=0,;i<=2;i++)int a=2;", 8 }, { "for(int i=0;i<=2;i++,)int a=2;", 15 } };
 
 	}
 
@@ -77,11 +84,12 @@ public class DoWhileAndForTests {
 	@MethodSource(value = "ForErrorTests_Data")
 	public void ForErrorTests(String text, int index) {
 		// Arrange
-		VTokenizer tokenizer = new VTokenizer();
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
 		// Act
-		List<Token> tokens = tokenizer.tokenizeString(text,false);
+		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, tokens.get(index).errors.get(0));
+		assertTrue(tokens.get(index).errors.size() > 0,"");
 
 	}
 }

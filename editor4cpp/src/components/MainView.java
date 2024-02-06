@@ -22,7 +22,11 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import common.AppSelectionListener;
-import interfaces.ITokenizer;
+import interfaces.IParsingFacade;
+import services.Parser;
+import services.ParsingFacade;
+import services.TextFormatting;
+import services.TokenHighlighter;
 import services.VTokenizer;
 
 import org.eclipse.swt.widgets.Table;
@@ -35,15 +39,19 @@ public class MainView extends ViewPart {
 	private JFrame frame;
 	private TableItem selectedItem = null;
 	private TextEditor editor;
-	private ITokenizer tokenizer;
+	private IParsingFacade parsingFacade;
 	private EStringToStringMapEntryImpl entry;
 	private boolean closing = false;
 	private List<Button> buttons = new ArrayList<>();
 	private List<TableEditor> tableEditors = new ArrayList<>();
 	
 	public MainView() {
-		tokenizer=new VTokenizer();
-		editor=new TextEditor(tokenizer);
+		var tokenHighlighter=new TokenHighlighter();
+		parsingFacade=new ParsingFacade(tokenHighlighter,
+				new TextFormatting(tokenHighlighter),
+				new VTokenizer(),
+				new Parser());
+		editor=new TextEditor(parsingFacade);
 		frame = new EditorFrame(editor,()->saveChanges());
 
 		addSaveOnFrameClosingEventListener();

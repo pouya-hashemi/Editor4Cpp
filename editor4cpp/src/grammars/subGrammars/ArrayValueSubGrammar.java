@@ -75,17 +75,20 @@ public class ArrayValueSubGrammar  extends Grammar {
 //		secondFloatLiteral_Node10.addChild(ThirdFloatLiteral_Node11.Id);
 
 		
-		
 		boolLiteral_Node6.addChild(commaForLiteral_Node7.Id);
+		commaForLiteral_Node7.addChild(boolLiteral_Node6.Id);
 		boolLiteral_Node6.addChild(closeCurlyBracket_Node9.Id);
 		
 		textLiteral_Node3.addChild(commaForLiteral_Node7.Id);
+		commaForLiteral_Node7.addChild(textLiteral_Node3.Id);
 		textLiteral_Node3.addChild(closeCurlyBracket_Node9.Id);
 		
 		floatLiteral_Node5.addChild(commaForLiteral_Node7.Id);
+		commaForLiteral_Node7.addChild(floatLiteral_Node5.Id);
 		floatLiteral_Node5.addChild(closeCurlyBracket_Node9.Id);
 		
 		numericLiteral_Node4.addChild(commaForLiteral_Node7.Id);
+		commaForLiteral_Node7.addChild(numericLiteral_Node4.Id);
 		numericLiteral_Node4.addChild(closeCurlyBracket_Node9.Id);
 		
 

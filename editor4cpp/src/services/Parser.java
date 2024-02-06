@@ -4,22 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import Dtos.ParsingObject;
-import Dtos.StatementParsingResult;
+import common.CommonCharacters;
 import constants.GrammarLibrary;
 import entities.*;
 import entities.TokenTypes.DataType;
+import entities.TokenTypes.EndOfText;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.Literal;
 import entities.TokenTypes.Punctuations.EqualType;
 import enums.GrammarStatus;
 import interfaces.HasType;
+import interfaces.IParser;
 
-public class ErrorDetecter {
-	private List<ParsingObject> currentExpressions = null;
-	private List<ParsingObject> previousExpressions = null;
+public class Parser implements IParser {
+	private List<ParsingObject> currentExpressions;
+	private List<ParsingObject> previousExpressions ;
+	private boolean waitSynchToken;
 
-	public StatementParsingResult Parse( Token token) {
+	public Parser() {
+		currentExpressions=null;
+		previousExpressions=null;
+		waitSynchToken=false;
+	}
+	
+	public void Parse( Token token) {
 
+		if(waitSynchToken&& CommonCharacters.isSynchronizedToken(token.value)) {
+			waitSynchToken=false;
+		}
+		
+		if(waitSynchToken)
+			return;
+		
 		if (currentExpressions == null)
 			currentExpressions = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfAll(), false).cloneParsingObject();
 
@@ -59,6 +75,12 @@ public class ErrorDetecter {
 
 				if (child.getClass() == TerminalNode.class) {
 
+					if(token.tokenType instanceof EndOfText) {
+						if(gObj.progressCounter==0)
+							continue;
+						childErrors.add(((TerminalNode) child).tokenType.getError());
+						continue;
+					}
 					if (((TerminalNode) child).tokenType.getClass().isInstance(token.tokenType)) {
 
 						if (token.tokenType instanceof HasType) {
@@ -109,6 +131,9 @@ public class ErrorDetecter {
 					}
 
 				} else if (child.getClass() == NonTerminalNode.class) {
+					if(token.tokenType instanceof EndOfText) {
+						continue;
+					}
 					breakDownChilds(gObj, gObj.currentNodeId, child.Id);
 					if (!deleteList.contains(gObj))
 						deleteList.add(gObj);
@@ -133,21 +158,21 @@ public class ErrorDetecter {
 		}
 
 		currentExpressions.removeAll(deleteList);
-		var result = new StatementParsingResult();
 
 		if (currentExpressions.isEmpty()) {
 			if (previousExpressions.stream().anyMatch(a -> a.grammarStatus == GrammarStatus.isEnded)) {
-				result.grammarStatus = GrammarStatus.refresh_Retry;
+				//refresh retry
+				refresh();
+				Parse(token);
 			} else {
-				result.grammarStatus = GrammarStatus.failed;
-
+				//failed
+				waitSynchToken=true;
 				token.errors.addAll(finalError);
+				refresh();
 			}
-		} else {
-			result.grammarStatus = GrammarStatus.processing;
-		}
+		} 
 
-		return result;
+		return;
 	}
 
 	private void breakDownChilds(ParsingObject gObj, UUID currentNodeId, UUID childId) {
@@ -188,8 +213,9 @@ public class ErrorDetecter {
 
 	}
 
-	public void refresh() {
+	private void refresh() {
 		currentExpressions = null;
 		previousExpressions = null;
+		waitSynchToken=false;
 	}
 }

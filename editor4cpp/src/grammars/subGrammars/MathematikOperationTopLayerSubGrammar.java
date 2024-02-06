@@ -31,14 +31,14 @@ public class MathematikOperationTopLayerSubGrammar extends Grammar {
 		TerminalNode doubleOperator_Node7 = new TerminalNode(new DoubleOperandOperator(), false);
 		NonTerminalNode mathTopLayer_Node8 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(),true);
 		
-		TerminalNode firstPreSingleOperator_Node9 = new TerminalNode(new SingleOperandOperator(), false);
+//		TerminalNode firstPreSingleOperator_Node9 = new TerminalNode(new SingleOperandOperator(), false);
 		TerminalNode secondPreSingleOperator_Node10 = new TerminalNode(new SingleOperandOperator(), false);
 		
 
 		// -----------------------------------------------------------------
 		root.addChild(openParenthesis_Node1.Id);
 		root.addChild(mathOp_Node2.Id);
-		root.addChild(firstPreSingleOperator_Node9.Id);
+		root.addChild(secondPreSingleOperator_Node10.Id);
 		
 		openParenthesis_Node1.addChild(mathToplayer_Node3.Id);
 		
@@ -49,7 +49,7 @@ public class MathematikOperationTopLayerSubGrammar extends Grammar {
 		secondSingleOperator_Node6.addChild(doubleOperator_Node7.Id);
 		doubleOperator_Node7.addChild(mathTopLayer_Node8.Id);
 
-		firstPreSingleOperator_Node9.addChild(secondPreSingleOperator_Node10.Id);
+//		firstPreSingleOperator_Node9.addChild(secondPreSingleOperator_Node10.Id);
 		secondPreSingleOperator_Node10.addChild(openParenthesis_Node1.Id);
 		secondPreSingleOperator_Node10.addChild(mathOp_Node2.Id);
 		if (grammarNodes == null)
@@ -63,7 +63,7 @@ public class MathematikOperationTopLayerSubGrammar extends Grammar {
 		grammarNodes.add(secondSingleOperator_Node6);
 		grammarNodes.add(doubleOperator_Node7);
 		grammarNodes.add(mathTopLayer_Node8);
-		grammarNodes.add(firstPreSingleOperator_Node9);
+//		grammarNodes.add(firstPreSingleOperator_Node9);
 		grammarNodes.add(secondPreSingleOperator_Node10);
 		
 	}

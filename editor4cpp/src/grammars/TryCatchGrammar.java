@@ -65,6 +65,7 @@ public class TryCatchGrammar extends Grammar {
 		root.addChild(try_Node1.Id);
 		
 		try_Node1.addChild(openCurlyBracket_Node2.Id);
+		openCurlyBracket_Node2.addChild(closeCurlyBracket_Node4.Id);
 		openCurlyBracket_Node2.addChild(multiStatement_Node3.Id);
 		
 		multiStatement_Node3.addChild(closeCurlyBracket_Node4.Id);
