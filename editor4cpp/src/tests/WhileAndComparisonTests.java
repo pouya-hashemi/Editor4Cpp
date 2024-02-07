@@ -12,7 +12,7 @@ import services.Parser;
 import services.ParsingFacade;
 import services.TextFormatting;
 import services.TokenHighlighter;
-import services.VTokenizer;
+import services.Tokenizer;
 
 public class WhileAndComparisonTests {
 	public static String[] ComparisonTests_Data() {
@@ -29,7 +29,7 @@ public class WhileAndComparisonTests {
 	public void ComparisonTests(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
@@ -52,7 +52,7 @@ public class WhileAndComparisonTests {
 	public void ComparisonErrorsTests(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);

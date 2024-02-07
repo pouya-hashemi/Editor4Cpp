@@ -12,6 +12,8 @@ import grammars.SemicolonGrammar;
 import grammars.ForGrammar;
 import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
+import grammars.NamespaceGrammar;
+import grammars.NamespaceSubGrammar;
 import grammars.ObjectDeclarationGrammar;
 import grammars.PointerAssignmentGrammar;
 import grammars.PointerDeclarationGrammar;
@@ -19,6 +21,7 @@ import grammars.ReturnGrammar;
 import grammars.SwitchGrammar;
 import grammars.TryCatchGrammar;
 import grammars.VariableDeclarationGrammar;
+import grammars.VectorDeclarationGrammar;
 import grammars.WhileGrammar;
 import grammars.subGrammars.ArrayValueSubGrammar;
 import grammars.subGrammars.CaseSubGrammar;
@@ -169,9 +172,24 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new DeleteGrammar()));
 		return list;
 	}
-	public static List<ParsingObject> getParsingObjectsOfSemicolon() {
+	public static List<ParsingObject> getParsingObjectsOfSemicolonGrammar() {
 		var list = new ArrayList<ParsingObject>();
 		list.add(new ParsingObject(new SemicolonGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfNamespaceGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new NamespaceGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfNamespaceSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new NamespaceSubGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfVectorGrammar(boolean hasSemicolon) {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new VectorDeclarationGrammar(hasSemicolon)));
 		return list;
 	}
 	public static List<ParsingObject> getParsingObjectsOfAll() {
@@ -188,11 +206,12 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfSwitchGrammar());
 		list.addAll(getParsingObjectsOfArrayGrammar());
 		list.addAll(getParsingObjectsOfFunctionCallGrammar());
-//		list.addAll(getParsingObjectsOfObjectDeclarationGrammar());
 		list.addAll(getParsingObjectsOfTryCatchGrammar());
 		list.addAll(getParsingObjectsOfReturnGrammar());
 		list.addAll(getParsingObjectsOfDeleteGrammar());
-		list.addAll(getParsingObjectsOfSemicolon());
+		list.addAll(getParsingObjectsOfSemicolonGrammar());
+		list.addAll(getParsingObjectsOfNamespaceGrammar());
+		list.addAll(getParsingObjectsOfVectorGrammar(true));
 
 		return list;
 	}

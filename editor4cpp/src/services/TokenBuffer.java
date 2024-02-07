@@ -28,6 +28,8 @@ public class TokenBuffer {
 	public String peek(int extraSteps) {
 		if(matcher == null)
 			throw new NullPointerException("The matcher of buffer is null. remmember to set the ;text before calling peek()");
+		if(currentIndex+extraSteps <0)
+			return null;
 		if (!matcher.find(currentIndex+extraSteps)) {
 			return null;
 		}

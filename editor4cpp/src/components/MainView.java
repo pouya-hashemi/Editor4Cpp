@@ -27,7 +27,7 @@ import services.Parser;
 import services.ParsingFacade;
 import services.TextFormatting;
 import services.TokenHighlighter;
-import services.VTokenizer;
+import services.Tokenizer;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -49,7 +49,7 @@ public class MainView extends ViewPart {
 		var tokenHighlighter=new TokenHighlighter();
 		parsingFacade=new ParsingFacade(tokenHighlighter,
 				new TextFormatting(tokenHighlighter),
-				new VTokenizer(),
+				new Tokenizer(),
 				new Parser());
 		editor=new TextEditor(parsingFacade);
 		frame = new EditorFrame(editor,()->saveChanges());

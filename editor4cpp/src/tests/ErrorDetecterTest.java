@@ -10,7 +10,7 @@ import services.Parser;
 import services.ParsingFacade;
 import services.TextFormatting;
 import services.TokenHighlighter;
-import services.VTokenizer;
+import services.Tokenizer;
 
 //"int a[5];", "int a[]={2};", "int a[]={2,1};","int a[]={\"a\"};","int a[]={\"a\",\"b\"};", "int a[2]={2,1};",
 public class ErrorDetecterTest {
@@ -24,7 +24,7 @@ public class ErrorDetecterTest {
 	public void newD(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -48,7 +48,7 @@ public class ErrorDetecterTest {
 	public void noError(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -70,7 +70,7 @@ public class ErrorDetecterTest {
 	public void detectError(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -92,7 +92,7 @@ public class ErrorDetecterTest {
 	public void variableDeclaration(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -113,7 +113,7 @@ public class ErrorDetecterTest {
 	public void variableDeclarationError(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -131,7 +131,7 @@ public class ErrorDetecterTest {
 	public void VariableDeclarationAndAssignmentWithLiteralOnly(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -157,7 +157,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithLiteralOnlyErrors(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -176,7 +176,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithIdentifierOnly(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -200,7 +200,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithIdentifiersOnlyErrors(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -219,7 +219,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithAritmeticOperations(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -240,7 +240,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithAritmeticOperationsAndParenthesis_Data(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -262,7 +262,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithAritmeticOperationsAndParenthesisErrors(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -280,7 +280,7 @@ public class ErrorDetecterTest {
 	public void VariableAssignmentWithLiteralOnly(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -302,7 +302,7 @@ public class ErrorDetecterTest {
 	public void IfStatement(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -322,7 +322,7 @@ public class ErrorDetecterTest {
 	public void CompeleteIfStatement_Data(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -343,7 +343,7 @@ public class ErrorDetecterTest {
 	public void WhileStatement(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -364,7 +364,7 @@ public class ErrorDetecterTest {
 	public void DoWhileStatement_Data(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -386,7 +386,7 @@ public class ErrorDetecterTest {
 	public void ForStatement(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -407,7 +407,7 @@ public class ErrorDetecterTest {
 	public void PointerTest(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -432,7 +432,7 @@ public class ErrorDetecterTest {
 	public void SwitchTest(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -453,7 +453,7 @@ public class ErrorDetecterTest {
 	public void ArrayTest(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -474,7 +474,7 @@ public class ErrorDetecterTest {
 	public void FunctionTest(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -513,7 +513,7 @@ public class ErrorDetecterTest {
 	public void TryCatchTest(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -533,7 +533,7 @@ public class ErrorDetecterTest {
 	public void ReturnTest_Data(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -553,7 +553,7 @@ public class ErrorDetecterTest {
 	public void DeleteTest(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert
@@ -573,7 +573,7 @@ public class ErrorDetecterTest {
 	public void AssignmentWithArraysTest_Data(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text, false);
 		// Assert

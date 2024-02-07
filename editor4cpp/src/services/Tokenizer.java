@@ -18,7 +18,7 @@ import entities.TokenTypes.Punctuations.*;
 import enums.DataTypes;
 import interfaces.ITokenizer;
 
-public class VTokenizer implements ITokenizer{
+public class Tokenizer implements ITokenizer {
 	private TokenBuffer buffer;
 	private Map<String, DataType> dataTypes;
 	private List<Identifier> identifiers;
@@ -26,16 +26,15 @@ public class VTokenizer implements ITokenizer{
 	private DataTypes dataTypeInProgress;
 	private List<String> keywords;
 
-	public VTokenizer() {
+	public Tokenizer() {
 		dataTypes = new HashMap<>();
-		keywords=new ArrayList<String>();
+		keywords = new ArrayList<String>();
 		identifiers = new ArrayList<Identifier>();
 		declarationInProgress = false;
 		buffer = new TokenBuffer();
 		initDataTypes();
 		initKeywords();
-		
-		
+
 	}
 
 	public void setTextAndRestart(String text) {
@@ -68,8 +67,24 @@ public class VTokenizer implements ITokenizer{
 		case "-":
 		case "%":
 			return processMathematicalOperator();
-		case "<":
-		case ">":
+		case "<": {
+			var nextChar = buffer.peek(1);
+			if (nextChar != null && nextChar.equals("<")) {
+				var token = new Token(buffer.consume(), new StreamInsertionType());
+				token.value += buffer.consume();
+				return token;
+			}
+			return processComparisonOperator();
+		}
+		case ">": {
+			var nextChar = buffer.peek(1);
+			if (nextChar != null && nextChar.equals(">")) {
+				var token = new Token(buffer.consume(), new StreamExtractionType());
+				token.value += buffer.consume();
+				return token;
+			}
+			return processComparisonOperator();
+		}
 		case "!":
 			return processComparisonOperator();
 		case "=": {
@@ -168,12 +183,14 @@ public class VTokenizer implements ITokenizer{
 	}
 
 	private Token processDefault() {
+		var prevChar = buffer.peek(-1);
+		var secondPrevChar = buffer.peek(-2);
 		var token = new Token(buffer.consume());
 
 		var nextChar = buffer.peek();
 
-		while (nextChar != null
-				&& (Character.isAlphabetic(nextChar.charAt(0)) || Character.isDigit(nextChar.charAt(0))||nextChar.equals("_"))) {
+		while (nextChar != null && (Character.isAlphabetic(nextChar.charAt(0)) || Character.isDigit(nextChar.charAt(0))
+				|| nextChar.equals("_"))) {
 			token.value += buffer.consume();
 			nextChar = buffer.peek();
 		}
@@ -193,7 +210,17 @@ public class VTokenizer implements ITokenizer{
 		case "\n":
 		case "\t":
 		default: {
+
 			if (token.tokenType == null) {
+
+				if (prevChar != null && prevChar.equals(":")) {
+
+					if (secondPrevChar != null && secondPrevChar.equals(":")) {
+						token.tokenType = new NamespaceMemberType();
+						return token;
+					}
+				}
+
 				return processIdentifier(token);
 			}
 			return token;
@@ -210,7 +237,7 @@ public class VTokenizer implements ITokenizer{
 			if (token.tokenType == null) {
 				var secondChar = buffer.peek(1);
 				if (secondChar != null && secondChar.equals(":")) {
-					token.tokenType = new LibraryType();
+					token.tokenType = new NamespaceType();
 					return token;
 				} else
 					return processIdentifier(token);
@@ -261,6 +288,8 @@ public class VTokenizer implements ITokenizer{
 			token.tokenType = new DeleteKeyword();
 		else if (token.value.equals("if"))
 			token.tokenType = new IfKeyword();
+		else if (token.value.equals("vector"))
+			token.tokenType = new VectorType();
 		else if (token.value.equals("case"))
 			token.tokenType = new CaseKeyword();
 		else if (token.value.equals("break"))
@@ -483,11 +512,20 @@ public class VTokenizer implements ITokenizer{
 		var token = new Token(buffer.consume());
 
 		switch (token.value) {
-		case ">":
+		case ">": {
+			var nextChar = buffer.peek();
+			if (nextChar == null || !nextChar.equals("=")) {
+				token.tokenType = new GreaterThanOperator();
+				return token;
+			}
+			token.value += buffer.consume();
+			token.tokenType = new DoubleComparisonOperator();
+			return token;
+		}
 		case "<": {
 			var nextChar = buffer.peek();
 			if (nextChar == null || !nextChar.equals("=")) {
-				token.tokenType = new SingleComparisonOperator();
+				token.tokenType = new LessThanOperator();
 				return token;
 			}
 			token.value += buffer.consume();
@@ -521,7 +559,5 @@ public class VTokenizer implements ITokenizer{
 		}
 
 	}
-
-
 
 }

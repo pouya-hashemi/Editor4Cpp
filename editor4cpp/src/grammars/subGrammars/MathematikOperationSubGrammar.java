@@ -56,6 +56,7 @@ public class MathematikOperationSubGrammar extends Grammar {
 		TerminalNode numericLiteral_Node14 = new TerminalNode(new NumericLiteral(), false);
 
 		TerminalNode closeBracket_Node15 = new TerminalNode(new CloseBracket(), true);
+		
 
 		// -----------------------------------------------------------------
 //		root.addChild(firstSingleOperator_Node1.Id);
@@ -65,6 +66,7 @@ public class MathematikOperationSubGrammar extends Grammar {
 		root.addChild(floatLiteral_Node3.Id);
 		root.addChild(numericLiteral_Node4.Id);
 		root.addChild(functionCall_Node12.Id);
+
 
 //		firstSingleOperator_Node1.addChild(secondSingleOperator_Node2.Id);
 

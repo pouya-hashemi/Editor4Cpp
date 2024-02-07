@@ -5,7 +5,7 @@ import javax.swing.text.Style;
 import constants.CustomStyle;
 import entities.TokenType;
 
-public class LibraryType extends TokenType {
+public class NamespaceMemberType extends TokenType {
 
 	@Override
 	public Style getTokenStyle() {
@@ -16,7 +16,7 @@ public class LibraryType extends TokenType {
 	@Override
 	public String getError() {
 		// TODO Auto-generated method stub
-		return "library name expected";
+		return "namespace's member";
 	}
 
 }

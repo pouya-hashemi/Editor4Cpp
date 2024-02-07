@@ -1,9 +1,12 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import entities.Token;
 import services.Parser;
 import services.ParsingFacade;
@@ -11,15 +14,15 @@ import services.TextFormatting;
 import services.TokenHighlighter;
 import services.Tokenizer;
 
-public class DoWhileAndForTests {
-	public static String[] DoWhileTests_Data() {
-		return new String[] { "do int a=2; while(1==1);", "do {int a=2;} while(1==1);",
-				"do {int a=2;long b=3;} while(1==1);", };
+public class namespaceAndVectorTests {
+	public static String[] namespaceCout_Data() {
+		return new String[] { "std::cout << \"hello world\";","std::cout << \"hello world\"<<std::endl;"
+				,"int a=2; std::cout << a <<std::endl;"};
 	}
 
 	@ParameterizedTest
-	@MethodSource(value = "DoWhileTests_Data")
-	public void DoWhileTests(String text) {
+	@MethodSource(value = "namespaceCout_Data")
+	public void namespaceCout(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
 		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
@@ -27,40 +30,17 @@ public class DoWhileAndForTests {
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue(tokens.get(i).errors.size() == 0,
-					"index:" + i);
+			assertTrue( tokens.get(i).errors.size() == 0,"index:" + i );
 		}
 
 	}
-
-	public static Object[][] DoWhileTestsErrors_Data() {
-		return new Object[][] { { "do(1>2) int a=2; while(1==1);", 1 } };
-
+	public static String[] namespaceCin_Data() {
+		return new String[] { "int a; std::cin << a;", "int a,b,c; std::cin << a<<b<<c;",};
 	}
 
 	@ParameterizedTest
-	@MethodSource(value = "DoWhileTestsErrors_Data")
-	public void DoWhileTestsErrors(String text, int index) {
-		// Arrange
-		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
-		// Act
-		List<Token> tokens = parsingFacade.ParseText(text,false);
-		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0,"");
-
-	}
-
-	////////////////////////////////////////////////////////
-	public static String[] ForTests_Data() {
-		return new String[] { "for(int i=0;i<=2;i++)int a=2;", "for(int i=0;i<=2;i++){int a=2;}",
-				"for(int i=0;i<=2;i++){int a=2;\nint b=3;}", "for(int i=0,b=9;i<=2;i++,b--){int a=2;}",
-				"int i;for( i=0;i<=2;i++){int a=2;}", "for(int i=0;i<=2;--i){int a=2;}" };
-	}
-
-	@ParameterizedTest
-	@MethodSource(value = "ForTests_Data")
-	public void ForTests(String text) {
+	@MethodSource(value = "namespaceCin_Data")
+	public void namespaceCin(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
 		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
@@ -68,28 +48,49 @@ public class DoWhileAndForTests {
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
 		for (int i = 0; i < tokens.size(); i++) {
-			assertTrue( tokens.get(i).errors.size() == 0,
-					"index:" + i);
+			assertTrue( tokens.get(i).errors.size() == 0,"index:" + i );
 		}
 
 	}
-
-	public static Object[][] ForErrorTests_Data() {
-		return new Object[][] { { "for(int i=0,long b=2;i<=2;i++)int a=2;", 8 },
-				{ "for(int i=0,;i<=2;i++)int a=2;", 8 }, { "for(int i=0;i<=2;i++,)int a=2;", 15 } };
-
+	
+	public static String[] namespaceVector_Data() {
+		return new String[] { "std::vector<int> a;", "std::vector<int> a={1,2,3};", "std::vector<int> a();"};
 	}
 
 	@ParameterizedTest
-	@MethodSource(value = "ForErrorTests_Data")
-	public void ForErrorTests(String text, int index) {
+	@MethodSource(value = "namespaceVector_Data")
+	public void namespaceVector_Data(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
 		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0,"");
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue( tokens.get(i).errors.size() == 0,"index:" + i );
+		}
 
 	}
+	
+	
+	
+	public static String[] vectorInstantiation_Data() {
+		return new String[] { "vector<int> a;", "vector<int> a={1,2,3};", "vector<int> a();" };
+	}
+
+	@ParameterizedTest
+	@MethodSource(value = "vectorInstantiation_Data")
+	public void vectorInstantiation_Data(String text) {
+		// Arrange
+		var tokenHighlighter=new TokenHighlighter();
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
+		// Act
+		List<Token> tokens = parsingFacade.ParseText(text,false);
+		// Assert
+		for (int i = 0; i < tokens.size(); i++) {
+			assertTrue( tokens.get(i).errors.size() == 0,"index:" + i );
+		}
+
+	}
+	
 }

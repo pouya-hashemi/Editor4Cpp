@@ -12,7 +12,7 @@ import services.Parser;
 import services.ParsingFacade;
 import services.TextFormatting;
 import services.TokenHighlighter;
-import services.VTokenizer;
+import services.Tokenizer;
 
 public class DeclareAndAssignmentTests {
 
@@ -28,7 +28,7 @@ public class DeclareAndAssignmentTests {
 	public void DeclarationSubGrammarTests(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
@@ -49,7 +49,7 @@ public class DeclareAndAssignmentTests {
 	public void DeclarationSubGrammarErrorTests(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
@@ -67,7 +67,7 @@ public class DeclareAndAssignmentTests {
 	public void EqualSubGrammarTests(String text) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
@@ -88,7 +88,7 @@ public class DeclareAndAssignmentTests {
 	public void EqualSubGrammarErrorTests(String text, int index) {
 		// Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 		// Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 		// Assert
@@ -108,7 +108,7 @@ public class DeclareAndAssignmentTests {
 	public void MathematicTopLayerTests(String text) {
 // Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 // Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 // Assert
@@ -129,7 +129,7 @@ public class DeclareAndAssignmentTests {
 	public void MathematicTopLayerErrorsTests(String text, int index) {
 // Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 // Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 // Assert
@@ -150,7 +150,7 @@ public class DeclareAndAssignmentTests {
 	public void MathematicOperationTests(String text) {
 // Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 // Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 // Assert
@@ -174,7 +174,7 @@ public class DeclareAndAssignmentTests {
 	public void MathematicOperationErrorsTests(String text, int index) {
 // Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 // Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 // Assert
@@ -193,7 +193,7 @@ public class DeclareAndAssignmentTests {
 	public void AssignmentTests(String text) {
 // Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 // Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 // Assert
@@ -213,7 +213,7 @@ public class DeclareAndAssignmentTests {
 	public void AssignmentErrorsTests_Data(String text, int index) {
 // Arrange
 		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
+		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
 // Act
 		List<Token> tokens = parsingFacade.ParseText(text,false);
 // Assert
