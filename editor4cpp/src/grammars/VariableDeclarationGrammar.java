@@ -9,6 +9,7 @@ import entities.GrammarNode;
 import entities.TerminalNode;
 import entities.NonTerminalNode;
 import entities.TokenTypes.DataType;
+import entities.TokenTypes.Keywords.AutoKeyword;
 
 
 
@@ -38,11 +39,13 @@ public class VariableDeclarationGrammar extends Grammar {
 		TerminalNode dataType_Node1 = new TerminalNode(new DataType(),false);
 
 		NonTerminalNode assignment_Node2=new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfDeclartionSubGrammar(hasSemicolon),true);
-		
+		TerminalNode auto_Node3 = new TerminalNode(new AutoKeyword(),false);
 
 		root.addChild(dataType_Node1.Id);
+		root.addChild(auto_Node3.Id);
 		
 		dataType_Node1.addChild(assignment_Node2.Id);
+		auto_Node3.addChild(assignment_Node2.Id);
 
 		
 		if (grammarNodes == null)
@@ -50,6 +53,7 @@ public class VariableDeclarationGrammar extends Grammar {
 		grammarNodes.add(root);
 		grammarNodes.add(dataType_Node1);
 		grammarNodes.add(assignment_Node2);
+		grammarNodes.add(auto_Node3);
 	}
 	
 	@Override

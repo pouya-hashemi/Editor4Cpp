@@ -20,7 +20,7 @@ public class DeclareAndAssignmentTests {
 		return new String[] { "int a;", "int myLongNamedVaiable;", "int variableNameWithUnderScore_InTheMiddle;",
 				"int _StartWithUnderScore;", "int WithNumbers12InMiddle;", "int WithNumbersAtEnd12;", "short a;",
 				"long a;", "char b;", "string a;", "bool a;", "float a;", "double a;", "int a,b;", "int a,b,c,d,e,f;",
-				"int a,b; short c;double d;", "int a,b; short c,d;double e,f;" };
+				"int a,b; short c;double d;", "int a,b; short c,d;double e,f;","int* a;"," auto endIter=activations->end();" };
 	}
 
 	@ParameterizedTest

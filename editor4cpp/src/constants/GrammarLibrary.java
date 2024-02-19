@@ -5,6 +5,7 @@ import java.util.List;
 import Dtos.ParsingObject;
 import grammars.ArrayGrammar;
 import grammars.AssignmentGrammar;
+import grammars.BracketGrammar;
 import grammars.ComparisonGrammar;
 import grammars.DeleteGrammar;
 import grammars.DoWhileGrammar;
@@ -14,7 +15,6 @@ import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
 import grammars.NamespaceGrammar;
 import grammars.NamespaceSubGrammar;
-import grammars.ObjectDeclarationGrammar;
 import grammars.PointerAssignmentGrammar;
 import grammars.PointerDeclarationGrammar;
 import grammars.ReturnGrammar;
@@ -30,6 +30,7 @@ import grammars.subGrammars.EqualSubGrammar;
 import grammars.subGrammars.FunctionCallSubGrammar;
 import grammars.subGrammars.MathematikOperationSubGrammar;
 import grammars.subGrammars.MathematikOperationTopLayerSubGrammar;
+import grammars.subGrammars.PointerAccessSubGrammar;
 import grammars.subGrammars.PointerEqualSubGrammar;
 
 public class GrammarLibrary {
@@ -192,6 +193,16 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new VectorDeclarationGrammar(hasSemicolon)));
 		return list;
 	}
+	public static List<ParsingObject> getParsingObjectsOfBracketGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new BracketGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfPointerAccessSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new PointerAccessSubGrammar()));
+		return list;
+	}
 	public static List<ParsingObject> getParsingObjectsOfAll() {
 		var list = new ArrayList<ParsingObject>();
 
@@ -212,6 +223,7 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfSemicolonGrammar());
 		list.addAll(getParsingObjectsOfNamespaceGrammar());
 		list.addAll(getParsingObjectsOfVectorGrammar(true));
+		list.addAll(getParsingObjectsOfBracketGrammar());
 
 		return list;
 	}

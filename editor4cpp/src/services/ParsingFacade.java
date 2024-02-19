@@ -59,30 +59,6 @@ public class ParsingFacade implements IParsingFacade {
 			
 			 parser.Parse(token);
 			
-//			if (!hasError) {
-//				var result = parser.Parse(token);
-//
-//				if (result.grammarStatus == GrammarStatus.failed) {
-//					parser = null;
-//					parser = new ErrorDetecter();
-////						token.error = result.error;
-//					hasError = true;
-//				}
-//				if (result.grammarStatus == GrammarStatus.refresh_Retry) {
-//
-//					parser = null;
-//					parser = new ErrorDetecter();
-//
-//					var secondResult = parser.Parse(token);
-//
-//					if (secondResult.grammarStatus == GrammarStatus.failed) {
-//						parser = null;
-//						parser = new ErrorDetecter();
-////							token.errors.add(text) = secondResult.error;
-//						hasError = true;
-//					}
-//				}
-//			}
 			if (formatText) {
 
 				var formattingResult = textFormatting.FormatToken(token);

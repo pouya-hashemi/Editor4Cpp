@@ -1,7 +1,7 @@
 package enums;
 
 public enum DataTypes {
-	Short, Int, Long, Float, Double, Char, String, Bool, Pointer;
+	Short, Int, Long, Float, Double, Char, String, Bool, Pointer,Auto;
 
 	public String getError() {
 		switch (this) {
@@ -23,6 +23,8 @@ public enum DataTypes {
 			return "Expected a bool";
 		case Pointer:
 			return "Expected a pointer";
+		case Auto:
+			return "Expected a auto";
 		default:
 			return "";
 
@@ -99,6 +101,12 @@ public enum DataTypes {
 		case Pointer:
 		{
 			if (dataType == DataTypes.Pointer)
+				return true;
+			return false;
+		}
+		case Auto:
+		{
+			if (dataType == DataTypes.Auto)
 				return true;
 			return false;
 		}

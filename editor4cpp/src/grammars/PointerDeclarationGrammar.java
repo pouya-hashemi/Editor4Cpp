@@ -11,6 +11,7 @@ import entities.NonTerminalNode;
 import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.PointerDataType;
+import entities.TokenTypes.Identifiers.PointerIdentifier;
 import entities.TokenTypes.Punctuations.SemicolonType;
 import entities.TokenTypes.Punctuations.StarType;
 
@@ -29,7 +30,7 @@ public class PointerDeclarationGrammar extends Grammar {
 //
 //		TerminalNode star_Node2 = new TerminalNode(new StarType(), false);
 		TerminalNode pointerType_Node1 = new TerminalNode(new PointerDataType(), false);
-		TerminalNode identifier_Node3 = new TerminalNode(new Identifier(""), false);
+		TerminalNode identifier_Node3 = new TerminalNode(new PointerIdentifier(""), false);
 
 		NonTerminalNode pointerEqualStatement_Node4 = new NonTerminalNode(()->GrammarLibrary.getParsingObjectsOfPointerEqualSubGrammar(),false);
 		

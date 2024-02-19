@@ -172,7 +172,7 @@ public class Tokenizer implements ITokenizer {
 	}
 
 	private void initKeywords() {
-		keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "auto", "bitand", "bitor", "class",
+		keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "bitand", "bitor", "class",
 				"compl", "concept", "const", "const_cast", "consteval", "constexpr", "constinit", "continue",
 				"co_await", "co_return", "co_yield", "decltype", "dynamic_cast", "enum", "explicit", "export", "extern",
 				"friend", "goto", "inline", "mutable", "namespace", "noexcept", "not", "not_eq", "operator", "or",
@@ -228,6 +228,8 @@ public class Tokenizer implements ITokenizer {
 		case "*": {
 			if (token.tokenType instanceof DataType) {
 				token.tokenType = new PointerDataType();
+				declarationInProgress=true;
+				dataTypeInProgress=DataTypes.Pointer;
 				token.value += buffer.consume();
 				return token;
 			}
@@ -288,6 +290,11 @@ public class Tokenizer implements ITokenizer {
 			token.tokenType = new DeleteKeyword();
 		else if (token.value.equals("if"))
 			token.tokenType = new IfKeyword();
+		else if (token.value.equals("auto")) {
+			token.tokenType = new AutoKeyword();
+			declarationInProgress = true;
+			dataTypeInProgress=DataTypes.Auto;			
+		}
 		else if (token.value.equals("vector"))
 			token.tokenType = new VectorType();
 		else if (token.value.equals("case"))
@@ -344,6 +351,8 @@ public class Tokenizer implements ITokenizer {
 			return new StringIdentifier(name);
 		case Bool:
 			return new BoolIdentifier(name);
+		case Pointer:
+			return new PointerIdentifier(name);
 		default:
 			return new Identifier(name);
 		}
@@ -411,6 +420,11 @@ public class Tokenizer implements ITokenizer {
 			if (nextChar != null && nextChar.equals("-")) {
 				token.value += buffer.consume();
 				token.tokenType = new SingleOperandOperator();
+				return token;
+			}
+			else if(nextChar != null && nextChar.equals(">")) {
+				token.value += buffer.consume();
+				token.tokenType = new AccessPointer();
 				return token;
 			}
 			token.tokenType = new MinusOperator();
