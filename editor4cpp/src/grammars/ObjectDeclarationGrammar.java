@@ -3,7 +3,6 @@ package grammars;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import constants.GrammarLibrary;
 import entities.GrammarNode;
 import entities.TerminalNode;
@@ -26,12 +25,6 @@ public class ObjectDeclarationGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-//		SingleNode unknown_Node1 = new SingleNode(new UnknownType(), false);
-//
-//		SingleNode colon_Node2 = new SingleNode(new ColonType(), false);
-//
-//		SingleNode colon_Node3 = new SingleNode(new ColonType(), false);
-
 		TerminalNode unknown_Node4 = new TerminalNode(new UnknownType(), false);
 
 		TerminalNode objectIdentifier_Node5 = new TerminalNode(new ObjectIdentifier(), false);
@@ -49,15 +42,7 @@ public class ObjectDeclarationGrammar extends Grammar {
 		
 
 		// -----------------------------------------------------------------
-//		root.addChild(unknown_Node1.Id);
 		root.addChild(unknown_Node4.Id);
-		
-		
-//		unknown_Node1.addChild(colon_Node2.Id);
-//		
-//		colon_Node2.addChild(colon_Node3.Id);
-//		
-//		colon_Node3.addChild(unknown_Node4.Id);
 		
 		unknown_Node4.addChild(objectIdentifier_Node5.Id);
 		
@@ -80,9 +65,6 @@ public class ObjectDeclarationGrammar extends Grammar {
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
-//		grammarNodes.add(unknown_Node1);
-//		grammarNodes.add(colon_Node2);
-//		grammarNodes.add(colon_Node3);
 		grammarNodes.add(unknown_Node4);
 		grammarNodes.add(objectIdentifier_Node5);
 		grammarNodes.add(openParenthesis_Node6);

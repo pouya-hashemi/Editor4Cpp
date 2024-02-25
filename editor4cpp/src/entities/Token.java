@@ -11,12 +11,7 @@ public class Token {
 	public String value="";
 	public Style tokenStyle;
 	public TokenType tokenType;
-//	public String error;
 	public List<String> errors;
-//	public Token prevToken;
-//	public Token nextToken;
-//	public Token absoluteNextToken;
-	public Token absolutePrevToken;
 	public boolean isEndOfStatement;
 	
 	public Token(String value) {

@@ -29,8 +29,13 @@ public class TextEditor extends JTextPane {
 		setFont(new Font("Monospaced", Font.PLAIN, 14));
 		setTabStops(4);
 		addEventListeners();
+		this.setEditorKit(new StyledEditorKit());
 
 	}
+	 @Override
+	    public boolean getScrollableTracksViewportWidth() {
+	        return getUI().getPreferredSize(this).width <= getParent().getSize().width;
+	    }
 
 	private void addEventListeners() {
 		addKeyListener(new java.awt.event.KeyAdapter() {

@@ -49,10 +49,8 @@ public class ParsingFacade implements IParsingFacade {
 			if (token.tokenType instanceof WhiteSpace || token.tokenType instanceof Comment) {
 				if (!formatText)
 					tokens.add(token);
-				var prevToken = token;
+//			
 				token = tokenizer.getNextToken();
-				if (token != null)
-					token.absolutePrevToken = prevToken;
 				continue;
 			}
 
@@ -81,14 +79,11 @@ public class ParsingFacade implements IParsingFacade {
 				tokens.add(token);
 			}
 
-			var prevToken = token;
 
 			if (token.tokenType instanceof EndOfText) {
 				break;
 			}
 			token = tokenizer.getNextToken();
-			if (token != null)
-				token.absolutePrevToken = prevToken;
 
 		}
 

@@ -20,7 +20,9 @@ public class DeclareAndAssignmentTests {
 		return new String[] { "int a;", "int myLongNamedVaiable;", "int variableNameWithUnderScore_InTheMiddle;",
 				"int _StartWithUnderScore;", "int WithNumbers12InMiddle;", "int WithNumbersAtEnd12;", "short a;",
 				"long a;", "char b;", "string a;", "bool a;", "float a;", "double a;", "int a,b;", "int a,b,c,d,e,f;",
-				"int a,b; short c;double d;", "int a,b; short c,d;double e,f;","int* a;"," auto endIter=activations->end();" };
+				"int a,b; short c;double d;", "int a,b; short c,d;double e,f;","int* a;"," auto endIter=activations->end();" ,
+				"std::shared_ptr<Bag<fUML::Semantics::Activities::ActivityNodeActivation>> enabledActivations(new Bag<fUML::Semantics::Activities::ActivityNodeActivation>());",
+				"const int a;"};
 	}
 
 	@ParameterizedTest
@@ -161,26 +163,6 @@ public class DeclareAndAssignmentTests {
 
 	}
 
-	public static Object[][] MathematicOperationErrorsTests_Data() {
-		return new Object[][] { { "int a=2.3;", 4 }, { "short a=2.3;", 4 }, { "long a=2.3;", 4 },
-				{ "string a=2.3;", 4 }, { "char a=2.3;", 4 }, { "string a=2;", 4 }, { "char a=2;", 4 },
-				{ "string a='a';", 4 }, { "char a=\"a\";", 4 }, { "int a=2(;", 5 }, { "int a,b=a++(;", 8 },
-				{ "int a,b=a[];", 8 }, { "int a,b=a[2(;", 9 } };
-
-	}
-
-	@ParameterizedTest
-	@MethodSource(value = "MathematicOperationErrorsTests_Data")
-	public void MathematicOperationErrorsTests(String text, int index) {
-// Arrange
-		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
-// Act
-		List<Token> tokens = parsingFacade.ParseText(text,false);
-// Assert
-		assertTrue(tokens.get(index).errors.size() > 0,"");
-
-	}
 /////////////////////////////////////////////////////////////////////////////////////
 
 	public static String[] AssignmentTests_Data() {

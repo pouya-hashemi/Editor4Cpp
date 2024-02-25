@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import Dtos.ParsingObject;
 import entities.GrammarNode;
+import entities.NonTerminalNode;
+import entities.TerminalNode;
+import entities.Token;
 
 public class Grammar implements Cloneable  {
 
@@ -36,6 +41,26 @@ public class Grammar implements Cloneable  {
 		return nodes;
 	}
 
+	public boolean childExistsInRoot(Token token) {
+		var rootChildIds=getGrammarNodeById(rootNodeId).getChildIds();
+		for (UUID rootChildId:rootChildIds) {
+			var child=getGrammarNodeById(rootChildId);
+			if(child.getClass()==TerminalNode.class) {
+				if(((TerminalNode) child).tokenType.getClass().isInstance(token.tokenType)) {
+					return true;
+				}
+			}
+			else {
+				for(ParsingObject parsingObject : ((NonTerminalNode) child).cloneParsingObject()) {
+					if(parsingObject.grammar.childExistsInRoot(token)) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
 	@Override
 	public Grammar clone() {
 		var nodes = new ArrayList<GrammarNode>();

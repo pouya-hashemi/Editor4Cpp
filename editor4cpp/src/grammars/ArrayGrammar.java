@@ -7,9 +7,9 @@ import constants.GrammarLibrary;
 import entities.GrammarNode;
 import entities.TerminalNode;
 import entities.NonTerminalNode;
-import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.NumericLiteral;
+import entities.TokenTypes.DataTypes.FundamentalDataType;
 import entities.TokenTypes.Punctuations.CloseBracket;
 import entities.TokenTypes.Punctuations.EqualType;
 import entities.TokenTypes.Punctuations.OpenBracket;
@@ -28,7 +28,7 @@ public class ArrayGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId=root.Id;
 
-		TerminalNode dataType_Node1 = new TerminalNode(new DataType(), false);
+		TerminalNode dataType_Node1 = new TerminalNode(new FundamentalDataType(""), false);
 
 		TerminalNode identifier_Node2 = new TerminalNode(new Identifier(""), false);
 		

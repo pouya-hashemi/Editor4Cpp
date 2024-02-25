@@ -15,7 +15,6 @@ public class FunctionIdentifier extends TokenType {
 
 	@Override
 	public String getError() {
-		// TODO Auto-generated method stub
 		return "Expected function name";
 	}
 

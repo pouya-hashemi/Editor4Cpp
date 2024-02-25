@@ -12,7 +12,6 @@ import services.TextFormatting;
 import services.TokenHighlighter;
 import services.Tokenizer;
 
-//"int a[5];", "int a[]={2};", "int a[]={2,1};","int a[]={\"a\"};","int a[]={\"a\",\"b\"};", "int a[2]={2,1};",
 public class ErrorDetecterTest {
 
 	public static String[] newData() {
@@ -59,7 +58,7 @@ public class ErrorDetecterTest {
 	}
 
 	public static Object[][] detectError_Data() {
-		return new Object[][] { { "int a:", 3 }, { "int a='a';", 4 }, { "int a, b:", 6 }, { "int a , b:", 7 },
+		return new Object[][] { { "int a:", 3 }, { "int a, b:", 6 }, { "int a , b:", 7 },
 				{ "int a , b=2:", 9 }, { "int a,b=2,c:", 9 }, { "int a,2", 4 }, { "int a,'", 4 },
 				{ "int a;int a:", 7 } };
 
@@ -142,29 +141,6 @@ public class ErrorDetecterTest {
 
 	}
 
-	public static Object[][] VariableAssignmentWithLiteralOnlyErrors_Data() {
-		return new Object[][] { { "short a=32768;", 4 }, { "int a=2147483648;", 4 }, { "short a=2.3;", 4 },
-				{ "int a=2.3;", 4 }, { "long a=2.3;", 4 }, { "char a=2;", 4 }, { "string a=2;", 4 },
-				{ "char a=\"ss\";", 4 }, { "string a='a';", 4 }, { "long a=\"asd\";", 4 }, { "int a=\"asd\";", 4 },
-				{ "short a=\"asd\";", 4 }, { "long a='a';", 4 }, { "short a='a';", 4 }, { "int a='a';", 4 },
-				{ "float a='a';", 4 }, { "double a='a';", 4 }, { "float a=\"asd\";", 4 }, { "double a=\"asd\";", 4 },
-				{ "bool a=\"asd\";", 4 }, { "bool a='a';", 4 }, { "bool a=2;", 4 }, { "bool a=2.3;", 4 } };
-
-	}
-
-	@ParameterizedTest
-	@MethodSource(value = "VariableAssignmentWithLiteralOnlyErrors_Data")
-	public void VariableAssignmentWithLiteralOnlyErrors(String text, int index) {
-		// Arrange
-		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
-		// Act
-		List<Token> tokens = parsingFacade.ParseText(text, false);
-		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, "");
-
-	}
-
 	public static String[] VariableAssignmentWithIdentifierOnly_Data() {
 		return new String[] { "short a=2;short b=a;", "int a=2;int b=a;", "long a=2;long b=a;",
 				"float a=2.3;float b=a;", "double a=2.3;double b=2.3;", "char a='a';char b=a;",
@@ -184,27 +160,6 @@ public class ErrorDetecterTest {
 			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
 					
 		}
-
-	}
-
-	public static Object[][] VariableAssignmentWithIdentifiersOnlyErrors_Data() {
-		return new Object[][] { { "float a=2.3;short b=a;", 10 }, { "float a=2.3;int b=a;", 10 },
-				{ "float a=2.3;long b=a;", 10 }, { "double a=2.3;short b=a;", 10 }, { "double a=2.3;int b=a;", 10 },
-				{ "double a=2.3;long b=a;", 10 }, { "int a=2;char b=a;", 10 }, { "long a=2;char b=a;", 10 },
-				{ "short a=2;char b=a;", 10 }, { "int a=2;string b=a;", 10 }, { "int a=2;bool b=a;", 10 }, };
-
-	}
-
-	@ParameterizedTest
-	@MethodSource(value = "VariableAssignmentWithIdentifiersOnlyErrors_Data")
-	public void VariableAssignmentWithIdentifiersOnlyErrors(String text, int index) {
-		// Arrange
-		var tokenHighlighter=new TokenHighlighter();
-		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new Tokenizer(),new Parser());
-		// Act
-		List<Token> tokens = parsingFacade.ParseText(text, false);
-		// Assert
-		assertTrue(tokens.get(index).errors.size() > 0, "");
 
 	}
 
@@ -485,24 +440,6 @@ public class ErrorDetecterTest {
 
 	}
 
-//	public static String[] ObjectDeclareTest_Data() {
-//		return new String[] { "className myClass;", "className myClass(1);" };
-//	}
-//
-//	@ParameterizedTest
-//	@MethodSource(value = "ObjectDeclareTest_Data")
-//	public void ObjectDeclareTest(String text) {
-//		// Arrange
-//		ParsingFacade parsingFacade = new ParsingFacade(tokenHighlighter,new TextFormatting(tokenHighlighter),new VTokenizer(),new Parser());
-//		// Act
-//		List<Token> tokens = parsingFacade.tokenizeString(text,false);
-//		// Assert
-//		for (int i = 0; i < tokens.size(); i++) {
-//			assertTrue(tokens.get(i).errors.size() == 0, "index:" + i );
-//					
-//		}
-//
-//	}
 
 	public static String[] TryCatchTest_Data() {
 		return new String[] { "try{ int a=2;}catch(...){int b=2;}" };

@@ -8,17 +8,8 @@ import constants.GrammarLibrary;
 import entities.GrammarNode;
 import entities.NonTerminalNode;
 import entities.TerminalNode;
-import entities.TokenTypes.DataType;
 import entities.TokenTypes.Identifier;
-import entities.TokenTypes.Identifiers.PointerIdentifier;
-import entities.TokenTypes.Keywords.NewKeyword;
-import entities.TokenTypes.Keywords.NullKeyword;
-import entities.TokenTypes.Keywords.NullptrKeyword;
-import entities.TokenTypes.Punctuations.AccessPointer;
-import entities.TokenTypes.Punctuations.AmpersandType;
-import entities.TokenTypes.Punctuations.CloseParenthesisType;
-import entities.TokenTypes.Punctuations.EqualType;
-import entities.TokenTypes.Punctuations.OpenParenthesisType;
+import entities.TokenTypes.Keywords.ThisKeyword;
 import grammars.Grammar;
 
 public class PointerAccessSubGrammar extends Grammar {
@@ -32,26 +23,26 @@ public class PointerAccessSubGrammar extends Grammar {
 
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
-		TerminalNode pointerIdentifier_Node1 = new TerminalNode(new PointerIdentifier(""), false);
-
-		TerminalNode accessPointer_Node2 = new TerminalNode(new AccessPointer(), false);
+		TerminalNode pointerIdentifier_Node1 = new TerminalNode(new Identifier(""), false);
+		TerminalNode this_Node4 = new TerminalNode(new ThisKeyword(), false);
 		
 		NonTerminalNode functionCall_Node3 = new NonTerminalNode(
-				() -> GrammarLibrary.getParsingObjectsOfFunctionCallSubGrammar(), true);
+				() -> GrammarLibrary.getParsingObjectsOfPointerAccessWithoutIdentifierSubGrammar(), true);
 
 		// -----------------------------------------------------------------
 		
 		root.addChild(pointerIdentifier_Node1.Id);
+		root.addChild(this_Node4.Id);
 		
-		pointerIdentifier_Node1.addChild(accessPointer_Node2.Id);
-		accessPointer_Node2.addChild(functionCall_Node3.Id);
+		pointerIdentifier_Node1.addChild(functionCall_Node3.Id);
+		this_Node4.addChild(functionCall_Node3.Id);
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
 		grammarNodes.add(pointerIdentifier_Node1);
-		grammarNodes.add(accessPointer_Node2);
 		grammarNodes.add(functionCall_Node3);
+		grammarNodes.add(this_Node4);
 
 	}
 

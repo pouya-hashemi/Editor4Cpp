@@ -9,9 +9,8 @@ import entities.GrammarNode;
 import entities.TerminalNode;
 import entities.NonTerminalNode;
 import entities.TokenTypes.FunctionIdentifier;
-import entities.TokenTypes.Punctuations.CloseParenthesisType;
-import entities.TokenTypes.Punctuations.CommaType;
-import entities.TokenTypes.Punctuations.OpenParenthesisType;
+import entities.TokenTypes.NamespaceType;
+import entities.TokenTypes.Punctuations.ColonType;
 import grammars.Grammar;
 
 public class FunctionCallSubGrammar  extends Grammar {
@@ -27,58 +26,38 @@ public class FunctionCallSubGrammar  extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
 		TerminalNode funcIdentifier_Node1 = new TerminalNode(new FunctionIdentifier(), false);
-
-		TerminalNode openParenthesis_Node2 = new TerminalNode(new OpenParenthesisType(), false);
-
-		NonTerminalNode topLevel_Node3 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), false);
-
-		TerminalNode comma_Node4 = new TerminalNode(new CommaType(), false);
 		
-		TerminalNode closeParenthesis_Node5 = new TerminalNode(new CloseParenthesisType(), true);
+		NonTerminalNode functionParam_Node2 = new NonTerminalNode(() -> GrammarLibrary.getParsingObjectsOfFunctionParametersSubGrammar(), true);
 		
-//		SingleNode unknown_Node6 = new SingleNode(new UnknownType(), false);
-//		SingleNode colon_Node7 = new SingleNode(new ColonType(), false);
-//		SingleNode colon_Node8 = new SingleNode(new ColonType(), false);
-//		SingleNode unknown_Node9 = new SingleNode(new UnknownType(), false);
-//		SingleNode dot_Node10 = new SingleNode(new DotType(), false);
+		TerminalNode namespace_Node6 = new TerminalNode(new NamespaceType(""), false);
+
+		TerminalNode firstColon_Node7 = new TerminalNode(new ColonType(), false);
+		
+		TerminalNode secondColon_Node8 = new TerminalNode(new ColonType(), false);
+
 		
 		
 
 		// -----------------------------------------------------------------
 		root.addChild(funcIdentifier_Node1.Id);
-//		root.addChild(unknown_Node6.Id);
-//		root.addChild(unknown_Node9.Id);
+		root.addChild(namespace_Node6.Id);
 		
-		funcIdentifier_Node1.addChild(openParenthesis_Node2.Id);
-		openParenthesis_Node2.addChild(closeParenthesis_Node5.Id);
-		openParenthesis_Node2.addChild(topLevel_Node3.Id);
-		topLevel_Node3.addChild(comma_Node4.Id);
-		topLevel_Node3.addChild(closeParenthesis_Node5.Id);
-		comma_Node4.addChild(topLevel_Node3.Id);
-		
-	
-//		unknown_Node6.addChild(colon_Node7.Id);
-//		colon_Node7.addChild(colon_Node8.Id);
-//		
-//		colon_Node8.addChild(funcIdentifier_Node1.Id);
-//		colon_Node8.addChild(unknown_Node9.Id);
-//		
-//		unknown_Node9.addChild(dot_Node10.Id);
-//		dot_Node10.addChild(funcIdentifier_Node1.Id);
+		funcIdentifier_Node1.addChild(functionParam_Node2.Id);
+
+		namespace_Node6.addChild(firstColon_Node7.Id);
+		firstColon_Node7.addChild(secondColon_Node8.Id);
+		secondColon_Node8.addChild(namespace_Node6.Id);
+		secondColon_Node8.addChild(funcIdentifier_Node1.Id);
+
 
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
 		grammarNodes.add(funcIdentifier_Node1);
-		grammarNodes.add(openParenthesis_Node2);
-		grammarNodes.add(topLevel_Node3);
-		grammarNodes.add(comma_Node4);
-		grammarNodes.add(closeParenthesis_Node5);
-//		grammarNodes.add(unknown_Node6);
-//		grammarNodes.add(colon_Node7);
-//		grammarNodes.add(colon_Node8);
-//		grammarNodes.add(unknown_Node9);
-//		grammarNodes.add(dot_Node10);
+		grammarNodes.add(functionParam_Node2);
+		grammarNodes.add(namespace_Node6);
+		grammarNodes.add(firstColon_Node7);
+		grammarNodes.add(secondColon_Node8);
 
 	}
 

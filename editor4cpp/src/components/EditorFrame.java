@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import common.LambdaFunc;
@@ -38,6 +39,7 @@ public class EditorFrame extends JFrame {
 	
 	private void initTextEditor() {
 		JScrollPane scrollPane = new JScrollPane(editor);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		getContentPane().add(scrollPane);
 	}
 	private void addToolbar() {

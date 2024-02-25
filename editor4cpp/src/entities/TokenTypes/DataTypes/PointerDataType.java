@@ -1,11 +1,14 @@
-package entities.TokenTypes;
+package entities.TokenTypes.DataTypes;
 
 import javax.swing.text.Style;
 import constants.CustomStyle;
-import entities.TokenType;
+import entities.TokenTypes.DataType;
 
-public class PointerDataType extends TokenType {
+public class PointerDataType extends DataType {
 
+	public PointerDataType(String name) {
+		super(name);
+	}
 	@Override
 	public Style getTokenStyle() {
 

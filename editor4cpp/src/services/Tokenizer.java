@@ -10,36 +10,36 @@ import common.CommonCharacters;
 import entities.Token;
 import entities.TokenTypes.*;
 import entities.TokenTypes.DataTypes.*;
-import entities.TokenTypes.Identifiers.*;
 import entities.TokenTypes.Keywords.*;
 import entities.TokenTypes.Literals.*;
 import entities.TokenTypes.Operations.*;
 import entities.TokenTypes.Punctuations.*;
-import enums.DataTypes;
 import interfaces.ITokenizer;
 
 public class Tokenizer implements ITokenizer {
 	private TokenBuffer buffer;
 	private Map<String, DataType> dataTypes;
+	private Map<String, NamespaceType> namespaces;
+	private Map<String, NamespaceMemberType> namespaceMembers;
 	private List<Identifier> identifiers;
-	private boolean declarationInProgress;
-	private DataTypes dataTypeInProgress;
 	private List<String> keywords;
+	private int genericInprogress=0;
 
 	public Tokenizer() {
 		dataTypes = new HashMap<>();
+		namespaces = new HashMap<>();
+		namespaceMembers = new HashMap<>();
 		keywords = new ArrayList<String>();
 		identifiers = new ArrayList<Identifier>();
-		declarationInProgress = false;
 		buffer = new TokenBuffer();
-		initDataTypes();
+		initFundamentalDataTypes();
 		initKeywords();
-
+		initNamespaceTypes();
+		initNamespaceMembers();
 	}
 
 	public void setTextAndRestart(String text) {
 		identifiers.clear();
-		declarationInProgress = false;
 		buffer.setTextAndReset(text);
 	}
 
@@ -78,11 +78,17 @@ public class Tokenizer implements ITokenizer {
 		}
 		case ">": {
 			var nextChar = buffer.peek(1);
-			if (nextChar != null && nextChar.equals(">")) {
-				var token = new Token(buffer.consume(), new StreamExtractionType());
-				token.value += buffer.consume();
-				return token;
+			if(genericInprogress==0) {
+				if (nextChar != null && nextChar.equals(">")) {
+					var token = new Token(buffer.consume(), new StreamExtractionType());
+					token.value += buffer.consume();
+					return token;
+				}
 			}
+			else {
+				genericInprogress--;
+			}
+			
 			return processComparisonOperator();
 		}
 		case "!":
@@ -107,7 +113,6 @@ public class Tokenizer implements ITokenizer {
 		case "9":
 			return processNumericLiteral();
 		case ";": {
-			declarationInProgress = false;
 			return new Token(buffer.consume(), new SemicolonType());
 		}
 		case "\r":
@@ -154,37 +159,9 @@ public class Tokenizer implements ITokenizer {
 
 	}
 
-	private Token processLogicalOperator() {
-		var token = new Token(buffer.consume(), new LogicalOperator());
-		token.value += buffer.consume();
-		return token;
-	}
-
-	private void initDataTypes() {
-		dataTypes.putIfAbsent("int", new IntType());
-		dataTypes.putIfAbsent("char", new CharType());
-		dataTypes.putIfAbsent("string", new StringType());
-		dataTypes.putIfAbsent("short", new ShortType());
-		dataTypes.putIfAbsent("long", new LongType());
-		dataTypes.putIfAbsent("float", new FloatType());
-		dataTypes.putIfAbsent("double", new DoubleType());
-		dataTypes.putIfAbsent("bool", new BoolType());
-	}
-
-	private void initKeywords() {
-		keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "bitand", "bitor", "class",
-				"compl", "concept", "const", "const_cast", "consteval", "constexpr", "constinit", "continue",
-				"co_await", "co_return", "co_yield", "decltype", "dynamic_cast", "enum", "explicit", "export", "extern",
-				"friend", "goto", "inline", "mutable", "namespace", "noexcept", "not", "not_eq", "operator", "or",
-				"or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires", "signed",
-				"sizeof", "static", "static_assert", "static_cast", "struct", "template", "this", "thread_local",
-				"throw", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile", "xor",
-				"xor_eq");
-	}
 
 	private Token processDefault() {
-		var prevChar = buffer.peek(-1);
-		var secondPrevChar = buffer.peek(-2);
+
 		var token = new Token(buffer.consume());
 
 		var nextChar = buffer.peek();
@@ -195,8 +172,9 @@ public class Tokenizer implements ITokenizer {
 			nextChar = buffer.peek();
 		}
 
-		token = processWords(token);
+		processWords(token);
 
+		//if it is last token
 		if (nextChar == null) {
 			if (token.tokenType == null)
 				return processIdentifier(token);
@@ -213,23 +191,13 @@ public class Tokenizer implements ITokenizer {
 
 			if (token.tokenType == null) {
 
-				if (prevChar != null && prevChar.equals(":")) {
-
-					if (secondPrevChar != null && secondPrevChar.equals(":")) {
-						token.tokenType = new NamespaceMemberType();
-						return token;
-					}
-				}
-
 				return processIdentifier(token);
 			}
 			return token;
 		}
 		case "*": {
-			if (token.tokenType instanceof DataType) {
-				token.tokenType = new PointerDataType();
-				declarationInProgress=true;
-				dataTypeInProgress=DataTypes.Pointer;
+			if (token.tokenType instanceof FundamentalDataType) {
+				token.tokenType = new PointerDataType(((DataType)token.tokenType).getName()+"*");
 				token.value += buffer.consume();
 				return token;
 			}
@@ -239,7 +207,10 @@ public class Tokenizer implements ITokenizer {
 			if (token.tokenType == null) {
 				var secondChar = buffer.peek(1);
 				if (secondChar != null && secondChar.equals(":")) {
-					token.tokenType = new NamespaceType();
+					// found new namespace, add to namespaces
+					var namespace=new NamespaceType(token.value);
+					namespaces.putIfAbsent(namespace.getName(), namespace);
+					token.tokenType = namespace;
 					return token;
 				} else
 					return processIdentifier(token);
@@ -257,6 +228,16 @@ public class Tokenizer implements ITokenizer {
 
 			return token;
 		}
+		case "<": {
+			if (token.tokenType == null) {
+				var generic= new GenericDataType(token.value);
+				token.tokenType =generic;
+				genericInprogress++;
+				dataTypes.putIfAbsent(token.value, generic);
+			}
+
+			return token;
+		}
 
 		}
 	}
@@ -265,38 +246,39 @@ public class Tokenizer implements ITokenizer {
 		if (identifiers.stream().anyMatch(s -> s.getName().equals(token.value)))
 			token.tokenType = identifiers.stream().filter(s -> s.getName().equals(token.value)).findFirst().get();
 		else {
-
-			if (declarationInProgress) {
-				var identifier = resolveIdentifier(dataTypeInProgress, token.value);
-				token.tokenType = identifier;
-				identifiers.add(identifier);
-			} else {
 				var identifier = new Identifier(token.value);
-				token.errors.add("Identifier does not exists in this context.");
+//				token.errors.add("Identifier does not exists in this context.");
 				token.tokenType = identifier;
 				identifiers.add(identifier);
-			}
 		}
 		return token;
 	}
 
-	private Token processWords(Token token) {
+	private void processWords(Token token) {
+		var namespace=namespaces.getOrDefault(token.value, null);
+		if(namespace!=null) {
+			token.tokenType=namespace;
+			return;
+		}
 		var dataType = dataTypes.getOrDefault(token.value, null);
 		if (dataType != null) {
 			token.tokenType = dataType;
-			declarationInProgress = true;
-			dataTypeInProgress = dataType.getDataType();
-		} else if (token.value.equals("delete"))
+			if(dataType instanceof GenericDataType)
+				genericInprogress++;
+			return;
+		} 
+		var namespaceMember=namespaceMembers.getOrDefault(token.value, null);
+		if (namespaceMember != null) {
+			token.tokenType = namespaceMember;
+			return;
+		} 
+		else if (token.value.equals("delete"))
 			token.tokenType = new DeleteKeyword();
 		else if (token.value.equals("if"))
 			token.tokenType = new IfKeyword();
 		else if (token.value.equals("auto")) {
-			token.tokenType = new AutoKeyword();
-			declarationInProgress = true;
-			dataTypeInProgress=DataTypes.Auto;			
+			token.tokenType = new AutoKeyword();		
 		}
-		else if (token.value.equals("vector"))
-			token.tokenType = new VectorType();
 		else if (token.value.equals("case"))
 			token.tokenType = new CaseKeyword();
 		else if (token.value.equals("break"))
@@ -305,6 +287,8 @@ public class Tokenizer implements ITokenizer {
 			token.tokenType = new ForKeyword();
 		else if (token.value.equals("try"))
 			token.tokenType = new TryKeyword();
+		else if (token.value.equals("this"))
+			token.tokenType = new ThisKeyword();
 		else if (token.value.equals("catch"))
 			token.tokenType = new CatchKeyword();
 		else if (token.value.equals("while"))
@@ -325,37 +309,13 @@ public class Tokenizer implements ITokenizer {
 			token.tokenType = new NullptrKeyword();
 		else if (token.value.equals("NULL"))
 			token.tokenType = new NullKeyword();
+		else if (token.value.equals("const"))
+			token.tokenType = new ConstKeyword();
 		else if (token.value.equals("true") || token.value.equals("false"))
 			token.tokenType = new BoolLiteral();
 		else if (keywords.contains(token.value))
 			token.tokenType = new Keyword();
 
-		return token;
-	}
-
-	private Identifier resolveIdentifier(DataTypes dataType, String name) {
-		switch (dataType) {
-		case Short:
-			return new ShortIdentifier(name);
-		case Int:
-			return new IntIdentifier(name);
-		case Long:
-			return new LongIdentifier(name);
-		case Float:
-			return new FloatIdentifier(name);
-		case Double:
-			return new DoubleIdentifier(name);
-		case Char:
-			return new CharIdentifier(name);
-		case String:
-			return new StringIdentifier(name);
-		case Bool:
-			return new BoolIdentifier(name);
-		case Pointer:
-			return new PointerIdentifier(name);
-		default:
-			return new Identifier(name);
-		}
 
 	}
 
@@ -572,6 +532,55 @@ public class Tokenizer implements ITokenizer {
 		}
 		}
 
+	}
+	private Token processLogicalOperator() {
+		var token = new Token(buffer.consume(), new LogicalOperator());
+		token.value += buffer.consume();
+		return token;
+	}
+	private void initFundamentalDataTypes() {
+		dataTypes.putIfAbsent("int", new FundamentalDataType("int"));
+		dataTypes.putIfAbsent("char", new FundamentalDataType("char"));
+		dataTypes.putIfAbsent("short", new FundamentalDataType("short"));
+		dataTypes.putIfAbsent("long", new FundamentalDataType("long"));
+		dataTypes.putIfAbsent("float",new FundamentalDataType("float"));
+		dataTypes.putIfAbsent("double", new FundamentalDataType("double"));
+		dataTypes.putIfAbsent("bool", new FundamentalDataType("bool"));
+		dataTypes.putIfAbsent("string", new FundamentalDataType("string"));
+		dataTypes.putIfAbsent("vector", new GenericDataType("vector"));
+		dataTypes.putIfAbsent("dynamic_pointer_cast", new GenericDataType("dynamic_pointer_cast"));
+		dataTypes.putIfAbsent("shared_ptr", new GenericDataType("shared_ptr"));
+		dataTypes.putIfAbsent("ActivityNodeActivation", new UserDefinedDataType("ActivityNodeActivation"));
+		dataTypes.putIfAbsent("ActivityEdgeInstance", new UserDefinedDataType("ActivityEdgeInstance"));
+		dataTypes.putIfAbsent("Action", new UserDefinedDataType("Action"));
+		dataTypes.putIfAbsent("InputPin", new UserDefinedDataType("InputPin"));
+		dataTypes.putIfAbsent("ActionActivation", new UserDefinedDataType("ActionActivation"));
+	}
+private void initNamespaceMembers() {
+	namespaceMembers.putIfAbsent("cout", new NamespaceMemberType("cout"));
+	namespaceMembers.putIfAbsent("cin", new NamespaceMemberType("cin"));
+	namespaceMembers.putIfAbsent("endl", new NamespaceMemberType("endl"));
+	namespaceMembers.putIfAbsent("INPUTPINACTIVATION_CLASS", new NamespaceMemberType("INPUTPINACTIVATION_CLASS"));
+	namespaceMembers.putIfAbsent("OUTPUTPINACTIVATION_CLASS", new NamespaceMemberType("OUTPUTPINACTIVATION_CLASS"));
+	namespaceMembers.putIfAbsent("EXPANSIONNODEACTIVATION_CLASS", new NamespaceMemberType("EXPANSIONNODEACTIVATION_CLASS"));
+}
+	private void initNamespaceTypes() {
+		namespaces.putIfAbsent("std", new NamespaceType("std"));
+		namespaces.putIfAbsent("fUML", new NamespaceType("fUML"));
+		namespaces.putIfAbsent("Semantics", new NamespaceType("Semantics"));
+		namespaces.putIfAbsent("Activities", new NamespaceType("Activities"));
+
+
+	}
+	private void initKeywords() {
+		keywords = Arrays.asList("alignas", "alignof", "and", "and_e", "asm", "bitand", "bitor", "class",
+				"compl", "concept", "const", "const_cast", "consteval", "constexpr", "constinit", "continue",
+				"co_await", "co_return", "co_yield", "decltype", "dynamic_cast", "enum", "explicit", "export", "extern",
+				"friend", "goto", "inline", "mutable", "namespace", "noexcept", "not", "not_eq", "operator", "or",
+				"or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires", "signed",
+				"sizeof", "static", "static_assert", "static_cast", "struct", "template", "this", "thread_local",
+				"throw", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "volatile", "xor",
+				"xor_eq");
 	}
 
 }

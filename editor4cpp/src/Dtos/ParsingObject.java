@@ -2,7 +2,6 @@ package Dtos;
 
 import java.util.UUID;
 
-import enums.DataTypes;
 import enums.GrammarStatus;
 import grammars.Grammar;
 
@@ -12,7 +11,6 @@ public class ParsingObject implements Cloneable {
 	public GrammarStatus grammarStatus;
 	public String error;
 	public int progressCounter;
-	public DataTypes dataType;
 
 
 	public ParsingObject(Grammar grammar) {
@@ -20,7 +18,6 @@ public class ParsingObject implements Cloneable {
 		this.currentNodeId = grammar.rootNodeId;
 		this.grammarStatus = GrammarStatus.processing;
 		this.progressCounter = 0;
-		dataType=null;
 
 	}
 	public ParsingObject(Grammar grammar, UUID currentNodeId) {
@@ -28,19 +25,17 @@ public class ParsingObject implements Cloneable {
 		this.currentNodeId = currentNodeId;
 		this.grammarStatus = GrammarStatus.processing;
 		this.progressCounter = 0;
-		dataType=null;
 
 	}
 
 	public ParsingObject(Grammar grammar, UUID currentNodeId, GrammarStatus grammarStatus, String error,
-			int progressCounter, DataTypes dataType) {
+			int progressCounter) {
 		this.grammar = grammar;
 		this.currentNodeId = currentNodeId;
 		this.grammarStatus = GrammarStatus.processing;
 		this.grammarStatus = grammarStatus;
 		this.error = error;
 		this.progressCounter = progressCounter;
-		this.dataType=dataType;
 
 	}
 
@@ -51,6 +46,6 @@ public class ParsingObject implements Cloneable {
 	@Override
 	public ParsingObject clone() {
 		return new ParsingObject(this.grammar.clone(), this.currentNodeId, this.grammarStatus, this.error,
-				this.progressCounter,this.dataType);
+				this.progressCounter);
 	}
 }

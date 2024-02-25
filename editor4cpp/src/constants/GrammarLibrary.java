@@ -5,6 +5,7 @@ import java.util.List;
 import Dtos.ParsingObject;
 import grammars.ArrayGrammar;
 import grammars.AssignmentGrammar;
+import grammars.BooleanAssignmentGrammar;
 import grammars.BracketGrammar;
 import grammars.ComparisonGrammar;
 import grammars.DeleteGrammar;
@@ -13,25 +14,31 @@ import grammars.SemicolonGrammar;
 import grammars.ForGrammar;
 import grammars.FunctionCallGrammar;
 import grammars.IfGrammar;
-import grammars.NamespaceGrammar;
-import grammars.NamespaceSubGrammar;
+//import grammars.NamespaceGrammar;
+//import grammars.NamespaceSubGrammar;
+import grammars.PointerAccessGrammar;
 import grammars.PointerAssignmentGrammar;
 import grammars.PointerDeclarationGrammar;
 import grammars.ReturnGrammar;
 import grammars.SwitchGrammar;
 import grammars.TryCatchGrammar;
 import grammars.VariableDeclarationGrammar;
-import grammars.VectorDeclarationGrammar;
+import grammars.GenericDeclarationGrammar;
 import grammars.WhileGrammar;
 import grammars.subGrammars.ArrayValueSubGrammar;
 import grammars.subGrammars.CaseSubGrammar;
 import grammars.subGrammars.DeclartionSubGrammar;
+import grammars.subGrammars.DynamicAllocationSubGrammar;
 import grammars.subGrammars.EqualSubGrammar;
 import grammars.subGrammars.FunctionCallSubGrammar;
+import grammars.subGrammars.FunctionParametersSubGrammar;
+import grammars.subGrammars.GenericDataTypeSubGrammar;
 import grammars.subGrammars.MathematikOperationSubGrammar;
 import grammars.subGrammars.MathematikOperationTopLayerSubGrammar;
 import grammars.subGrammars.PointerAccessSubGrammar;
+import grammars.subGrammars.PointerAccessWithoutIdentifierSubGrammar;
 import grammars.subGrammars.PointerEqualSubGrammar;
+import grammars.subGrammars.PreNamespaceSubGrammar;
 
 public class GrammarLibrary {
 
@@ -153,11 +160,6 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new FunctionCallGrammar()));
 		return list;
 	}
-//	public static List<ParsingObject> getParsingObjectsOfObjectDeclarationGrammar() {
-//		var list = new ArrayList<ParsingObject>();
-//		list.add(new ParsingObject(new ObjectDeclarationGrammar()));
-//		return list;
-//	}
 	public static List<ParsingObject> getParsingObjectsOfTryCatchGrammar() {
 		var list = new ArrayList<ParsingObject>();
 		list.add(new ParsingObject(new TryCatchGrammar()));
@@ -178,19 +180,9 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new SemicolonGrammar()));
 		return list;
 	}
-	public static List<ParsingObject> getParsingObjectsOfNamespaceGrammar() {
-		var list = new ArrayList<ParsingObject>();
-		list.add(new ParsingObject(new NamespaceGrammar()));
-		return list;
-	}
-	public static List<ParsingObject> getParsingObjectsOfNamespaceSubGrammar() {
-		var list = new ArrayList<ParsingObject>();
-		list.add(new ParsingObject(new NamespaceSubGrammar()));
-		return list;
-	}
 	public static List<ParsingObject> getParsingObjectsOfVectorGrammar(boolean hasSemicolon) {
 		var list = new ArrayList<ParsingObject>();
-		list.add(new ParsingObject(new VectorDeclarationGrammar(hasSemicolon)));
+		list.add(new ParsingObject(new GenericDeclarationGrammar(hasSemicolon)));
 		return list;
 	}
 	public static List<ParsingObject> getParsingObjectsOfBracketGrammar() {
@@ -203,6 +195,42 @@ public class GrammarLibrary {
 		list.add(new ParsingObject(new PointerAccessSubGrammar()));
 		return list;
 	}
+	public static List<ParsingObject> getParsingObjectsOfPointerAccessSGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new PointerAccessGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfPreNamespaceSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new PreNamespaceSubGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfGenericDataTypeSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new GenericDataTypeSubGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfDynamicAllocationSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new DynamicAllocationSubGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfBooleanAssignmentGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new BooleanAssignmentGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfFunctionParametersSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new FunctionParametersSubGrammar()));
+		return list;
+	}
+	public static List<ParsingObject> getParsingObjectsOfPointerAccessWithoutIdentifierSubGrammar() {
+		var list = new ArrayList<ParsingObject>();
+		list.add(new ParsingObject(new PointerAccessWithoutIdentifierSubGrammar()));
+		return list;
+	}
+
 	public static List<ParsingObject> getParsingObjectsOfAll() {
 		var list = new ArrayList<ParsingObject>();
 
@@ -221,10 +249,12 @@ public class GrammarLibrary {
 		list.addAll(getParsingObjectsOfReturnGrammar());
 		list.addAll(getParsingObjectsOfDeleteGrammar());
 		list.addAll(getParsingObjectsOfSemicolonGrammar());
-		list.addAll(getParsingObjectsOfNamespaceGrammar());
+//		list.addAll(getParsingObjectsOfNamespaceGrammar());
 		list.addAll(getParsingObjectsOfVectorGrammar(true));
 		list.addAll(getParsingObjectsOfBracketGrammar());
-
+		list.addAll(getParsingObjectsOfPointerAccessSGrammar());
+		list.addAll(getParsingObjectsOfBooleanAssignmentGrammar());
+		
 		return list;
 	}
 }

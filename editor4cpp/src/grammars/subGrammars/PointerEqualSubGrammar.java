@@ -42,7 +42,7 @@ public class PointerEqualSubGrammar extends Grammar {
 		
 		TerminalNode identifier_Node6 = new TerminalNode(new Identifier(""), true);
 		
-		TerminalNode dataType_Node7 = new TerminalNode(new DataType(), false);
+		TerminalNode dataType_Node7 = new TerminalNode(new DataType(""), false);
 		
 		TerminalNode openParenthesis_Node8 = new TerminalNode(new OpenParenthesisType(), false);
 

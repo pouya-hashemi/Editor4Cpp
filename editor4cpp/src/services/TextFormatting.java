@@ -117,12 +117,7 @@ public class TextFormatting implements ITextFormatting {
 				return FlagCheckBeforeReturn(token, result);
 			}
 		}
-
-//		if (token.tokenType instanceof DoubleOperandOperator) {
-//			result.addInsertBefore(createToken(" "));
-//			result.addInsertAfter(createToken(" "));
-//			return FlagCheckBeforeReturn(token, result);
-//		}
+		
 		if (token.tokenType instanceof Keyword) {
 			result.addInsertAfter(createToken(" "));
 			return FlagCheckBeforeReturn(token, result);

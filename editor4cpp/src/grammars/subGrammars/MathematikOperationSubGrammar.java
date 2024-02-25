@@ -12,7 +12,7 @@ import entities.TokenTypes.FloatingPointLiteral;
 import entities.TokenTypes.Identifier;
 import entities.TokenTypes.NumericLiteral;
 import entities.TokenTypes.TextLiteral;
-import entities.TokenTypes.Identifiers.PointerIdentifier;
+import entities.TokenTypes.Keywords.ThisKeyword;
 import entities.TokenTypes.Literals.BoolLiteral;
 import entities.TokenTypes.Operations.DoubleOperandOperator;
 import entities.TokenTypes.Operations.SingleOperandOperator;
@@ -34,20 +34,16 @@ public class MathematikOperationSubGrammar extends Grammar {
 		GrammarNode root = new GrammarNode();
 		rootNodeId = root.Id;
 
-//		SingleNode firstSingleOperator_Node1 = new SingleNode(new SingleOperandOperator(), false);
-//		SingleNode secondSingleOperator_Node2 = new SingleNode(new SingleOperandOperator(), false);
-
 		TerminalNode textLiteral_Node1 = new TerminalNode(new TextLiteral(), true);
 		TerminalNode boolLiteral_Node2 = new TerminalNode(new BoolLiteral(), true);
 		TerminalNode floatLiteral_Node3 = new TerminalNode(new FloatingPointLiteral(), true);
 		TerminalNode numericLiteral_Node4 = new TerminalNode(new NumericLiteral(), true);
 		TerminalNode identifier_Node5 = new TerminalNode(new Identifier(""), true);
-		
-//		TerminalNode firstSingleOperator_Node6 = new TerminalNode(new SingleOperandOperator(), false);
+		TerminalNode this_Node6 = new TerminalNode(new ThisKeyword(), false);
+
 		TerminalNode secondSingleOperator_Node7 = new TerminalNode(new SingleOperandOperator(), true);
 		TerminalNode doubleOperator_Node8 = new TerminalNode(new DoubleOperandOperator(), false);
-//		TerminalNode secondFloatingPoint_Node9 = new TerminalNode(new FloatingPointLiteral(), false);
-//		TerminalNode thirdFloatingPoint_Node10 = new TerminalNode(new FloatingPointLiteral(), true);
+
 		NonTerminalNode rightAssignment_Node11 = new NonTerminalNode(
 				() -> GrammarLibrary.getParsingObjectsOfMathematikOperationTopLayerSubGrammar(), true);
 		
@@ -64,25 +60,15 @@ public class MathematikOperationSubGrammar extends Grammar {
 		
 
 		// -----------------------------------------------------------------
-//		root.addChild(firstSingleOperator_Node1.Id);
 		root.addChild(identifier_Node5.Id);
 		root.addChild(textLiteral_Node1.Id);
 		root.addChild(boolLiteral_Node2.Id);
 		root.addChild(floatLiteral_Node3.Id);
 		root.addChild(numericLiteral_Node4.Id);
 		root.addChild(functionCall_Node12.Id);
+		root.addChild(this_Node6.Id);
 
 
-
-//		firstSingleOperator_Node1.addChild(secondSingleOperator_Node2.Id);
-
-
-//		secondSingleOperator_Node2.addChild(identifier_Node7.Id);
-
-//		textLiteral_Node1.addChild(textLiteral_Node1.Id);
-
-//		floatLiteral_Node3.addChild(secondFloatingPoint_Node9.Id);
-//		secondFloatingPoint_Node9.addChild(thirdFloatingPoint_Node10.Id);
 		floatLiteral_Node3.addChild(doubleOperator_Node8.Id);
 
 		numericLiteral_Node4.addChild(doubleOperator_Node8.Id);
@@ -91,13 +77,14 @@ public class MathematikOperationSubGrammar extends Grammar {
 		identifier_Node5.addChild(accessPointer_Node16.Id);
 		identifier_Node5.addChild(secondSingleOperator_Node7.Id);
 
-//		firstSingleOperator_Node6.addChild(secondSingleOperator_Node7.Id);
+		this_Node6.addChild(accessPointer_Node16.Id);
 
 		secondSingleOperator_Node7.addChild(doubleOperator_Node8.Id);
 
 		doubleOperator_Node8.addChild(rightAssignment_Node11.Id);
 		
 		functionCall_Node12.addChild(doubleOperator_Node8.Id);
+		functionCall_Node12.addChild(accessPointer_Node16.Id);
 		
 		
 		identifier_Node5.addChild(openBracket_Node13.Id);
@@ -116,18 +103,14 @@ public class MathematikOperationSubGrammar extends Grammar {
 		if (grammarNodes == null)
 			grammarNodes = new ArrayList<GrammarNode>();
 		grammarNodes.add(root);
-//		grammarNodes.add(firstSingleOperator_Node1);
-//		grammarNodes.add(secondSingleOperator_Node2);
 		grammarNodes.add(textLiteral_Node1);
 		grammarNodes.add(boolLiteral_Node2);
 		grammarNodes.add(floatLiteral_Node3);
 		grammarNodes.add(numericLiteral_Node4);
 		grammarNodes.add(identifier_Node5);
-//		grammarNodes.add(firstSingleOperator_Node6);
+		grammarNodes.add(this_Node6);
 		grammarNodes.add(secondSingleOperator_Node7);
 		grammarNodes.add(doubleOperator_Node8);
-//		grammarNodes.add(secondFloatingPoint_Node9);
-//		grammarNodes.add(thirdFloatingPoint_Node10);
 		grammarNodes.add(rightAssignment_Node11);
 		grammarNodes.add(functionCall_Node12);
 		grammarNodes.add(openBracket_Node13);

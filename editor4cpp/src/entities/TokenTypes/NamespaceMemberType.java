@@ -6,16 +6,23 @@ import constants.CustomStyle;
 import entities.TokenType;
 
 public class NamespaceMemberType extends TokenType {
+	private String name;
+
+	public NamespaceMemberType(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 
 	@Override
 	public Style getTokenStyle() {
-		// TODO Auto-generated method stub
 		return CustomStyle.defaultStyle;
 	}
 
 	@Override
 	public String getError() {
-		// TODO Auto-generated method stub
 		return "namespace's member";
 	}
 

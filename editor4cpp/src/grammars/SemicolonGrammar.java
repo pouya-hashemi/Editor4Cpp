@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import entities.GrammarNode;
 import entities.TerminalNode;
-import entities.TokenTypes.EndOfText;
 import entities.TokenTypes.Punctuations.SemicolonType;
 
 

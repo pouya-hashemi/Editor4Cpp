@@ -1,18 +1,25 @@
 package entities.TokenTypes;
 
-import enums.DataTypes;
-import interfaces.HasType;
 
-public class DataType extends Keyword implements HasType{
+public class DataType extends Keyword {
+	private String name;
 
-	protected DataTypes dataType;
+	public DataType(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String getError() {
 		
 		return "Expected DataType";
 	}
-	@Override
-	public DataTypes getDataType() {
-		return dataType;
-	}
+
 }
