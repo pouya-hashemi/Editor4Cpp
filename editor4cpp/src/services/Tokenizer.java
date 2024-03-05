@@ -550,25 +550,28 @@ public class Tokenizer implements ITokenizer {
 		dataTypes.putIfAbsent("vector", new GenericDataType("vector"));
 		dataTypes.putIfAbsent("dynamic_pointer_cast", new GenericDataType("dynamic_pointer_cast"));
 		dataTypes.putIfAbsent("shared_ptr", new GenericDataType("shared_ptr"));
-		dataTypes.putIfAbsent("ActivityNodeActivation", new UserDefinedDataType("ActivityNodeActivation"));
-		dataTypes.putIfAbsent("ActivityEdgeInstance", new UserDefinedDataType("ActivityEdgeInstance"));
-		dataTypes.putIfAbsent("Action", new UserDefinedDataType("Action"));
-		dataTypes.putIfAbsent("InputPin", new UserDefinedDataType("InputPin"));
-		dataTypes.putIfAbsent("ActionActivation", new UserDefinedDataType("ActionActivation"));
+//		
+//		dataTypes.putIfAbsent("ActivityNodeActivation", new UserDefinedDataType("ActivityNodeActivation"));
+//		dataTypes.putIfAbsent("ActivityEdgeInstance", new UserDefinedDataType("ActivityEdgeInstance"));
+//		dataTypes.putIfAbsent("Action", new UserDefinedDataType("Action"));
+//		dataTypes.putIfAbsent("InputPin", new UserDefinedDataType("InputPin"));
+//		dataTypes.putIfAbsent("ActionActivation", new UserDefinedDataType("ActionActivation"));
 	}
 private void initNamespaceMembers() {
 	namespaceMembers.putIfAbsent("cout", new NamespaceMemberType("cout"));
 	namespaceMembers.putIfAbsent("cin", new NamespaceMemberType("cin"));
 	namespaceMembers.putIfAbsent("endl", new NamespaceMemberType("endl"));
-	namespaceMembers.putIfAbsent("INPUTPINACTIVATION_CLASS", new NamespaceMemberType("INPUTPINACTIVATION_CLASS"));
-	namespaceMembers.putIfAbsent("OUTPUTPINACTIVATION_CLASS", new NamespaceMemberType("OUTPUTPINACTIVATION_CLASS"));
-	namespaceMembers.putIfAbsent("EXPANSIONNODEACTIVATION_CLASS", new NamespaceMemberType("EXPANSIONNODEACTIVATION_CLASS"));
+	
+//	namespaceMembers.putIfAbsent("INPUTPINACTIVATION_CLASS", new NamespaceMemberType("INPUTPINACTIVATION_CLASS"));
+//	namespaceMembers.putIfAbsent("OUTPUTPINACTIVATION_CLASS", new NamespaceMemberType("OUTPUTPINACTIVATION_CLASS"));
+//	namespaceMembers.putIfAbsent("EXPANSIONNODEACTIVATION_CLASS", new NamespaceMemberType("EXPANSIONNODEACTIVATION_CLASS"));
 }
 	private void initNamespaceTypes() {
 		namespaces.putIfAbsent("std", new NamespaceType("std"));
-		namespaces.putIfAbsent("fUML", new NamespaceType("fUML"));
-		namespaces.putIfAbsent("Semantics", new NamespaceType("Semantics"));
-		namespaces.putIfAbsent("Activities", new NamespaceType("Activities"));
+		
+//		namespaces.putIfAbsent("fUML", new NamespaceType("fUML"));
+//		namespaces.putIfAbsent("Semantics", new NamespaceType("Semantics"));
+//		namespaces.putIfAbsent("Activities", new NamespaceType("Activities"));
 
 
 	}

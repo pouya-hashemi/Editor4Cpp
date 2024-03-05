@@ -21,7 +21,6 @@ public class DeclareAndAssignmentTests {
 				"int _StartWithUnderScore;", "int WithNumbers12InMiddle;", "int WithNumbersAtEnd12;", "short a;",
 				"long a;", "char b;", "string a;", "bool a;", "float a;", "double a;", "int a,b;", "int a,b,c,d,e,f;",
 				"int a,b; short c;double d;", "int a,b; short c,d;double e,f;","int* a;"," auto endIter=activations->end();" ,
-				"std::shared_ptr<Bag<fUML::Semantics::Activities::ActivityNodeActivation>> enabledActivations(new Bag<fUML::Semantics::Activities::ActivityNodeActivation>());",
 				"const int a;"};
 	}
 
